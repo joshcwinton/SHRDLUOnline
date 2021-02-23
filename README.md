@@ -1,2 +1,5 @@
 # SHRDLUOnline 
-Josh Winton, Jasper Cheung, Saurav Hossain, Donald Chen
+Frontend:
+Josh Winton, Jasper Cheung
+Backend:
+Saurav Hossain, Donald Chen
