@@ -1,14 +1,15 @@
-GridSize = 4
+GRID_SIZE = 4
 #Tuple is (shape, color, height)
-Grid = [[(0,0,0) for i in range(GridSize)] for j in range(GridSize)]
+Grid = [[(0,0,0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
 
 shapes = {"cube": 1, "pyramid": 2, "box": 3}
 colors = {"red": 1, "blue": 2, "green": 3}
-claw_pos = GridSize // 2, GridSize // 2
+claw_pos = GRID_SIZE // 2, GRID_SIZE // 2
 
 #Change height parameter in functions to a lambda to check for comparison words:
 #ie. Find a block that is TALLER than this pyramid
 
+#returns all shapes found based on given parameters
 def findShape(shape, color = None,height = 0):
     foundShapes = []
 
@@ -61,16 +62,4 @@ def holdShape(row,col):
 def showGrid():
     for i in Grid:
         print(i)
-
-def test():
-    x = 1
-    y = 2
-    shape = 'cube'
-    color = 'red'
-
-    addShape(x,y,shape, color)
-
-    showGrid()
-
-    print(findShape(shape))
 
