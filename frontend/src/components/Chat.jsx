@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import ChatInput from './ChatInput';
 import ChatMessageList from './ChatMessageList';
@@ -6,6 +7,19 @@ import ChatMessageList from './ChatMessageList';
 class Chat extends Component {
   state = {
     messages: [],
+  }
+
+  // Send message to backend then print it to console
+  sendMessage = (message) => {
+    axios.post('localhost:8080/sentences', {
+        message: message
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   addMessage = (message) => {
