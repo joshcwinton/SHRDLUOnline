@@ -12,7 +12,7 @@ class ChatMessageList extends Component {
     return this.props.messages.map((message, index) =>
           <ChatMessage
             key={index}
-            message={message.message}
+            message={message.text}
             name={message.name}
           />);
   }
