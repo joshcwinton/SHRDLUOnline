@@ -13,7 +13,7 @@ class ChatMessageList extends Component {
           <ChatMessage
             key={index}
             message={message.message}
-            name={"Me:"}
+            name={message.name}
           />);
   }
 }
