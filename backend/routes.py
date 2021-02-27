@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request
 import os
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 #dummy data
 sentences = [{'sass' : 'sample_response_1'}, {'sass' : 'sample_response_2'}, {'sass' : 'sample_response_3'}]
