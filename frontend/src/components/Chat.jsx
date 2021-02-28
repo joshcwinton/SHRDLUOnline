@@ -5,7 +5,6 @@ import Container from "react-bootstrap/Container";
 
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
-import SHRDLUNavbar from "./Navbar";
 
 class Chat extends Component {
   state = {
@@ -46,7 +45,6 @@ class Chat extends Component {
   render() {
     return (
       <div>
-        <SHRDLUNavbar />
         <Container>
           <ChatMessageList messages={this.state.messages} />
           <ChatInput
