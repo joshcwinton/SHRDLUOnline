@@ -17,6 +17,11 @@ class SHRDLUNavbar extends Component {
             />{" "}
             SHRDLU Online
           </Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="/">Chat</Nav.Link>
+            <Nav.Link href="/">Explore</Nav.Link>
+            <Nav.Link href="/">Login</Nav.Link>
+          </Nav>
         </Navbar>
       </div>
     );
