@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import ChatInput from './ChatInput';
-import ChatMessageList from './ChatMessageList';
+import ChatInput from "./ChatInput";
+import ChatMessageList from "./ChatMessageList";
+import SHRDLUNavbar from "./Navbar";
+import Container from "react-bootstrap/Container";
+
+import SHRDLUNavbar from "./Navbar";
 
 class Chat extends Component {
   state = {
@@ -42,10 +46,15 @@ class Chat extends Component {
   render() {
     return (
       <div>
+        <SHRDLUNavbar />
+        <Container>
+          <ChatMessageList messages={this.state.messages} />
         <ChatInput
-          onSubmitMessage={messageString => this.submitMessage(messageString)}
+            onSubmitMessage={(messageString) =>
+              this.submitMessage(messageString)
+            }
         />
-        <ChatMessageList messages={this.state.messages}/>
+        </Container>
       </div>
     );
   }
