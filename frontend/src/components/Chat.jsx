@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import Container from "react-bootstrap/Container";
+
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import SHRDLUNavbar from "./Navbar";
