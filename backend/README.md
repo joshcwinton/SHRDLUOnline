@@ -11,11 +11,11 @@ To enable all development features (including debug mode) you can export the FLA
 
 This does the following things:
 
-[x] it activates the debugger
+- [x] it activates the debugger
 
-[x] it activates the automatic reloader
+- [x] it activates the automatic reloader
 
-[x] it enables the debug mode on the Flask application.
+- [x] it enables the debug mode on the Flask application.
 
 In order to check open routes and launch in debug mode you can run:
 ### `python routes.py`
