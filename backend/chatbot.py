@@ -45,8 +45,8 @@ def checkAction(action):
     return action in ACTIONS
 
 def checkLocation(row,col):
-    return row > GRID_SIZE or col > GRID_SIZE \
-        or row < 0 or col < 0
+    return not (row > GRID_SIZE or col > GRID_SIZE \
+        or row < 0 or col < 0)
 
 def emptyPosition(row,col):
     return GRID[row][col] == ("", "", 0)
@@ -55,7 +55,7 @@ def emptyPosition(row,col):
 #Returns the reponse_number based on what conditions are met
 def doAction(action,shape,color,row,col):
 
-    if action == 'add':
+    if action == 'ADD':
         if not checkColor(color):
             return 4
         elif not checkLocation(row,col):
@@ -75,22 +75,22 @@ def doAction(action,shape,color,row,col):
     elif len(foundShape) == 0:
         return 6
     else:
-        if action == 'move':
+        if action == 'MOVE':
             if not checkLocation(row,col) == 1:
                 return 7
             else:
                 moveShape(x1= foundShape[0][0],y1=foundShape[0][1],x2=row,y2=col)
-        if action == 'find':
+        if action == 'FIND':
             return 8
-        if action == 'delete':
+        if action == 'DELETE':
             if row != -1 and col != -1: #Case: Coordinates are given
-                if GRID[row][col] == (SHAPES[shape], COLORS[color], 0):
+                if GRID[row][col] == (shape, color, 0):
                     delShape(row,col)
                 else:
                     return 6
             else:
                 delShape(foundShape[0][0],foundShape[0][1])
-        if action == 'pick':
+        if action == 'PICK':
             holdShape(foundShape[0][0], foundShape[0][1])
 
     return 0

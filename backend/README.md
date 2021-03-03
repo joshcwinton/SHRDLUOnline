@@ -26,6 +26,11 @@ While lightweight and easy to use, Flask’s built-in server is not suitable for
 
 Learn More about deployment options at: https://flask.palletsprojects.com/en/1.1.x/deploying/#deployment
 
+#Chatbot and Environment
+
+Install requirements:
+pip install spacy
+python -m spacy download en_core_web_sm
 
 
 

@@ -16,11 +16,11 @@ def findShape(shape, color = None,height = 0):
     for y, row in enumerate(GRID):
         for x, pos in enumerate(row):
             found = True
-            if SHAPES[shape] != pos[0]:
+            if shape != pos[0]:
                 found = False
             if color:
                 if color in COLORS:
-                    if COLORS[color] != pos[1]:
+                    if color != pos[1]:
                         found = False
                 else:
                     found = False
@@ -37,7 +37,7 @@ def addShape(row,col, shape, color, height = 0):
     global GRID
 
     if shape in SHAPES and color in COLORS:
-        GRID[row][col] = (SHAPES[shape], COLORS[color], height)
+        GRID[row][col] = (shape, color, height)
 
 def delShape(row,col):
     global GRID
