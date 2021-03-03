@@ -10,13 +10,14 @@ class Chat extends Component {
   state = {
     messages: [],
     name: "Me",
+    errors: [],
   };
 
   // Send message to backend then print it to console
   sendMessage = (message) => {
     // add message to chat history
     this.addMessage(message);
-
+    let errors = [];
     // send message to backend
     axios
       .post("http://0.0.0.0:5555/sentences", {
@@ -29,6 +30,10 @@ class Chat extends Component {
       })
       .catch((err) => {
         console.log(err);
+        errors.push(err.message);
+      })
+      .finally(()  => {
+        this.setState({errors:errors});
       });
   };
 
@@ -38,8 +43,15 @@ class Chat extends Component {
 
   submitMessage = (messageString) => {
     // on submitting the ChatInput form, send the message, add it to the list and reset the input
-    const message = { name: this.state.name, text: messageString };
-    this.sendMessage(message);
+    let errors = [];
+    if(messageString === ""){
+      console.log("Blank message is not valid!");
+      errors.push("Blank message is not valid!");
+    } else{
+      const message = { name: this.state.name, text: messageString };
+      this.sendMessage(message);
+    }
+    this.setState({errors:errors});
   };
 
   render() {
@@ -52,6 +64,8 @@ class Chat extends Component {
               this.submitMessage(messageString)
             }
           />
+          {this.state.errors.map((error, i) => <p key={i} className="error">{error}</p>) }
+
         </Container>
       </div>
     );

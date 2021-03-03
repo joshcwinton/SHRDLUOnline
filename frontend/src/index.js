@@ -8,7 +8,7 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 
 // Components
 import Chat from './components/Chat';
-import SHRDLUNavbar from './components/Navbar'
+import SHRDLUNavbar from './components/Navbar';
 
 const routing = (
   <div>
