@@ -1,30 +1,42 @@
 from flask import Flask, jsonify, request
 import os
+from chatbot import chatbot
+import json
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
 #dummy data
-sentences = [{'sass' : 'sample_response_1'}, {'sass' : 'sample_response_2'}, {'sass' : 'sample_response_3'}]
+dummy = [{'sass' : 'sample_response_1'}, {'sass' : 'sample_response_2'}, {'sass' : 'sample_response_3'}]
 
-#main route defaults
+#main route (Landing Page)
 @app.route('/', methods = ['GET'])
 def main_route():
-        return jsonify({"about":"Default"})
+        return jsonify({"about" : "Default"})
 
-#endpoint GET ALL (UNUSED)
-@app.route('/sentences', methods = ['GET'])
-def return_All():
-    return jsonify({'sentences' : sentences})
+#endpoint that returns dummy data above (Used For Testing)
+@app.route('/dummy', methods = ['GET'])
+def return_dummy():
+    return jsonify({'dummy' : dummy})
             
-#endpoint POST
-@app.route('/sentences', methods = ['GET','POST'])
-def test_route():
-    sentence = {'sass' : request.json['sass']}
+#endpoint that echos input (Used For Testing)
+@app.route('/repeat', methods = ['GET','POST'])
+def repeat_route():
+        if request.method == 'POST':
+                user_inp = request.get_json()
+                return jsonify(user_inp)
+        return jsonify({"get" : "requested"})
 
-    #sentences.append(sentence)
-    return jsonify({'sentences' : sentence})
+#endpoint that calls chatbot function (SHRDLU Response)
+@app.route('/chat', methods = ['GET', 'POST'])
+def chatbot_route():
+        if request.method == 'POST':
+                post_data = request.get_json()
+                user_res = post_data["user"]
+                bot_res = chatbot(user_res)
+                return jsonify({"SHRDLU: ": bot_res})
+        return jsonify({"get" : "requested"})
 
 
 if __name__ == '__main__':
