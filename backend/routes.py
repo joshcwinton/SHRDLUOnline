@@ -24,8 +24,9 @@ def return_dummy():
 @app.route('/repeat', methods = ['GET','POST'])
 def repeat_route():
         if request.method == 'POST':
-                user_inp = request.get_json()
-                return jsonify(user_inp)
+                post_data = request.get_json()
+                user_res = post_data["user"]
+                return jsonify({"SHRDLU Echo: " : user_res})
         return jsonify({"get" : "requested"})
 
 #endpoint that calls chatbot function (SHRDLU Response)
