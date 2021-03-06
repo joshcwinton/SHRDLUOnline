@@ -29,7 +29,7 @@ def findShape(shape, color = None,height = 0):
                     found = False
 
             if found:
-                foundShapes.append((x, y))
+                foundShapes.append((y, x))
 
     return foundShapes
 
@@ -42,7 +42,7 @@ def addShape(row,col, shape, color, height = 0):
 def delShape(row,col):
     global GRID
 
-    GRID[row][col] = (0, 0, 0)
+    GRID[row][col] = ("", "", 0)
 
 
 #x1,y1 is moving from
@@ -58,6 +58,11 @@ def holdShape(row,col):
     global CLAW_POS
     CLAW_POS = row, col
 
+def clearBoard():
+    global GRID
+    for x in range(GRID_SIZE):
+        for y in range(GRID_SIZE):
+            GRID[x][y] = ("","",0)
 
 def showGrid():
     for i in GRID:
