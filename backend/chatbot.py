@@ -91,7 +91,7 @@ def doAction(action,shape,color,row,col):
             return 8
         if action == 'DELETE':
             if row != -1 and col != -1: #Case: Coordinates are given
-                if GRID[row][col] == (SHAPES[shape], COLORS[color], 0):
+                if GRID[row][col] == (shape, color, 0):
                     delShape(row,col)
                 else:
                     return 6
