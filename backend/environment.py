@@ -16,11 +16,11 @@ def findShape(shape, color = None,height = 0):
     for y, row in enumerate(GRID):
         for x, pos in enumerate(row):
             found = True
-            if SHAPES[shape] != pos[0]:
+            if shape != pos[0]:
                 found = False
             if color:
                 if color in COLORS:
-                    if COLORS[color] != pos[1]:
+                    if color != pos[1]:
                         found = False
                 else:
                     found = False
@@ -29,7 +29,7 @@ def findShape(shape, color = None,height = 0):
                     found = False
 
             if found:
-                foundShapes.append((x, y))
+                foundShapes.append((y, x))
 
     return foundShapes
 
@@ -37,12 +37,12 @@ def addShape(row,col, shape, color, height = 0):
     global GRID
 
     if shape in SHAPES and color in COLORS:
-        GRID[row][col] = (SHAPES[shape], COLORS[color], height)
+        GRID[row][col] = (shape, color, height)
 
 def delShape(row,col):
     global GRID
 
-    GRID[row][col] = (0, 0, 0)
+    GRID[row][col] = ("", "", 0)
 
 
 #x1,y1 is moving from
@@ -58,6 +58,11 @@ def holdShape(row,col):
     global CLAW_POS
     CLAW_POS = row, col
 
+def clearBoard():
+    global GRID
+    for x in range(GRID_SIZE):
+        for y in range(GRID_SIZE):
+            GRID[x][y] = ("","",0)
 
 def showGrid():
     for i in GRID:
