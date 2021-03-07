@@ -20,12 +20,12 @@ class Chat extends Component {
     let errors = [];
     // send message to backend
     axios
-      .post("http://0.0.0.0:5555/sentences", {
-        sass: message.text,
+      .post("http://0.0.0.0:5555/chat", {
+        user: message.text,
       })
       .then((res) => {
         // add response to history
-        let response = { name: "SHRDLU", text: res.data.sentences.sass };
+        let response = { name: "SHRDLU", text: res.data.SHRDLU };
         this.addMessage(response);
       })
       .catch((err) => {
