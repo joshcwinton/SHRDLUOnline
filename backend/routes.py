@@ -36,8 +36,8 @@ def chatbot_route():
                 post_data = request.get_json()
                 user_res = post_data["user"]
                 bot_res = chatbot(user_res)
-                return jsonify({"SHRDLU: ": bot_res})
-        return jsonify({"get" : "requested"})
+        return jsonify({"SHRDLU": bot_res})
+    return jsonify({"get": "requested"})
 
 
 if __name__ == '__main__':
