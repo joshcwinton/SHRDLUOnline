@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
+import Environment from "./Environment";
 
 class Chat extends Component {
   state = {
@@ -32,8 +35,8 @@ class Chat extends Component {
         console.log(err);
         errors.push(err.message);
       })
-      .finally(()  => {
-        this.setState({errors:errors});
+      .finally(() => {
+        this.setState({ errors: errors });
       });
   };
 
@@ -44,30 +47,38 @@ class Chat extends Component {
   submitMessage = (messageString) => {
     // on submitting the ChatInput form, send the message, add it to the list and reset the input
     let errors = [];
-    if(messageString === ""){
+    if (messageString === "") {
       console.log("Blank message is not valid!");
       errors.push("Blank message is not valid!");
-    } else{
+    } else {
       const message = { name: this.state.name, text: messageString };
       this.sendMessage(message);
     }
-    this.setState({errors:errors});
+    this.setState({ errors: errors });
   };
 
   render() {
     return (
-      <div>
-        <Container>
-          <ChatMessageList messages={this.state.messages} />
-          <ChatInput
-            onSubmitMessage={(messageString) =>
-              this.submitMessage(messageString)
-            }
-          />
-          {this.state.errors.map((error, i) => <p key={i} className="error">{error}</p>) }
-
-        </Container>
-      </div>
+      <Container fluid="sm">
+        <Row>
+          <Col>
+            <Environment />
+          </Col>
+          <Col>
+            <ChatMessageList messages={this.state.messages} />
+            <ChatInput
+              onSubmitMessage={(messageString) =>
+                this.submitMessage(messageString)
+              }
+            />
+            {this.state.errors.map((error, i) => (
+              <p key={i} className="error">
+                {error}
+              </p>
+            ))}
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
