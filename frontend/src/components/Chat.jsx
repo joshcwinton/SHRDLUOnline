@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Environment from "./Environment";
+import SampleCommands from "./SampleCommands";
 
 class Chat extends Component {
   state = {
@@ -60,6 +61,7 @@ class Chat extends Component {
   render() {
     return (
       <Container fluid="sm">
+        <SampleCommands />
         <Row>
           <Col>
             <Environment />

@@ -5,7 +5,7 @@ from environment import SHAPES, COLORS, addShape,delShape,findShape,moveShape,ho
 
 nlp = spacy.load('en_core_web_sm')
 
-ACTIONS = {'FIND':findShape, 'DELETE':delShape, 'ADD':addShape, 'MOVE':moveShape, 'PICK':holdShape}
+ACTIONS = {'FIND':findShape, 'DELETE':delShape, 'ADD':addShape, 'MOVE':moveShape, 'HOLD':holdShape}
 
 #@Param sentence- string
 #Sentence - Takes the format "[action] [adj] [noun] [x] [y]"
@@ -45,8 +45,8 @@ def checkAction(action):
     return action in ACTIONS
 
 def checkLocation(row,col):
-    return row > GRID_SIZE or col > GRID_SIZE \
-        or row < 0 or col < 0
+    return not (row > GRID_SIZE - 1 or col > GRID_SIZE -1  \
+        or row < 0 or col < 0)
 
 def emptyPosition(row,col):
     return GRID[row][col] == ("", "", 0)
@@ -55,9 +55,15 @@ def emptyPosition(row,col):
 #Returns the reponse_number based on what conditions are met
 def doAction(action,shape,color,row,col):
 
-    if action == 'add':
+    if not checkShape(shape) == 1: # Check if shape is valid
+        return 2
+    elif not checkAction(action) == 1: #Check if action is valid
+        return 3
+
+    if action == 'ADD':
         if not checkColor(color):
             return 4
+
         elif not checkLocation(row,col):
             return 10
         elif emptyPosition(row,col):
@@ -67,6 +73,7 @@ def doAction(action,shape,color,row,col):
             return 1 #Say location is taken
 
     foundShape = findShape(shape=shape,color=color)
+    #Ask check for location
     if len(foundShape) > 1:
         if color in COLORS:
             return 5  # Change to ask for location
@@ -75,22 +82,22 @@ def doAction(action,shape,color,row,col):
     elif len(foundShape) == 0:
         return 6
     else:
-        if action == 'move':
+        if action == 'MOVE':
             if not checkLocation(row,col) == 1:
                 return 7
             else:
                 moveShape(x1= foundShape[0][0],y1=foundShape[0][1],x2=row,y2=col)
-        if action == 'find':
+        if action == 'FIND':
             return 8
-        if action == 'delete':
+        if action == 'DELETE':
             if row != -1 and col != -1: #Case: Coordinates are given
-                if GRID[row][col] == (SHAPES[shape], COLORS[color], 0):
+                if GRID[row][col] == (shape, color, 0):
                     delShape(row,col)
                 else:
                     return 6
             else:
                 delShape(foundShape[0][0],foundShape[0][1])
-        if action == 'pick':
+        if action == 'HOLD':
             holdShape(foundShape[0][0], foundShape[0][1])
 
     return 0
@@ -116,14 +123,7 @@ def response(response_number):
 def chatbot(sentence):
     shape, color, action, row, col = readSentence(sentence)
 
-    response_number = -1
-
-    if not checkShape(shape) == 1: # Check if shape is valid
-        response_number = 2
-    elif not checkAction(action) == 1: #Check if action is valid
-        response_number = 3
-    else:
-        response_number = doAction(action=action,shape=shape,color=color,row=row,col=col)
+    response_number = doAction(action=action,shape=shape,color=color,row=row,col=col)
 
     return(response(response_number))
 
