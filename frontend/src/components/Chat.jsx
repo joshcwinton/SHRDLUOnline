@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
+import SampleCommands from "./SampleCommands";
 
 class Chat extends Component {
   state = {
@@ -58,6 +59,7 @@ class Chat extends Component {
     return (
       <div>
         <Container>
+          <SampleCommands />
           <ChatMessageList messages={this.state.messages} />
           <ChatInput
             onSubmitMessage={(messageString) =>
@@ -65,7 +67,6 @@ class Chat extends Component {
             }
           />
           {this.state.errors.map((error, i) => <p key={i} className="error">{error}</p>) }
-
         </Container>
       </div>
     );
