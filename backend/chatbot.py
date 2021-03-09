@@ -13,6 +13,8 @@ ACTIONS = {'FIND':findShape, 'DELETE':delShape, 'ADD':addShape, 'MOVE':moveShape
 #Specifically looks for shape,color,action,row,col
 def readSentence(sentence):
 
+    sentence = sentence.lower()
+
     processed_sentence = nlp(sentence)
 
     color,shape,action = '','',''
