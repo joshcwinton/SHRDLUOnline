@@ -72,15 +72,27 @@ def doAction(action,shape,color,row,col):
         else:
             return 1 #Say location is taken
 
-    foundShape = findShape(shape=shape,color=color)
-    #Ask check for location
+    foundShape = []
+    if row != -1 and col != -1 and not emptyPosition(row=row, col=col):
+        if color in COLORS:
+            if GRID[row][col] == (shape,color,0):
+                foundShape.append((row,col))
+            else:
+                return 6
+        else:
+            return 4
+    else:
+        foundShape = findShape(shape=shape,color=color)
+
+
+    if len(foundShape) == 0:
+        return 6
+
     if len(foundShape) > 1:
         if color in COLORS:
             return 5  # Change to ask for location
         else:
             return 4
-    elif len(foundShape) == 0:
-        return 6
     else:
         if action == 'MOVE':
             if not checkLocation(row,col) == 1:

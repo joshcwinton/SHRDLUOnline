@@ -158,5 +158,23 @@ def environment_test():
     print(results)
     return results
 
-environment_test()
-chatbot_test()
+#Delete with a capital D is recognized as a noun and will not work
+#delete only works with lowercase d
+def AddandDelete():
+    print(chatbot("Add the red cube"))
+    print(chatbot("Add the red cube 2 2"))
+    print(chatbot("Find the red cube"))
+    print(chatbot("Add the red cube 1 2"))
+    print(chatbot("Find the red cube"))
+    print(chatbot("Find the red cube 2 2"))
+    print(chatbot("delete the red cube"))
+    print(chatbot("delete the red cube 1 2"))
+    print(chatbot("Find the red cube"))
+
+    clearBoard()
+
+
+
+#All variables should return true in the lists
+#environment_test()
+#chatbot_test()
