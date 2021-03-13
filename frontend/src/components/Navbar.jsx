@@ -2,8 +2,17 @@ import React, { Component } from "react";
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import SampleCommands from "./SampleCommands";
 
 class SHRDLUNavbar extends Component {
+  state = {
+    show: false
+  }
+
+  handleClick = (e) =>{
+    this.setState({show:!this.state.show});
+  }
+
   render() {
     return (
       <div>
@@ -22,8 +31,10 @@ class SHRDLUNavbar extends Component {
             <Nav.Link href="/">Chat</Nav.Link>
             <Nav.Link href="/">Explore</Nav.Link>
             <Nav.Link href="/">Login</Nav.Link>
+            <Nav.Link onClick={this.handleClick}> Toggle Help</Nav.Link>
           </Nav>
         </Navbar>
+        <SampleCommands show={this.state.show} />
       </div>
     );
   }
