@@ -17,3 +17,8 @@ code {
   margin: 0px;
   margin-bottom: 5px;
 }
+
+.Chat {
+  height: 400px;
+  overflow-y: scroll;
+}
