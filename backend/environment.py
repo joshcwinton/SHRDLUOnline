@@ -67,9 +67,12 @@ class Environment:
 
     def addShape(self,row: int,col: int, shape: str, color: str, height = 0) -> None:
         """Add a shape to the grid at specified row and column
-        """
-        if shape in self.SHAPES and color in self.COLORS:
-            self.GRID[row][col] = (shape, color, height)
+        :raise ValueError if row and col does not lie within grid."""
+        try:
+            if shape in self.SHAPES and color in self.COLORS:
+                self.GRID[row][col] = (shape, color, height)
+        except:
+            raise ValueError('Enter values of within range(0,%d)'%self.GRID_SIZE)
 
     def delShape(self,row: int,col: int)-> None:
         """Deletes the shape at (row,col) position of grid.
