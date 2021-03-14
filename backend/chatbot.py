@@ -1,11 +1,13 @@
 import spacy
-from environment import SHAPES, COLORS, addShape,delShape,findShape,moveShape,holdShape, GRID_SIZE, GRID,showGrid
+from environment import Environment
+
+env = Environment()
 
 #Create function for conjunctions(and) to make sentences easier to read
 
 nlp = spacy.load('en_core_web_sm')
 
-ACTIONS = {'FIND':findShape, 'DELETE':delShape, 'ADD':addShape, 'MOVE':moveShape, 'HOLD':holdShape}
+ACTIONS = {'FIND':env.findShape, 'DELETE':env.delShape, 'ADD':env.addShape, 'MOVE':env.moveShape, 'HOLD':env.holdShape}
 
 #@Param sentence- string
 #Sentence - Takes the format "[action] [adj] [noun] [x] [y]"
@@ -36,20 +38,20 @@ def readSentence(sentence):
     return(shape,color,action,row,col)
 
 def checkShape(noun):
-    return noun in SHAPES
+    return noun in env.SHAPES
 
 def checkColor(adj):
-    return adj in COLORS
+    return adj in env.COLORS
 
 def checkAction(action):
     return action in ACTIONS
 
 def checkLocation(row,col):
-    return not (row > GRID_SIZE - 1 or col > GRID_SIZE -1  \
-        or row < 0 or col < 0)
+    return not (row > env.GRID_SIZE - 1 or col > env.GRID_SIZE -1 \
+                or row < 0 or col < 0)
 
 def emptyPosition(row,col):
-    return GRID[row][col] == ("", "", 0)
+    return env.GRID[row][col] == ("", "", 0)
 
 #@Param flags- the check from @func checkSemantics
 #Returns the reponse_number based on what conditions are met
@@ -67,15 +69,15 @@ def doAction(action,shape,color,row,col):
         elif not checkLocation(row,col):
             return 10
         elif emptyPosition(row,col):
-            addShape(shape=shape,color = color,row = row,col=col)
+            env.addShape(shape=shape,color = color,row = row,col=col)
             return 0
         else:
             return 1 #Say location is taken
 
-    foundShape = findShape(shape=shape,color=color)
+    foundShape = env.findShape(shape=shape,color=color)
     #Ask check for location
     if len(foundShape) > 1:
-        if color in COLORS:
+        if color in env.COLORS:
             return 5  # Change to ask for location
         else:
             return 4
@@ -86,19 +88,19 @@ def doAction(action,shape,color,row,col):
             if not checkLocation(row,col) == 1:
                 return 7
             else:
-                moveShape(x1= foundShape[0][0],y1=foundShape[0][1],x2=row,y2=col)
+                env.moveShape(x1= foundShape[0][0],y1=foundShape[0][1],x2=row,y2=col)
         if action == 'FIND':
             return 8
         if action == 'DELETE':
             if row != -1 and col != -1: #Case: Coordinates are given
-                if GRID[row][col] == (shape, color, 0):
-                    delShape(row,col)
+                if env.GRID[row][col] == (shape, color, 0):
+                    env.delShape(row,col)
                 else:
                     return 6
             else:
-                delShape(foundShape[0][0],foundShape[0][1])
+                env.delShape(foundShape[0][0],foundShape[0][1])
         if action == 'HOLD':
-            holdShape(foundShape[0][0], foundShape[0][1])
+            env.holdShape(foundShape[0][0], foundShape[0][1])
 
     return 0
 
@@ -126,4 +128,3 @@ def chatbot(sentence):
     response_number = doAction(action=action,shape=shape,color=color,row=row,col=col)
 
     return(response(response_number))
-
