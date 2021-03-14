@@ -1,7 +1,7 @@
 import chatbot
-import environment
+from environment import Environment
 from chatbot import emptyPosition,chatbot,doAction
-from environment import  GRID, clearBoard
+env = Environment()
 
 
 #Check responses
@@ -37,7 +37,7 @@ def chatbot_test():
                             doAction(action="ADD", shape="PYRAMID", color="GREEN", row=2, col=2)
 
     #res1b = no color, res1c= no shape, res1d = no coordinates res1e = space is already taken
-    results.append((GRID[2][2]) == ('CUBE', 'RED', 0) and res1b == 4 and res1c == 2 and res1d == 10 and res1e == 1)
+    results.append((env.GRID[2][2]) == ('CUBE', 'RED', 0) and res1b == 4 and res1c == 2 and res1d == 10 and res1e == 1)
 
 
     ###Delete
@@ -107,7 +107,7 @@ def chatbot_test():
     test6b = "Hold the blue box"
     chatbot(test6a)
     chatbot(test6b)
-    results.append(environment.CLAW_POS == (1,3))
+    results.append(env.CLAW_POS == (1,3))
     clearBoard()
 
     print(results)
@@ -120,39 +120,39 @@ def environment_test():
     results = []
     #Add
     test1 = "Add the red cube 2 2"
-    environment.addShape(shape="CUBE", color= "RED",row=2,col=2)
+    env.addShape(shape="CUBE", color= "RED",row=2,col=2)
     results.append((GRID[2][2]) == ('CUBE', 'RED', 0))
     #Delete
     test2 = "Delete the red cube 2 2"
-    environment.delShape(row = 2, col = 2)
+    env.delShape(row = 2, col = 2)
     results.append(emptyPosition(row=2,col=2))
     #Clear Board
     test3a = "Add the red cube 2 2"
     test3b = "Add the green pyramid 1 1"
     test3c = "Add the blue box 0 1"
-    environment.addShape(shape="CUBE", color="RED", row=2, col=2)
-    environment.addShape(shape="PYRAMID", color="GREEN", row=1, col=1)
-    environment.addShape(shape="BOX", color="BLUE", row=0, col=1)
+    envir.addShape(shape="CUBE", color="RED", row=2, col=2)
+    envir.addShape(shape="PYRAMID", color="GREEN", row=1, col=1)
+    envir.addShape(shape="BOX", color="BLUE", row=0, col=1)
     clearBoard()
     results.append(emptyPosition(row=2,col=2) and emptyPosition(row=1,col=1) and emptyPosition(row=0,col=1))
     #Move
     test4a = "Add the green pyramid 2 3"
     test4b = "Move the green pyramid to 1 1"
-    environment.addShape(shape="PYRAMID",color="GREEN",row=2,col=3)
-    environment.moveShape(x1=2,y1=3,x2=1,y2=1)
-    results.append(emptyPosition(row=2,col=3) and GRID[1][1] == ('PYRAMID','GREEN',0))
+    env.addShape(shape="PYRAMID",color="GREEN",row=2,col=3)
+    env.moveShape(x1=2,y1=3,x2=1,y2=1)
+    results.append(emptyPosition(row=2,col=3) and env.GRID[1][1] == ('PYRAMID','GREEN',0))
     clearBoard()
     #Find
     test5a = "Add the red cube 1 2"
-    environment.addShape(shape="CUBE",color="RED",row=1,col=2)
-    results.append(environment.findShape(shape = "CUBE",color = "RED")[0] == (1,2))
+    env.addShape(shape="CUBE",color="RED",row=1,col=2)
+    results.append(env.findShape(shape = "CUBE",color = "RED")[0] == (1,2))
     clearBoard()
     #Hold
     test6a = "Add the blue box 1 3"
     test6b = "Hold the blue box"
-    environment.addShape(shape="BOX", color="BLUE", row=1, col=3)
-    environment.holdShape(row=1,col=3)
-    results.append(environment.CLAW_POS == (1,3))
+    env.addShape(shape="BOX", color="BLUE", row=1, col=3)
+    env.holdShape(row=1,col=3)
+    results.append(env.CLAW_POS == (1,3))
     clearBoard()
 
     print(results)
