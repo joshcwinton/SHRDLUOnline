@@ -21,4 +21,5 @@ code {
 .Chat {
   height: 400px;
   overflow-y: scroll;
+  border: 1px solid black;
 }
