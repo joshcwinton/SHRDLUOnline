@@ -31,6 +31,8 @@ def readSentence(sentence):
                 row = int(token.text)
             else:
                 col = int(token.text)
+        if token.pos_ == 'SCONJ':
+            conj = token.text.upper()
 
         #print(token, token.tag_, token.pos_, spacy.explain(token.tag_), token.head.text, token.dep_)
         #example output "Add VB VERB verb, base form Add ROOT"
@@ -52,6 +54,11 @@ def checkLocation(row,col):
 
 def emptyPosition(row,col):
     return GRID[row][col] == ("", "", 0)
+
+
+#Next to, Above, Below, Left, Right, Near
+def doRelativeAction():
+    pass
 
 #@Param flags- the check from @func checkSemantics
 #Returns the reponse_number based on what conditions are met
@@ -75,16 +82,20 @@ def doAction(action,shape,color,row,col):
             return 1 #Say location is taken
 
     foundShape = []
-    if row != -1 and col != -1 and not emptyPosition(row=row, col=col):
-        if color in COLORS:
-            if GRID[row][col] == (shape,color,0):
-                foundShape.append((row,col))
-            else:
-                return 6
+    if row != -1 and col != -1 and action != 'MOVE':
+        if emptyPosition(row = row, col = col):
+            return 6
         else:
-            return 4
+            if color in COLORS:
+                if GRID[row][col] == (shape,color,0):
+                    foundShape.append((row,col))
+                else:
+                    return 6
+            else:
+                return 4
     else:
         foundShape = findShape(shape=shape,color=color)
+
 
 
     if len(foundShape) == 0:
@@ -101,16 +112,14 @@ def doAction(action,shape,color,row,col):
                 return 7
             else:
                 moveShape(x1= foundShape[0][0],y1=foundShape[0][1],x2=row,y2=col)
+
+        row = foundShape[0][0]
+        col = foundShape[0][1]
+
         if action == 'FIND':
             return 8
         if action == 'DELETE':
-            if row != -1 and col != -1: #Case: Coordinates are given
-                if GRID[row][col] == (shape, color, 0):
-                    delShape(row,col)
-                else:
-                    return 6
-            else:
-                delShape(foundShape[0][0],foundShape[0][1])
+            delShape(row,col)
         if action == 'HOLD':
             holdShape(foundShape[0][0], foundShape[0][1])
 
