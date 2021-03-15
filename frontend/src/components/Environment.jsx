@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Image from "react-bootstrap/Image";
+import Canvas from "./Canvas"
 
 class Environment extends Component {
   state = {
@@ -10,6 +11,7 @@ class Environment extends Component {
     return (
       <div className="environment">
         <Image src="shrdlu-placeholder.jpg" rounded />
+        <Canvas />
       </div>
     );
   }
