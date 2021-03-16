@@ -2,7 +2,7 @@ GRID_SIZE = 4
 #Tuple is (shape, color, height)
 GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
 
-SHAPES = set(["CUBE", "PYRAMID", "BOX"])
+SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
 COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
 

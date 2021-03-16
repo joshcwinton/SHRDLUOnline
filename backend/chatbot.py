@@ -31,6 +31,7 @@ def readSentence(sentence):
                 row = int(token.text)
             else:
                 col = int(token.text)
+        #For relative
         if token.pos_ == 'SCONJ':
             conj = token.text.upper()
 

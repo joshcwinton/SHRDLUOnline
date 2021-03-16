@@ -57,7 +57,7 @@ def chatbot_test():
     chatbot("Add the red cube 2 3")
     res2c = doAction(action="DELETE",shape="CUBE",color="RED",row=-1,col=-1)
     #Shape not found
-    res2d = doAction(action="DELETE", shape="BOX", color="BLUE", row=-1, col=-1)
+    res2d = doAction(action="DELETE", shape="SPHERE", color="BLUE", row=-1, col=-1)
     results.append(res2a == 1 and res2b == 1 and res2c == 5 and res2d == 6)
 
 
@@ -65,7 +65,7 @@ def chatbot_test():
     ###Clear Board
     test3a = "Add the red cube 2 2"
     test3b = "Add the green pyramid 1 1"
-    test3c = "Add the blue box 0 1"
+    test3c = "Add the blue SPHERE 0 1"
     chatbot(test3a)
     chatbot(test3b)
     chatbot(test3c)
@@ -107,8 +107,8 @@ def chatbot_test():
 
 
     ###Hold
-    test6a = "Add the blue box 1 3"
-    test6b = "Hold the blue box"
+    test6a = "Add the blue sphere 1 3"
+    test6b = "Hold the blue sphere"
     chatbot(test6a)
     chatbot(test6b)
     results.append(environment.CLAW_POS == (1,3))
@@ -133,10 +133,10 @@ def environment_test():
     #Clear Board
     test3a = "Add the red cube 2 2"
     test3b = "Add the green pyramid 1 1"
-    test3c = "Add the blue box 0 1"
+    test3c = "Add the blue sphere 0 1"
     environment.addShape(shape="CUBE", color="RED", row=2, col=2)
     environment.addShape(shape="PYRAMID", color="GREEN", row=1, col=1)
-    environment.addShape(shape="BOX", color="BLUE", row=0, col=1)
+    environment.addShape(shape="SPHERE", color="BLUE", row=0, col=1)
     clearBoard()
     results.append(emptyPosition(row=2,col=2) and emptyPosition(row=1,col=1) and emptyPosition(row=0,col=1))
     #Move
@@ -152,9 +152,9 @@ def environment_test():
     results.append(environment.findShape(shape = "CUBE",color = "RED")[0] == (1,2))
     clearBoard()
     #Hold
-    test6a = "Add the blue box 1 3"
-    test6b = "Hold the blue box"
-    environment.addShape(shape="BOX", color="BLUE", row=1, col=3)
+    test6a = "Add the blue sphere 1 3"
+    test6b = "Hold the blue sphere"
+    environment.addShape(shape="SPHERE", color="BLUE", row=1, col=3)
     environment.holdShape(row=1,col=3)
     results.append(environment.CLAW_POS == (1,3))
     clearBoard()
@@ -201,9 +201,9 @@ def relativeActions():
 
 
 #All variables should return true in the lists
-#chatbot_test()
-#environment_test()
+chatbot_test()
+environment_test()
 
 
-#AddandDelete()
+AddandDelete()
 
