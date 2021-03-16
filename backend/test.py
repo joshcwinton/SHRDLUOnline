@@ -51,14 +51,15 @@ def chatbot_test():
     test2b = "Delete the red cube"
     chatbot(test2b)
     res2b = emptyPosition(row=2,col=2)
+    print(GRID[2][2])
     #Delete a shape without coordinates but there are multiple of that shape
     chatbot(test1a)
     chatbot("Add the red cube 2 3")
     res2c = doAction(action="DELETE",shape="CUBE",color="RED",row=-1,col=-1)
     #Shape not found
     res2d = doAction(action="DELETE", shape="BOX", color="BLUE", row=-1, col=-1)
+    results.append(res2a == 1 and res2b == 1 and res2c == 5 and res2d == 6)
 
-    results.append(res2a == 0 and res2b == 0 and res2c == 5 and res2d == 6)
 
 
     ###Clear Board
@@ -81,8 +82,11 @@ def chatbot_test():
     #Move a shape without coordinates
     test4c = "Move the green pyramid"
     res4c = doAction(action="MOVE",shape="PYRAMID",color="GREEN",row=-1,col=-1)
+    print(GRID[2][3],GRID[1][1])
+    print(emptyPosition(row=2, col=3), GRID[1][1] == ('PYRAMID', 'GREEN', 0), res4c == 7)
     results.append(emptyPosition(row=2, col=3) and GRID[1][1] == ('PYRAMID', 'GREEN', 0) and res4c == 7)
     clearBoard()
+
 
 
     ###Find
@@ -158,5 +162,48 @@ def environment_test():
     print(results)
     return results
 
-environment_test()
-chatbot_test()
+#Delete with a capital D is recognized as a noun and will not work
+#delete only works with lowercase d
+def AddandDelete():
+    print(chatbot("Add the red cube"))
+    print(chatbot("Add the red cube 2 2"))
+    print(chatbot("Find the red cube"))
+    print(chatbot("Add the red cube 1 2"))
+    print(chatbot("Find the red cube"))
+    print(chatbot("Find the red cube 2 2"))
+    print(chatbot("Delete the red cube"))
+    print(chatbot("Delete the red cube 1 2"))
+    print(chatbot("Find the red cube"))
+
+    clearBoard()
+
+
+#IN PROGRESS
+#Add/Find/Delete/Move
+#Next to, Above, Below, Left, Right, Near
+
+    #print(chatbot("Find the red cube taller than the red pyramid"))
+    #Conjuctions: Below, Above, Near
+    #Noun???? - Left/ Right (probably because its after the)
+    #Adverb - Next
+def relativeActions():
+    print(chatbot("Add a red cube below the red cube"))
+    print('------------------')
+    print(chatbot("Add a red cube next to the red cube"))
+    print('------------------')
+    print(chatbot("Add a red cube above the red cube"))
+    print('------------------')
+    print(chatbot("Add a red cube to the left of the red cube"))
+    print('------------------')
+    print(chatbot("Add a red cube to the right of the red cube"))
+    print('------------------')
+    print(chatbot("Add a red cube near the red cube"))
+
+
+#All variables should return true in the lists
+#chatbot_test()
+#environment_test()
+
+
+#AddandDelete()
+
