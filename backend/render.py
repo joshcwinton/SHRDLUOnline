@@ -1,11 +1,11 @@
 from PIL import Image, ImageDraw, ImageFilter
 
-GRID_SIZE = 20
-GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
-GRID[0][0] = ("SQUARE", "RED", None)
-GRID[1][1] = ("CIRCLE", "GREEN", None)
-GRID[2][2] = ("TRIANGLE", "BLUE", None)
-GRID[3][3] = ("SQUARE", "GREEN", None)
+# GRID_SIZE = 20
+# GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
+# GRID[0][0] = ("SQUARE", "RED", None)
+# GRID[1][1] = ("CIRCLE", "GREEN", None)
+# GRID[2][2] = ("TRIANGLE", "BLUE", None)
+# GRID[3][3] = ("SQUARE", "GREEN", None)
 SCALE = 200  # number of pixels per cell
 
 def drawGrid(draw, scale, rows, cols):
@@ -27,11 +27,11 @@ def drawShape(draw, i, j, shape):
   elif color_name == "BLUE":
     color = (0, 0, 255)
 
-  if shape_name == "CIRCLE":
+  if shape_name in ("CIRCLE", "SPHERE", "BALL"):
     draw.ellipse([i*SCALE,j*SCALE, (i+1)*SCALE, (j+1)*SCALE], fill=color, outline=(0, 0, 0), width=1)
-  elif shape_name == "SQUARE":
+  elif shape_name in ("SQUARE", "BOX", "CUBE"):
     draw.rectangle([i*SCALE,j*SCALE, (i+1)*SCALE, (j+1)*SCALE], fill=color, outline=(0, 0, 0), width=1)
-  elif shape_name == "TRIANGLE":
+  elif shape_name in ("TRIANGLE", "PYRAMID"):
     top = ((i*SCALE)+int(SCALE/2), (j*SCALE))
     bottom_left = (i*SCALE, (j+1)*SCALE)
     bottom_right = ((i+1)*SCALE, (j+1)*SCALE)
@@ -54,4 +54,4 @@ def renderEnvironment(env):
     print(im.format, im.size, im.mode)
 
 
-renderEnvironment(GRID)
+# renderEnvironment(GRID)
