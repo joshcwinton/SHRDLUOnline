@@ -1,3 +1,5 @@
+from render import renderEnvironment 
+
 GRID_SIZE = 4
 #Tuple is (shape, color, height)
 GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
@@ -39,11 +41,16 @@ def addShape(row,col, shape, color, height = 0):
     if shape in SHAPES and color in COLORS:
         GRID[row][col] = (shape, color, height)
 
+    renderEnvironment(GRID)
+    
+
+
 def delShape(row,col):
     global GRID
 
     GRID[row][col] = ("", "", 0)
 
+    renderEnvironment(GRID)
 
 #x1,y1 is moving from
 #x2,y2 is moving to
@@ -53,6 +60,8 @@ def moveShape(x1,y1,x2,y2):
     GRID[x2][y2] = GRID[x1][y1]
 
     delShape(x1, y1)
+
+    renderEnvironment(GRID)
 
 
 def holdShape(row,col):
@@ -64,8 +73,12 @@ def clearBoard():
     for x in range(GRID_SIZE):
         for y in range(GRID_SIZE):
             GRID[x][y] = ("","",0)
+    
+    renderEnvironment(GRID)
 
 def showGrid():
     for i in GRID:
         print(i)
+
+    renderEnvironment(GRID)
 
