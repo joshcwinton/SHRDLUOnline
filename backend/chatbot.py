@@ -63,6 +63,7 @@ def doRelativeAction():
 
 #@Param flags- the check from @func checkSemantics
 #Returns the reponse_number based on what conditions are met
+# TODO: Swap references to `GRID` with calls to `getEnvironment`
 def doAction(action,shape,color,row,col):
 
     if not checkShape(shape) == 1: # Check if shape is valid
