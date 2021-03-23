@@ -9,7 +9,7 @@ class Environment extends Component {
   render() {
     return (
       <div className="environment">
-        <Image src="shrdlu-placeholder.jpg" rounded />
+        <Image src={`${this.props.imageSrc}?${this.props.imageHash}`} rounded />
       </div>
     );
   }
