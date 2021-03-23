@@ -3,13 +3,16 @@ import os
 from chatbot import chatbot
 import json
 from flask_cors import CORS
-from environment import getEnvironment
+from environment import getEnvironment, clearBoard
 
 app = Flask(__name__)
 CORS(app)
 
 #dummy data
 dummy = [{'sass' : 'sample_response_1'}, {'sass' : 'sample_response_2'}, {'sass' : 'sample_response_3'}]
+
+# clear board to clear image 
+clearBoard()
 
 #main route (Landing Page)
 @app.route('/', methods = ['GET'])
