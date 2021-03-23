@@ -14,6 +14,8 @@ class Chat extends Component {
     messages: [],
     name: "Me",
     errors: [],
+    imageSrc: "http://0.0.0.0:5555/environment_image",
+    imageHash: Date.now()
   };
 
   // Send message to backend then print it to console
@@ -30,6 +32,7 @@ class Chat extends Component {
         // add response to history
         let response = { name: "SHRDLU", text: res.data.SHRDLU };
         this.addMessage(response);
+        this.updateEnvironment();
       })
       .catch((err) => {
         console.log(err);
@@ -57,12 +60,19 @@ class Chat extends Component {
     this.setState({ errors: errors });
   };
 
+  updateEnvironment = () => {
+    this.setState({
+      imageSrc: "http://0.0.0.0:5555/environment_image",
+      imageHash: Date.now()
+    })
+  }
+
   render() {
     return (
       <Container fluid="sm">
         <Row>
           <Col>
-            <Environment />
+            <Environment imageSrc={this.state.imageSrc} imageHash={this.state.imageHash} />
           </Col>
           <Col>
             <ChatMessageList messages={this.state.messages} />
