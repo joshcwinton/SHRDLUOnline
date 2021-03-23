@@ -82,3 +82,5 @@ def showGrid():
 
     renderEnvironment(GRID)
 
+def getEnvironment():
+    return(GRID)
