@@ -1,8 +1,9 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 import os
 from chatbot import chatbot
 import json
 from flask_cors import CORS
+from environment import getEnvironment
 
 app = Flask(__name__)
 CORS(app)
@@ -38,6 +39,23 @@ def chatbot_route():
                 bot_res = chatbot(user_res)
                 return jsonify({"SHRDLU": bot_res})
         return jsonify({"get": "requested"})
+
+#endpoint that returns environment array
+@app.route('/environment', methods = ['GET'])
+def environment_route():
+        if request.method == 'GET':
+                env = getEnvironment()
+                return jsonify({"env": env})
+        return None
+
+#endpoint that returns environment image file
+@app.route('/environment_image', methods = ['GET'])
+def environment_image():
+        if request.method == 'GET':
+                return send_from_directory('images', 'env_image.png')
+        return None
+
+
 
 
 if __name__ == '__main__':
