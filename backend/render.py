@@ -49,9 +49,11 @@ def renderEnvironment(env):
                 drawShape(draw, i, j, env[i][j])
     im.filter(ImageFilter.GaussianBlur(100))
     drawGrid(draw, SCALE, rows, cols)
-    im.show()
+    # im.show()
 
-    print(im.format, im.size, im.mode)
+    im.save('images/env_image.png')
+    # print(im.format, im.size, im.mode)
+
 
 
 # renderEnvironment(GRID)
