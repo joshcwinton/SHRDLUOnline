@@ -159,5 +159,8 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Images directort
+# Images directory
 /backend/images
+
+#Data files
+/backend/machine_learning/data/

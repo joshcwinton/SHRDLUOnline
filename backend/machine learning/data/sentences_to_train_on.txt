@@ -1,1 +1,0 @@
-Sentence,Target_Action,Noun,Color,Relative_Action,Relative_Object,Relative_Object_Color
