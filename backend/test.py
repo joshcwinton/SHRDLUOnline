@@ -5,7 +5,6 @@ from environment import  GRID, clearBoard
 
 
 #Check responses
-"""
 responses = {
     0 : "Done",
     1 : "Sorry, I can't",
@@ -19,7 +18,8 @@ responses = {
     9 : "Deleted",
     10 : "Location does not exist."
     }
-"""
+
+#Should return [True, True, True, True, True, True]
 def chatbot_test():
 
     results = []
@@ -51,7 +51,6 @@ def chatbot_test():
     test2b = "Delete the red cube"
     chatbot(test2b)
     res2b = emptyPosition(row=2,col=2)
-    print(GRID[2][2])
     #Delete a shape without coordinates but there are multiple of that shape
     chatbot(test1a)
     chatbot("Add the red cube 2 3")
@@ -82,8 +81,6 @@ def chatbot_test():
     #Move a shape without coordinates
     test4c = "Move the green pyramid"
     res4c = doAction(action="MOVE",shape="PYRAMID",color="GREEN",row=-1,col=-1)
-    print(GRID[2][3],GRID[1][1])
-    print(emptyPosition(row=2, col=3), GRID[1][1] == ('PYRAMID', 'GREEN', 0), res4c == 7)
     results.append(emptyPosition(row=2, col=3) and GRID[1][1] == ('PYRAMID', 'GREEN', 0) and res4c == 7)
     clearBoard()
 
@@ -119,6 +116,7 @@ def chatbot_test():
 
 
 #Find add move hold show
+#Should return [True, True, True, True, True, True]
 def environment_test():
 
     results = []
@@ -162,21 +160,40 @@ def environment_test():
     print(results)
     return results
 
-#Delete with a capital D is recognized as a noun and will not work
-#delete only works with lowercase d
+
+#Target output is:
+# Location does not exist.
+# Done
+# Found
+# Done
+# There are duplicates of that.
+# Found
+# There are duplicates of that.
+# Done
+# Found
+
 def AddandDelete():
-    print(chatbot("Add the red cube"))
-    print(chatbot("Add the red cube 2 2"))
-    print(chatbot("Find the red cube"))
-    print(chatbot("Add the red cube 1 2"))
-    print(chatbot("Find the red cube"))
-    print(chatbot("Find the red cube 2 2"))
-    print(chatbot("Delete the red cube"))
-    print(chatbot("Delete the red cube 1 2"))
-    print(chatbot("Find the red cube"))
+    chatbot_responses = []
+    answers = [10,0,8,0,5,8,5,0,8]
+
+    chatbot_responses.append(chatbot("Add the red cube"))
+    chatbot_responses.append(chatbot("Add the red cube 2 2"))
+    chatbot_responses.append(chatbot("Find the red cube"))
+    chatbot_responses.append(chatbot("Add the red cube 1 2"))
+    chatbot_responses.append(chatbot("Find the red cube"))
+    chatbot_responses.append(chatbot("Find the red cube 2 2"))
+    chatbot_responses.append(chatbot("Delete the red cube"))
+    chatbot_responses.append(chatbot("Delete the red cube 1 2"))
+    chatbot_responses.append(chatbot("Find the red cube"))
 
     clearBoard()
 
+    results = []
+    for x,sentence in enumerate(chatbot_responses):
+        results.append(chatbot_responses[x] == responses[answers[x]])
+
+    print(results)
+    return results
 
 #IN PROGRESS
 #Add/Find/Delete/Move
