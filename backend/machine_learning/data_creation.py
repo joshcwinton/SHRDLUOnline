@@ -82,14 +82,14 @@ def create_Data(action,noun,color,sentence,relative_action=None,
                     for rel_action_synoynm in RELATIVE_ACTIONS[relative_action.upper()]:
                         new_sentence2 = new_sentence1.replace(action, action_synonym)
                         new_sentence2 = new_sentence2.replace(relative_action,rel_action_synoynm)
-                        data.append([new_sentence2,action,noun_synonym,color,relative_action,
+                        data.append([new_sentence2,action,noun,color,relative_action,
                                      relative_object,relative_object_color])
                         total_sentences += 1
                         STATS_DATA[action.upper()] += 1
 
             else: #Case no relative actions
                 new_sentence1 = new_sentence.replace(action.lower(), action_synonym.lower())
-                data.append([new_sentence1, action, noun_synonym, color, relative_action,
+                data.append([new_sentence1, action, noun, color, relative_action,
                              relative_object,relative_object_color])
                 total_sentences += 1
                 STATS_DATA[action.upper()] += 1
