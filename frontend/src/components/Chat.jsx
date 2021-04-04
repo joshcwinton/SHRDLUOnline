@@ -14,7 +14,7 @@ class Chat extends Component {
     messages: [],
     name: "Me",
     errors: [],
-    imageSrc: "http://0.0.0.0:5555/environment_image",
+    imageSrc: "http://127.0.0.1:5555/environment_image",
     imageHash: Date.now()
   };
 
@@ -25,7 +25,7 @@ class Chat extends Component {
     let errors = [];
     // send message to backend
     axios
-      .post("http://0.0.0.0:5555/chat", {
+      .post("http://127.0.0.1:5555/chat", {
         user: message.text,
       })
       .then((res) => {
@@ -62,7 +62,7 @@ class Chat extends Component {
 
   updateEnvironment = () => {
     this.setState({
-      imageSrc: "http://0.0.0.0:5555/environment_image",
+      imageSrc: "http://127.0.0.1:5555/environment_image",
       imageHash: Date.now()
     })
   }
