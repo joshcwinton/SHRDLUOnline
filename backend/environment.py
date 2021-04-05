@@ -57,9 +57,8 @@ def delShape(row,col):
 def moveShape(x1,y1,x2,y2):
     global  GRID
 
-    GRID[x2][y2] = GRID[x1][y1]
-
     delShape(x1, y1)
+    GRID[x2][y2] = GRID[x1][y1]
 
     renderEnvironment(GRID)
 
