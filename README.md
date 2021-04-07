@@ -19,13 +19,7 @@ Saurav Hossain, Donald Chen
 
 ### Backend
 
-#### Requirements
-- `Pillow==8.1.2`
-- `spacy==3.0.3`
-- `en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0/en_core_web_sm-3.0.0-py3-none-any.whl`
-- `flask==1.1.2`
-- `flask-cors==3.0.10`
-
 #### Getting Started
 1. `cd backend`
-2. `python routes.py`
+2. `python3 -m pip install -r requirements.txt
+3. `python3 routes.py`
