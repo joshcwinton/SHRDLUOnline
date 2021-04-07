@@ -21,5 +21,5 @@ Saurav Hossain, Donald Chen
 
 #### Getting Started
 1. `cd backend`
-2. `python3 -m pip install -r requirements.txt
+2. `python3 -m pip install -r requirements.txt`
 3. `python3 routes.py`
