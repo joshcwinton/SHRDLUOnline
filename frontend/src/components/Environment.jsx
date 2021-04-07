@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Image from "react-bootstrap/Image";
+import CrossfadeImage from "react-crossfade-image";
 
 class Environment extends Component {
   state = {
@@ -9,7 +10,7 @@ class Environment extends Component {
   render() {
     return (
       <div className="environment">
-        <Image src={`${this.props.imageSrc}?${this.props.imageHash}`} rounded />
+        <CrossfadeImage src={`${this.props.imageSrc}?${this.props.imageHash}`} rounded />
       </div>
     );
   }
