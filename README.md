@@ -9,7 +9,7 @@ Saurav Hossain, Donald Chen
 ### Frontend
 
 #### Requirements
-- `Node`
+- Node
 
 #### Getting Started
 
@@ -18,7 +18,7 @@ Saurav Hossain, Donald Chen
 3. `npm start`
 
 ### Backend
-
+- Python 3
 #### Getting Started
 1. `cd backend`
 2. `python3 -m pip install -r requirements.txt`
