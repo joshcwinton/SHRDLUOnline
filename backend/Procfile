@@ -1,1 +1,1 @@
-web: gunicorn app:shrdluonline-backend
+web: gunicorn app:app
