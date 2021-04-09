@@ -29,3 +29,8 @@ Saurav Hossain, Donald Chen
 #### Getting Started
 1. `cd backend`
 2. `python routes.py`
+
+
+## Deployment
+1. `git subtree push --prefix frontend heroku-shrdluonline-frontend main`
+2. `git subtree push --prefix backend heroku-shrdluonline-backend main`
