@@ -71,9 +71,6 @@ class Chat extends Component {
   }
 
   render() {
-    console.log("ENV VAR:",process.env.REACT_APP_PROD);
-    console.log("URL:", getURI());
-
     return (
       <Container fluid="sm">
         <Row>
