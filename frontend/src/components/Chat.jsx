@@ -10,6 +10,7 @@ import ChatMessageList from "./ChatMessageList";
 import Environment from "./Environment";
 
 class Chat extends Component {
+
   state = {
     messages: [],
     name: "Me",
@@ -64,10 +65,12 @@ class Chat extends Component {
     this.setState({
       imageSrc: "https://shrdluonline-backend.herokuapp.com/environment_image",
       imageHash: Date.now()
-    })
+    });
   }
 
   render() {
+    console.log("ENV VAR:",process.env.REACT_APP_PROD);
+
     return (
       <Container fluid="sm">
         <Row>
