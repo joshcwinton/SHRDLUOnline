@@ -9,13 +9,15 @@ import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Environment from "./Environment";
 
+import {getURI} from "../utils/config";
+
 class Chat extends Component {
 
   state = {
     messages: [],
     name: "Me",
     errors: [],
-    imageSrc: "https://shrdluonline-backend.herokuapp.com/environment_image",
+    imageSrc: `${getURI()}/environment_image`,
     imageHash: Date.now()
   };
 
@@ -26,7 +28,7 @@ class Chat extends Component {
     let errors = [];
     // send message to backend
     axios
-      .post("https://shrdluonline-backend.herokuapp.com/chat", {
+      .post(`${getURI()}/chat`, {
         user: message.text,
       })
       .then((res) => {
@@ -63,13 +65,14 @@ class Chat extends Component {
 
   updateEnvironment = () => {
     this.setState({
-      imageSrc: "https://shrdluonline-backend.herokuapp.com/environment_image",
+      imageSrc: `${getURI()}/environment_image`,
       imageHash: Date.now()
     });
   }
 
   render() {
     console.log("ENV VAR:",process.env.REACT_APP_PROD);
+    console.log("URL:", getURI());
 
     return (
       <Container fluid="sm">
