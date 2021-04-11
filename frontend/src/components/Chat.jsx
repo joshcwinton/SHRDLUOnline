@@ -62,9 +62,49 @@ class Chat extends Component {
 
   updateEnvironment = () => {
     this.setState({
-      imageSrc: "https://shrdluonline-backend.herokuapp.com/environment_image",
+      imageSrc: "https:shrdluonline-backend.herokuapp.com/environment_image",
       imageHash: Date.now()
-    })
+    });
+  }
+
+  undoAction = () => {
+    console.log("Undo Action");
+    let errors = [];
+    // axios
+    //   .post("https://shrdluonline-backend.herokuapp.com/undo-action")
+    //   .then((res) => {
+    //     // add response to history
+    //     let response = { name: "SHRDLU", text: res.data.SHRDLU };
+    //     this.addMessage(response);
+    //     this.updateEnvironment();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     errors.push(err.message);
+    //   })
+    //   .finally(() => {
+    //     this.setState({ errors: errors });
+    //   });
+  }
+
+  clearBoard  = () => {
+    console.log("Clear Board");
+    // let errors = [];
+    // axios
+    //   .post("https://shrdluonline-backend.herokuapp.com/clear-board")
+    //   .then((res) => {
+    //     // add response to history
+    //     let response = { name: "SHRDLU", text: res.data.SHRDLU };
+    //     this.addMessage(response);
+    //     this.updateEnvironment();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     errors.push(err.message);
+    //   })
+    //   .finally(() => {
+    //     this.setState({ errors: errors });
+    //   });
   }
 
   render() {
@@ -81,6 +121,14 @@ class Chat extends Component {
                 this.submitMessage(messageString)
               }
             />
+            <button onClick={this.undoAction}>
+              Undo
+            </button>
+
+            <button onClick={this.clearBoard}>
+              Clear Board
+            </button>
+
             {this.state.errors.map((error, i) => (
               <p key={i} className="error">
                 {error}
