@@ -31,6 +31,13 @@ Saurav Hossain, Donald Chen
 2. `python routes.py`
 
 
+
 ## Deployment
+
+### Add remotes
+1. `heroku git:remote --remote heroku-shrdluonline-backend -a shrdluonline-backend`
+2. `heroku git:remote --remote heroku-shrdluonline-frontend -a shrdluonline-frontend`
+
+### Deploy
 1. `git subtree push --prefix frontend heroku-shrdluonline-frontend main`
 2. `git subtree push --prefix backend heroku-shrdluonline-backend main`
