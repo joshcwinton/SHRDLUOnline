@@ -1,5 +1,5 @@
 import spacy
-from environment import SHAPES, COLORS, addShape,delShape,findShape,moveShape,holdShape, GRID_SIZE, GRID,showGrid
+from environment import SHAPES, COLORS, addShape,delShape,findShape,moveShape,holdShape, GRID_SIZE, GRID,showGrid, getEnvironment
 
 #Create function for conjunctions(and) to make sentences easier to read
 
@@ -54,7 +54,7 @@ def checkLocation(row,col):
         or row < 0 or col < 0)
 
 def emptyPosition(row,col):
-    return GRID[row][col] == ("", "", 0)
+    return getEnvironment()[row][col] == ("", "", 0)
 
 
 #Next to, Above, Below, Left, Right, Near
@@ -63,7 +63,7 @@ def doRelativeAction():
 
 #@Param flags- the check from @func checkSemantics
 #Returns the reponse_number based on what conditions are met
-# TODO: Swap references to `GRID` with calls to `getEnvironment`
+# TODO: Would be good to make the code more readable.
 def doAction(action,shape,color,row,col):
 
     if not checkShape(shape) == 1: # Check if shape is valid
@@ -89,7 +89,7 @@ def doAction(action,shape,color,row,col):
             return 6
         else:
             if color in COLORS:
-                if GRID[row][col] == (shape,color,0):
+                if getEnvironment()[row][col] == (shape,color,0):
                     foundShape.append((row,col))
                 else:
                     return 6

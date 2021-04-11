@@ -37,22 +37,19 @@ def drawShape(draw, i, j, shape):
     bottom_right = ((i+1)*SCALE, (j+1)*SCALE)
     draw.polygon([top, bottom_left, bottom_right], fill=color, outline=(0, 0, 0))
 
-
 def renderEnvironment(env):
     rows = len(env)
     cols = len(env[0])
     im = Image.new('RGB', (rows*SCALE, cols*SCALE), (255, 255, 255))
-    draw = ImageDraw.Draw(im)
     for i in range(rows):
         for j in range(cols):
             if env[i][j][0] != "":
-                drawShape(draw, i, j, env[i][j])
-    im.filter(ImageFilter.GaussianBlur(100))
-    drawGrid(draw, SCALE, rows, cols)
-    # im.show()
-
+                shape = env[i][j][0].lower()
+                color = env[i][j][1].lower()
+                new_im = Image.open(f'images/{color}{shape}.png')
+                im.paste(new_im, (i*SCALE,j*SCALE, (i+1)*SCALE, (j+1)*SCALE), new_im)
     im.save('images/env_image.png')
-    # print(im.format, im.size, im.mode)
+
 
 
 
