@@ -1,4 +1,3 @@
-from icecream import ic
 from render import renderEnvironment
 
 GRID_SIZE = 4
