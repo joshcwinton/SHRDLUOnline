@@ -114,3 +114,7 @@ def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
     # TODO: Update this to update database instead of global variable
     HISTORY.append(Interaction(
         currentEnv, inputMessage, outputMessage, parsedMessage))
+
+
+def getHistory():
+    return(HISTORY)
