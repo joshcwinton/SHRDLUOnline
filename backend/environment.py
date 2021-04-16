@@ -8,6 +8,7 @@ SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
 COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
 MESSAGES = []  # Stores a list of messages
+HISTORY = []  # Stores a list of grids
 
 
 def findShape(shape, color=None, height=0):
@@ -92,18 +93,25 @@ def getEnvironment():
     return(GRID)
 
 
-def updateHistory(inputMessage, outputMessage):
+def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
     """"Adds information about a single interaction with SHRDLU to the history
 
     Args:
+        currentEnv: Resulting grid after interaction
         inputMessage (str): Message sent by the user
         outputMessage (str): Response from SHRDLU
+        parsedMessage (tuple): (shape, color, action, row, col)
     """
 
     # TODO: Update this to update database instead of global variable
     MESSAGES.append({"name": "Me", "text": inputMessage})
     MESSAGES.append({"name": "SHRDLU", "text": outputMessage})
+    HISTORY.append(currentEnv)
 
 
 def getMessages():
     return(MESSAGES)
+
+
+def getEnvironmentHistory():
+    return(HISTORY)
