@@ -1,3 +1,4 @@
+from icecream import ic
 from render import renderEnvironment
 
 GRID_SIZE = 4
@@ -7,6 +8,7 @@ GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
 SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
 COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
+HISTORY = []  # Stores a stack of grids, the last entry is the latest state
 
 # Change height parameter in functions to a lambda to check for comparison words:
 # ie. Find a block that is TALLER than this pyramid
@@ -91,3 +93,9 @@ def showGrid():
 
 def getEnvironment():
     return(GRID)
+
+
+def updateHistory(currentEnv):
+    # TODO: Update this to update database instead of global variable
+    HISTORY.append(currentEnv)
+    ic(HISTORY)

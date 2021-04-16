@@ -5,6 +5,7 @@ import json
 from flask_cors import CORS
 from environment import getEnvironment, clearBoard
 
+
 app = Flask(__name__)
 CORS(app)
 
