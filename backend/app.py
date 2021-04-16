@@ -3,7 +3,8 @@ import os
 from chatbot import chatbot
 import json
 from flask_cors import CORS
-from environment import getEnvironment, clearBoard
+from environment import getEnvironment, clearBoard, getMessages, getEnvironmentHistory
+
 
 app = Flask(__name__)
 CORS(app)
@@ -70,6 +71,20 @@ def environment_route():
 def environment_image():
     if request.method == 'GET':
         return send_from_directory('images', 'env_image.png')
+    return None
+
+
+@app.route('/messages', methods=['GET'])
+def messages():
+    if request.method == 'GET':
+        return jsonify({"messages": getMessages()})
+    return None
+
+
+@app.route('/history', methods=['GET'])
+def history():
+    if request.method == 'GET':
+        return jsonify({"history": getEnvironmentHistory()})
     return None
 
 

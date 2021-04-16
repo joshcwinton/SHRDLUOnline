@@ -1,5 +1,5 @@
 import spacy
-from environment import SHAPES, COLORS, addShape, delShape, findShape, moveShape, holdShape, GRID_SIZE, GRID, showGrid, getEnvironment
+from environment import SHAPES, COLORS, addShape, delShape, findShape, moveShape, holdShape, GRID_SIZE, GRID, showGrid, getEnvironment, updateHistory
 
 # Create function for conjunctions(and) to make sentences easier to read
 
@@ -173,5 +173,10 @@ def chatbot(sentence):
         color=color,
         row=row,
         col=col)
+
+    # Update board when grid is changed
+    currentEnv = getEnvironment()
+    updateHistory(currentEnv, sentence, response(
+        response_number), (shape, color, action, row, col))
 
     return(response(response_number))
