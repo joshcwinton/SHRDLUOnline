@@ -176,6 +176,7 @@ def chatbot(sentence):
 
     # Update board when grid is changed
     currentEnv = getEnvironment()
-    updateHistory(currentEnv)
+    updateHistory(currentEnv, sentence, response(
+        response_number), (shape, color, action, row, col))
 
     return(response(response_number))

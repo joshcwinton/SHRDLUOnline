@@ -95,7 +95,15 @@ def getEnvironment():
     return(GRID)
 
 
-def updateHistory(currentEnv):
+def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
+    """"Adds information about a single interaction with SHRDLU to the history
+
+    Args:
+        currentEnv: State of the environment after the interaction
+        inputMessage (str): Message sent by the user
+        outputMessage (str): Response from SHRDLU
+        parsedMessage (tuple): Parsed info as (shape, color, action, row, col)
+    """
+
     # TODO: Update this to update database instead of global variable
-    HISTORY.append(currentEnv)
-    ic(HISTORY)
+    HISTORY.append((currentEnv, inputMessage, outputMessage, parsed))
