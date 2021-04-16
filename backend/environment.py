@@ -2,7 +2,7 @@ from icecream import ic
 from render import renderEnvironment
 
 GRID_SIZE = 4
-#Tuple is (shape, color, height)
+# Tuple is (shape, color, height)
 GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
 
 SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
@@ -10,13 +10,20 @@ COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
 HISTORY = []  # Stores a stack of grids, the last entry is the latest state
 
-# Change height parameter in functions to a lambda to check for comparison words:
-# ie. Find a block that is TALLER than this pyramid
 
-# returns all shapes found based on given parameters
+class Interaction:
+    def __init__(self, currentEnv, inputMessage, outputMessage, parsedMessage):
+        self.currentEnv = currentEnv
+        self.inputMessage = inputMessage
+        self.outputMessage = outputMessage
+        self.parsedMessage = parsedMessage
 
 
 def findShape(shape, color=None, height=0):
+    """ Returns all shapes found based on given parameters
+    TODO: Change height parameter in functions to a lambda to check for comparison words:
+    ie. Find a block that is TALLER than this pyramid
+    """
     foundShapes = []
 
     for y, row in enumerate(GRID):
@@ -56,11 +63,10 @@ def delShape(row, col):
 
     renderEnvironment(GRID)
 
-# x1,y1 is moving from
-# x2,y2 is moving to
-
 
 def moveShape(x1, y1, x2, y2):
+    """x1,y1 is moving from
+    x2,y2 is moving to"""
     global GRID
 
     GRID[x2][y2] = GRID[x1][y1]
@@ -106,4 +112,5 @@ def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
     """
 
     # TODO: Update this to update database instead of global variable
-    HISTORY.append((currentEnv, inputMessage, outputMessage, parsed))
+    HISTORY.append(Interaction(
+        currentEnv, inputMessage, outputMessage, parsedMessage))
