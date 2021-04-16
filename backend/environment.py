@@ -8,15 +8,7 @@ GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
 SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
 COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
-HISTORY = []  # Stores a stack of grids, the last entry is the latest state
-
-
-class Interaction:
-    def __init__(self, currentEnv, inputMessage, outputMessage, parsedMessage):
-        self.currentEnv = currentEnv
-        self.inputMessage = inputMessage
-        self.outputMessage = outputMessage
-        self.parsedMessage = parsedMessage
+MESSAGES = []  # Stores a list of messages
 
 
 def findShape(shape, color=None, height=0):
@@ -101,20 +93,18 @@ def getEnvironment():
     return(GRID)
 
 
-def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
+def updateHistory(inputMessage, outputMessage):
     """"Adds information about a single interaction with SHRDLU to the history
 
     Args:
-        currentEnv: State of the environment after the interaction
         inputMessage (str): Message sent by the user
         outputMessage (str): Response from SHRDLU
-        parsedMessage (tuple): Parsed info as (shape, color, action, row, col)
     """
 
     # TODO: Update this to update database instead of global variable
-    HISTORY.append(Interaction(
-        currentEnv, inputMessage, outputMessage, parsedMessage))
+    MESSAGES.append({"name": "Me", "text": inputMessage})
+    MESSAGES.append({"name": "SHRDLU", "text": outputMessage})
 
 
-def getHistory():
-    return(HISTORY)
+def getMessages():
+    return(MESSAGES)
