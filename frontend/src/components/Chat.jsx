@@ -9,16 +9,15 @@ import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Environment from "./Environment";
 
-import {getURI} from "../utils/config";
+import { getURI } from "../utils/config";
 
 class Chat extends Component {
-
   state = {
     messages: [],
     name: "Me",
     errors: [],
     imageSrc: `${getURI()}/environment_image`,
-    imageHash: Date.now()
+    imageHash: Date.now(),
   };
 
   // Send message to backend then print it to console
@@ -66,16 +65,29 @@ class Chat extends Component {
   updateEnvironment = () => {
     this.setState({
       imageSrc: `${getURI()}/environment_image`,
-      imageHash: Date.now()
+      imageHash: Date.now(),
     });
-  }
+  };
+
+  // TODO: This will likely involve a user param later on
+  componentDidMount = () => {
+    axios.get(`${getURI()}/messages`).then((res) => {
+      let fetchedMessages = res.data.messages;
+      this.setState({
+        messages: fetchedMessages,
+      });
+    });
+  };
 
   render() {
     return (
       <Container fluid="sm">
         <Row>
           <Col>
-            <Environment imageSrc={this.state.imageSrc} imageHash={this.state.imageHash} />
+            <Environment
+              imageSrc={this.state.imageSrc}
+              imageHash={this.state.imageHash}
+            />
           </Col>
           <Col>
             <ChatMessageList messages={this.state.messages} />
