@@ -82,6 +82,14 @@ def clearBoard():
     renderEnvironment(GRID)
 
 
+def undo():
+    global GRID
+    if len(HISTORY) != 0:
+        GRID = HISTORY.pop()
+
+    renderEnvironment(GRID)
+
+
 def showGrid():
     for i in GRID:
         print(i)
