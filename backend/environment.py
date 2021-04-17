@@ -84,10 +84,19 @@ def clearBoard():
 
 def undo():
     global GRID
+
     if len(HISTORY) != 0:
         GRID = HISTORY.pop()
+        MESSAGES.append({"name": "Me", "Undo Action": inputMessage})
+        MESSAGES.append({"name": "SHRDLU", "Okay": outputMessage})
+        return True
+    else:
+        MESSAGES.append({"name": "Me", "Undo Action": inputMessage})
+        MESSAGES.append({"name": "SHRDLU", "No Actions to undo": outputMessage})
 
-    renderEnvironment(GRID)
+    return  False
+
+renderEnvironment(GRID)
 
 
 def showGrid():

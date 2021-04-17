@@ -4,7 +4,7 @@ from chatbot import chatbot
 import json
 from flask_cors import CORS
 from environment import getEnvironment, clearBoard, getMessages, getEnvironmentHistory, undo
-
+from machine_learning.chatbot_ml import chatbot_ml
 
 app = Flask(__name__)
 CORS(app)
@@ -87,17 +87,29 @@ def history():
         return jsonify({"history": getEnvironmentHistory()})
     return None
 
-@app.route('/undo', methods=['GET'])
+@app.route('/undo', methods=['POST'])
 def undo_route():
-    if request.method == 'GET':
+    if request.method == 'POST':
         undo()
+        return jsonify({"SHRDLU": "Undo Action"})
     return None
 
-@app.route('/clear', methods=['GET'])
+@app.route('/clear', methods=['POST'])
 def clear_route():
-    if request.method == 'GET':
+    if request.method == 'POST':
         clearBoard()
+        return jsonify({"SHRDLU": "Board Cleared"})
     return None
+
+@app.route('/chat_ml', methods=['POST'])
+def chatbot_ml_route():
+    if request.method == 'POST':
+        post_data = request.get_json()
+        user_res = post_data["user"]
+        bot_res = chatbot_ml(user_res)
+        return jsonify({"SHRDLU": bot_res})
+    return None
+
 
 if __name__ == '__main__':
     #    app.run(debug = True)
