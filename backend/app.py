@@ -87,17 +87,20 @@ def history():
         return jsonify({"history": getEnvironmentHistory()})
     return None
 
+
 @app.route('/undo', methods=['GET'])
 def undo_route():
     if request.method == 'GET':
         undo()
     return None
 
+
 @app.route('/clear', methods=['GET'])
 def clear_route():
     if request.method == 'GET':
         clearBoard()
     return None
+
 
 if __name__ == '__main__':
     #    app.run(debug = True)
