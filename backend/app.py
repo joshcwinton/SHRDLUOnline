@@ -3,7 +3,7 @@ import os
 from chatbot import chatbot
 import json
 from flask_cors import CORS
-from environment import getEnvironment, clearBoard, getMessages, getEnvironmentHistory
+from environment import getEnvironment, clearBoard, getMessages, getEnvironmentHistory, undo
 
 
 app = Flask(__name__)
@@ -85,6 +85,20 @@ def messages():
 def history():
     if request.method == 'GET':
         return jsonify({"history": getEnvironmentHistory()})
+    return None
+
+
+@app.route('/undo', methods=['GET'])
+def undo_route():
+    if request.method == 'GET':
+        undo()
+    return None
+
+
+@app.route('/clear', methods=['GET'])
+def clear_route():
+    if request.method == 'GET':
+        clearBoard()
     return None
 
 
