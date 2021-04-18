@@ -87,6 +87,7 @@ def history():
         return jsonify({"history": getEnvironmentHistory()})
     return None
 
+
 @app.route('/undo', methods=['POST'])
 def undo_route():
     if request.method == 'POST':
@@ -94,12 +95,14 @@ def undo_route():
         return jsonify({"SHRDLU": "Undo Action"})
     return None
 
+
 @app.route('/clear', methods=['POST'])
 def clear_route():
     if request.method == 'POST':
         clearBoard()
         return jsonify({"SHRDLU": "Board Cleared"})
     return None
+
 
 @app.route('/chat_ml', methods=['POST'])
 def chatbot_ml_route():

@@ -92,9 +92,11 @@ def undo():
         return True
     else:
         MESSAGES.append({"name": "Me", "Undo Action": inputMessage})
-        MESSAGES.append({"name": "SHRDLU", "No Actions to undo": outputMessage})
+        MESSAGES.append(
+            {"name": "SHRDLU", "No Actions to undo": outputMessage})
 
-    return  False
+    return False
+
 
 renderEnvironment(GRID)
 
