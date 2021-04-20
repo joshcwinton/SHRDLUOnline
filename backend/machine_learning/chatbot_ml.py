@@ -3,7 +3,7 @@ from tensorflow.keras.layers import Dense, Input
 from transformers import BertTokenizer, TFBertForTokenClassification
 import tensorflow as tf
 import numpy as np
-from environment import SHAPES, COLORS, addShape,delShape,findShape,moveShape, GRID_SIZE, GRID,getPostion, updateHistory
+from environment import SHAPES, COLORS, addShape, delShape, findShape, moveShape, GRID_SIZE, GRID, getPostion, updateHistory
 import random
 from datetime import datetime
 
@@ -13,7 +13,8 @@ INPUT_SIZE = 15
 # Target Fields - used to convert nn output to target output
 COLORS_LIST = {0: 'none', 1: 'red', 2: 'blue', 3: 'green'}
 ACTIONS_LIST = {0: 'none', 1: 'add', 2: 'find', 3: 'delete', 4: 'move'}
-REL_ACTIONS_LIST = {0: 'none', 1: 'above', 2: 'below', 3: 'near', 4: 'right', 5: 'left'}
+REL_ACTIONS_LIST = {0: 'none', 1: 'above',
+                    2: 'below', 3: 'near', 4: 'right', 5: 'left'}
 NOUN_LIST = {0: 'none', 1: 'cube', 2: 'pyramid', 3: 'sphere'}
 
 
@@ -21,60 +22,72 @@ NOUN_LIST = {0: 'none', 1: 'cube', 2: 'pyramid', 3: 'sphere'}
 def createModel():
     # Load pretrained model
     model = TFBertForTokenClassification.from_pretrained("bert-base-uncased",
-                                                     num_labels=INPUT_SIZE,
-                                                     output_attentions = False,
-                                                     output_hidden_states = False)
+                                                         num_labels=INPUT_SIZE,
+                                                         output_attentions=False,
+                                                         output_hidden_states=False)
 
-    #Create architecture and load weights
-    nn_input =  Input(shape=(INPUT_SIZE,), dtype= 'int64')
+    # Create architecture and load weights
+    nn_input = Input(shape=(INPUT_SIZE,), dtype='int64')
     x = model(nn_input)
     x = x[0]
     x = tf.keras.layers.Flatten()(x)
     x = Dense(128, activation='relu')(x)
-    x = Dense(64,activation='sigmoid')(x)
-    x = Dense(16,activation='sigmoid')(x)
+    x = Dense(64, activation='sigmoid')(x)
+    x = Dense(16, activation='sigmoid')(x)
 
-    action_pred = Dense(len(ACTIONS_LIST), name="Action", activation='softmax')(x)
+    action_pred = Dense(len(ACTIONS_LIST), name="Action",
+                        activation='softmax')(x)
     shape_pred = Dense(len(NOUN_LIST), name="Noun", activation='softmax')(x)
     color_pred = Dense(len(COLORS_LIST), name="Color", activation='softmax')(x)
-    rel_action_pred = Dense(len(REL_ACTIONS_LIST), name="Rel_Action", activation='softmax')(x)
-    rel_shape_pred = Dense(len(NOUN_LIST), name="Rel_Noun", activation='softmax')(x)
-    rel_color_pred = Dense(len(COLORS_LIST), name="Rel_Color", activation='softmax')(x)
+    rel_action_pred = Dense(len(REL_ACTIONS_LIST),
+                            name="Rel_Action", activation='softmax')(x)
+    rel_shape_pred = Dense(
+        len(NOUN_LIST), name="Rel_Noun", activation='softmax')(x)
+    rel_color_pred = Dense(
+        len(COLORS_LIST), name="Rel_Color", activation='softmax')(x)
 
     full_model = Model(inputs=nn_input,
-                       outputs = [action_pred,shape_pred,color_pred,rel_action_pred,rel_shape_pred,rel_color_pred])
+                       outputs=[action_pred, shape_pred, color_pred, rel_action_pred, rel_shape_pred, rel_color_pred])
 
     full_model.summary()
 
     full_model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=3e-5, epsilon=1e-08, clipnorm=1.0),
-                  loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                  metrics=[tf.keras.metrics.SparseCategoricalAccuracy('accuracy')])
+                       loss=tf.keras.losses.SparseCategoricalCrossentropy(
+                           from_logits=True),
+                       metrics=[tf.keras.metrics.SparseCategoricalAccuracy('accuracy')])
 
     full_model.load_weights("Weights.h5")
 
     return full_model
 
+
 def checkShape(noun):
     return noun in SHAPES
+
 
 def checkColor(adj):
     return adj in COLORS
 
-#Return if location is valid on the grid
-#If valid returns true
-def checkLocation(row,col):
-    return not (row > GRID_SIZE - 1 or col > GRID_SIZE -1  \
-        or row < 0 or col < 0)
+# Return if location is valid on the grid
+# If valid returns true
 
-def emptyPosition(row,col):
+
+def checkLocation(row, col):
+    return not (row > GRID_SIZE - 1 or col > GRID_SIZE - 1
+                or row < 0 or col < 0)
+
+
+def emptyPosition(row, col):
     return GRID[row][col] == ("", "", 0)
 
-#Grabs coordinates based on the relative action and relative shape
-#Returns the coordinates
-#ie relative action == left -> return coordinates left of relative shape
-def doRelativeAction(rel_action,rel_shape,rel_color):
+# Grabs coordinates based on the relative action and relative shape
+# Returns the coordinates
+# ie relative action == left -> return coordinates left of relative shape
+
+
+def doRelativeAction(rel_action, rel_shape, rel_color):
     # Above, Below, Near, Right, Left
-    x,y = findShape(shape=rel_shape,color=rel_color)[0]
+    x, y = findShape(shape=rel_shape, color=rel_color)[0]
 
     if rel_action == 'ABOVE':
         y = y+1
@@ -93,83 +106,85 @@ def doRelativeAction(rel_action,rel_shape,rel_color):
         positions = []
 
         x = x-1
-        y= y-1
-        #Store every possible coordinate within 1 square radius into positions
+        y = y-1
+        # Store every possible coordinate within 1 square radius into positions
         for i in range(3):
             for j in range(3):
                 temp_x = x + i
                 temp_y = y + j
                 if (temp_x > -1 and temp_y > -1 and
                         temp_x < GRID_SIZE and temp_y < GRID_SIZE):
-                    positions.append((temp_x,temp_y))
+                    positions.append((temp_x, temp_y))
 
-        #Chooses one randomly
-        pos = random.randint(0,len(positions) - 1)
-        x,y = positions.pop(pos)
-        while (not emptyPosition(x,y) and len(positions) != 0):
+        # Chooses one randomly
+        pos = random.randint(0, len(positions) - 1)
+        x, y = positions.pop(pos)
+        while (not emptyPosition(x, y) and len(positions) != 0):
             pos = random.randint(0, len(positions) - 1)
             x, y = positions.pop(pos)
 
-    return x,y
+    return x, y
 
-def addAction(shape,color,x,y):
+
+def addAction(shape, color, x, y):
     if not checkColor(color):
         return 4
     if not checkShape(shape):
         return 2
 
-    if emptyPosition(x,y):
-        addShape(row=x,col=y,shape=shape,color=color)
+    if emptyPosition(x, y):
+        addShape(row=x, col=y, shape=shape, color=color)
         return 0
     else:
         return 1
 
-def deleteAction(shape,color,x,y):
+
+def deleteAction(shape, color, x, y):
     if not checkColor(color):
         return 4
     if not checkShape(shape):
         return 2
 
-    if emptyPosition(x,y):
+    if emptyPosition(x, y):
         return 6
     else:
-        if getPostion(x,y) == (shape,color,0): #Action can be done
-            delShape(row=x,col=y)
+        if getPostion(x, y) == (shape, color, 0):  # Action can be done
+            delShape(row=x, col=y)
             return 0
-        else: #shape and/or color does not match
-            return 1 # Change to say incorrect color and/or shape
+        else:  # shape and/or color does not match
+            return 1  # Change to say incorrect color and/or shape
 
-def moveAction(shape,color,x,y):
+
+def moveAction(shape, color, x, y):
     if not checkColor(color):
         return 4
     if not checkShape(shape):
         return 2
 
-    foundShapes = findShape(shape=shape,color=color)
+    foundShapes = findShape(shape=shape, color=color)
     if len(foundShapes) == 0:  # Case: No shape
         return 6
 
     if len(foundShapes) > 1:  # Case: More than one shape
         return 5
 
-    old_x,old_y = foundShapes[0]
-    if old_x == x and old_y == y: #Shape is already in the right spot
+    old_x, old_y = foundShapes[0]
+    if old_x == x and old_y == y:  # Shape is already in the right spot
         return 0
     else:
-        moveShape(x1=old_x,y1=old_y,x2=x,y2=y)
+        moveShape(x1=old_x, y1=old_y, x2=x, y2=y)
         return 0
 
 
-
-def findAction(shape,color= None,x = -1,y = -1):
+def findAction(shape, color=None, x=-1, y=-1):
     if color:
         if not checkColor(color):
             return 4
     if not checkShape(shape):
         return 2
 
-    if x == -1 and y == -1: #Coordinates are not given
-        foundShapes = findShape(shape,color)
+    if x == -1 and y == -1:  # Coordinates are not given
+        foundShapes = findShape(shape, color)
         if len(foundShapes) == 0:  # Case: No shape
             return 6
 
@@ -178,86 +193,91 @@ def findAction(shape,color= None,x = -1,y = -1):
 
         if len(foundShapes) == 1:
             return 8
-    else: #Coordinates are given
-        if getPostion(x,y) == (shape,color,0):
+    else:  # Coordinates are given
+        if getPostion(x, y) == (shape, color, 0):
             return 8
         else:
             return 6
 
-#@Param flags- the check from @func checkSemantics
-#Returns the reponse_number based on what conditions are met
-def doAction(action,shape,color,rel_action=None,rel_shape=None,rel_color=None):
+# @Param flags- the check from @func checkSemantics
+# Returns the reponse_number based on what conditions are met
 
-    action=action.upper()
+
+def doAction(action, shape, color, rel_action=None, rel_shape=None, rel_color=None):
+
+    action = action.upper()
     shape = shape.upper()
     color = color.upper()
     rel_action = rel_action.upper()
     rel_shape = rel_shape.upper()
     rel_color = rel_color.upper()
 
-    #No relative stuff given
+    # No relative stuff given
     if not rel_action or not rel_shape or not rel_color:
         if action == "ADD":
-            return 7 #Location please
+            return 7  # Location please
         if action == "DELETE":
-            foundShape = findShape(shape=shape,color=color)
+            foundShape = findShape(shape=shape, color=color)
             if len(foundShape) != 0:
                 for found in foundShape:
-                    deleteAction(shape=shape,color=color,x=found[0],y=found[1])
+                    deleteAction(shape=shape, color=color,
+                                 x=found[0], y=found[1])
                     return 0
         if action == "MOVE":
-            return 7 #Location please
+            return 7  # Location please
         if action == "FIND":
-            return findAction(shape=shape,color=color)
+            return findAction(shape=shape, color=color)
 
         pass
 
-    #Relative stuff given
-    foundShape = findShape(shape=rel_shape,color=rel_color)
+    # Relative stuff given
+    foundShape = findShape(shape=rel_shape, color=rel_color)
 
-    if len(foundShape) == 0: #Case: No relative shape
+    if len(foundShape) == 0:  # Case: No relative shape
         return 6
 
-    if len(foundShape) > 1: # Case: More than one relative shape
-        #Add response to clarify which relative shape
+    if len(foundShape) > 1:  # Case: More than one relative shape
+        # Add response to clarify which relative shape
         return 5
 
-    #Case: relative shape found
-    #doRelativeAction returns the coordinates for the relative action
-    x,y = doRelativeAction(rel_action=rel_action,rel_shape=rel_shape,rel_color=rel_color)
+    # Case: relative shape found
+    # doRelativeAction returns the coordinates for the relative action
+    x, y = doRelativeAction(rel_action=rel_action,
+                            rel_shape=rel_shape, rel_color=rel_color)
 
-    #Case:relative action is out of bounds
-    if not checkLocation(x,y):
+    # Case:relative action is out of bounds
+    if not checkLocation(x, y):
         return 10
 
-    #Case x,y is valid -> Action is completed
+    # Case x,y is valid -> Action is completed
     if action == "ADD":
-        return addAction(shape=shape,color=color,x=x,y=y)
+        return addAction(shape=shape, color=color, x=x, y=y)
 
     if action == "DELETE":
-        return deleteAction(shape=shape,color=color,x=x,y=y)
+        return deleteAction(shape=shape, color=color, x=x, y=y)
 
     if action == "MOVE":
-        return moveAction(shape=shape,color=color,x=x,y=y)
+        return moveAction(shape=shape, color=color, x=x, y=y)
 
     if action == "FIND":
-        return findAction(shape=shape,color=color,x=x,y=y)
+        return findAction(shape=shape, color=color, x=x, y=y)
 
     return 0
 
-def response(response_number,action,shape,color):
+
+def response(response_number, action, shape, color):
     responses = {
-        0 : "Done",
-        1 : "Sorry, I can't",
-        2 : "What kind of shape is that?",
-        3 : "I do not know how to do that. Please try a different action.",
-        4 : "What color?",
-        5 : "There are duplicates of that.", #Change to specify location
-        6 : "Not found",
-        7 : "Location please.",
-        8 : "Found",
-        9 : "Deleted",
-        10 : "Location does not exist."
+        0: "Done",
+        1: "Sorry, I can't",
+        2: "What kind of shape is that?",
+        3: "I do not know how to do that. Please try a different action.",
+        4: "What color?",
+        5: "There are duplicates of that.",  # Change to specify location
+        6: "Not found",
+        7: "Location please.",
+        8: "Found",
+        9: "Deleted",
+        10: "Location does not exist."
     }
 
     return responses[response_number]
@@ -267,7 +287,8 @@ def chatbot_ml(sentence):
     model = createModel()
 
     sentence = sentence.lower()
-    tokenize_sentence = tokenizer.encode(sentence, padding='max_length', max_length=INPUT_SIZE)
+    tokenize_sentence = tokenizer.encode(
+        sentence, padding='max_length', max_length=INPUT_SIZE)
     print(sentence)
     print(tokenize_sentence)
     res = model.predict([tokenize_sentence])
@@ -279,12 +300,11 @@ def chatbot_ml(sentence):
     rel_noun = NOUN_LIST[np.argmax(res[4])]
     rel_color = COLORS_LIST[np.argmax(res[5])]
 
-    response_num = doAction(action=action,shape=noun,color=color,
-                            rel_action=rel_action,rel_shape=rel_noun,rel_color=rel_color)
+    response_num = doAction(action=action, shape=noun, color=color,
+                            rel_action=rel_action, rel_shape=rel_noun, rel_color=rel_color)
 
     print(response_num)
 
-    resp = response(response_num,action=action,shape=noun,color=color)
-    updateHistory(GRID,sentence,resp,(noun,color,action))
+    resp = response(response_num, action=action, shape=noun, color=color)
+    updateHistory(GRID, sentence, resp, (noun, color, action))
     return resp
-
