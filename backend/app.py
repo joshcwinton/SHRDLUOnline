@@ -4,6 +4,9 @@ from chatbot import chatbot
 import json
 from flask_cors import CORS
 from environment import getEnvironment, clearBoard, getMessages, getEnvironmentHistory
+from dbqueries import archiveBotMessage
+from dbqueries import archiveSelfMessage
+from dbqueries import retrieveAllMessages
 
 
 app = Flask(__name__)
@@ -51,7 +54,11 @@ def chatbot_route():
         post_data = request.get_json()
         user_res = post_data["user"]
         bot_res = chatbot(user_res)
-        return jsonify({"SHRDLU": bot_res})
+        jbot_res = jsonify({"SHRDLU": bot_res})
+        archiveSelfMessage(json.dumps(post_data))
+        archiveBotMessage(json.dumps(jbot_res.get_json()))
+        retrieveAllMessages()
+        return jbot_res
     return jsonify({"get": "requested"})
 
 # endpoint that returns environment array
