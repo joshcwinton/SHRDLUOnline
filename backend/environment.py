@@ -72,7 +72,7 @@ def holdShape(row, col):
 
 
 def clearBoard():
-    global GRID,HISTORY,MESSAGES
+    global GRID, HISTORY, MESSAGES
 
     for x in range(GRID_SIZE):
         for y in range(GRID_SIZE):
@@ -85,7 +85,7 @@ def clearBoard():
 
 
 def undo():
-    global GRID,HISTORY,MESSAGES
+    global GRID, HISTORY, MESSAGES
 
     if len(HISTORY) != 0:
         GRID = HISTORY.pop()
@@ -101,7 +101,6 @@ def undo():
     renderEnvironment(GRID)
 
 
-
 def showGrid():
     for i in GRID:
         print(i)
@@ -109,8 +108,9 @@ def showGrid():
     renderEnvironment(GRID)
 
 
-def getPostion(row,col):
+def getPostion(row, col):
     return GRID[row][col]
+
 
 def getEnvironment():
     return(GRID)
