@@ -1,3 +1,15 @@
+Chatbot_ML:
+Contains the logic of the chatbot
+
+Create_Model:
+Creates the neural network architecture and trains the data based on the training_data.csv in data/
+The weights are saved as Weights.h5 and then can be used in test_ml_model and app.py.
+The current model takes a sentence of input 20 and outputs action,noun,color,rel_action,rel_noun,rel_color
+
+Test_ML_Model:
+Loads weights from Weights.h5 and can be used to test specific sentences
+
+Data_Creation:
 To create data, input the data into sentences_to_train_on.txt under the fields header:
 The input should follow the fields
 Sentence,Target_Action,Noun,Color,Relative_Action,Relative_Object,Relative_Object_Color

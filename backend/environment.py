@@ -59,10 +59,8 @@ def delShape(row, col):
 def moveShape(x1, y1, x2, y2):
     """x1,y1 is moving from
     x2,y2 is moving to"""
-    global GRID
-
+    global GRID, HISTORY, MESSAGES
     GRID[x2][y2] = GRID[x1][y1]
-
     delShape(x1, y1)
 
     renderEnvironment(GRID)
@@ -74,29 +72,31 @@ def holdShape(row, col):
 
 
 def clearBoard():
-    global GRID
+    global GRID,HISTORY,MESSAGES
+
     for x in range(GRID_SIZE):
         for y in range(GRID_SIZE):
             GRID[x][y] = ("", "", 0)
 
+    MESSAGES.append({"name": "Me", "Clear board": inputMessage})
+    MESSAGES.append({"name": "SHRDLU", "Board Cleared": outputMessage})
+    HISTORY = []
     renderEnvironment(GRID)
 
 
 def undo():
-    global GRID
+    global GRID,HISTORY,MESSAGES
 
     if len(HISTORY) != 0:
         GRID = HISTORY.pop()
         MESSAGES.append({"name": "Me", "Undo Action": inputMessage})
         MESSAGES.append({"name": "SHRDLU", "Okay": outputMessage})
-        return True
     else:
         MESSAGES.append({"name": "Me", "Undo Action": inputMessage})
         MESSAGES.append({"name": "SHRDLU", "No Actions to undo": outputMessage})
 
-    return  False
+    renderEnvironment(GRID)
 
-renderEnvironment(GRID)
 
 
 def showGrid():
@@ -105,6 +105,9 @@ def showGrid():
 
     renderEnvironment(GRID)
 
+
+def getPostion(row,col):
+    return GRID[row][col]
 
 def getEnvironment():
     return(GRID)
@@ -117,7 +120,7 @@ def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
         currentEnv: Resulting grid after interaction
         inputMessage (str): Message sent by the user
         outputMessage (str): Response from SHRDLU
-        parsedMessage (tuple): (shape, color, action, row, col)
+        parsedMessage (tuple): (shape, color, action)
     """
 
     # TODO: Update this to update database instead of global variable
