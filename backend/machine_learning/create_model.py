@@ -11,6 +11,7 @@ from tensorflow.keras.layers import Dense, Input
 # Load pretrained model
 INPUT_SIZE = 20
 
+
 model = TFBertForTokenClassification.from_pretrained(
     "bert-base-uncased",
     num_labels=INPUT_SIZE,

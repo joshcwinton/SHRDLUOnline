@@ -14,6 +14,7 @@ model = TFBertForTokenClassification.from_pretrained(
     num_labels=INPUT_SIZE,
     output_attentions=False,
     output_hidden_states=False)
+
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
 # Create architecture and load weights
