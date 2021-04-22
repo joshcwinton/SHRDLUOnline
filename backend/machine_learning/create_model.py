@@ -11,10 +11,12 @@ from tensorflow.keras.layers import Dense, Input
 # Load pretrained model
 INPUT_SIZE = 20
 
-model = TFBertForTokenClassification.from_pretrained("bert-base-uncased",
-                                                     num_labels=INPUT_SIZE,
-                                                     output_attentions=False,
-                                                     output_hidden_states=False)
+
+model = TFBertForTokenClassification.from_pretrained(
+    "bert-base-uncased",
+    num_labels=INPUT_SIZE,
+    output_attentions=False,
+    output_hidden_states=False)
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 model.summary()
 
@@ -34,9 +36,9 @@ np.random.shuffle(np_data)
 TRAIN_SIZE = .8
 VAL_SIZE = .2
 
-SPLIT_SIZE = round(len(np_data)*TRAIN_SIZE)
+SPLIT_SIZE = round(len(np_data) * TRAIN_SIZE)
 train_data = np_data[:SPLIT_SIZE]
-val_data = np_data[:len(np_data)-SPLIT_SIZE]
+val_data = np_data[:len(np_data) - SPLIT_SIZE]
 
 train_data = np.asarray(train_data)
 val_data = np.asarray(val_data)
@@ -47,8 +49,11 @@ print(val_data.shape)
 # Split training data into separate categories
 sentences = []
 for sentence in train_data[:, 0]:
-    sentences.append(tokenizer.encode(
-        sentence, padding='max_length', max_length=INPUT_SIZE))
+    sentences.append(
+        tokenizer.encode(
+            sentence,
+            padding='max_length',
+            max_length=INPUT_SIZE))
 
 sentences = np.asarray(sentences)
 
@@ -72,34 +77,62 @@ x = Dense(16, activation='sigmoid')(x)
 # Target Fields
 COLORS_LIST = {0: 'none', 1: 'red', 2: 'blue', 3: 'green'}
 ACTIONS_LIST = {0: 'none', 1: 'add', 2: 'find', 3: 'delete', 4: 'move'}
-REL_ACTIONS_LIST = {0: 'none', 1: 'above',
-                    2: 'below', 3: 'near', 4: 'right', 5: 'left'}
+REL_ACTIONS_LIST = {
+    0: 'none',
+    1: 'above',
+    2: 'below',
+    3: 'near',
+    4: 'right',
+    5: 'left'}
 NOUN_LIST = {0: 'none', 1: 'cube', 2: 'pyramid', 3: 'sphere'}
 
 action_pred = Dense(len(ACTIONS_LIST), name="Action", activation='softmax')(x)
 shape_pred = Dense(len(NOUN_LIST), name="Noun", activation='softmax')(x)
 color_pred = Dense(len(COLORS_LIST), name="Color", activation='softmax')(x)
-rel_action_pred = Dense(len(REL_ACTIONS_LIST),
-                        name="Rel_Action", activation='softmax')(x)
-rel_shape_pred = Dense(len(NOUN_LIST), name="Rel_Noun",
-                       activation='softmax')(x)
-rel_color_pred = Dense(len(COLORS_LIST), name="Rel_Color",
-                       activation='softmax')(x)
+rel_action_pred = Dense(
+    len(REL_ACTIONS_LIST),
+    name="Rel_Action",
+    activation='softmax')(x)
+rel_shape_pred = Dense(
+    len(NOUN_LIST),
+    name="Rel_Noun",
+    activation='softmax')(x)
+rel_color_pred = Dense(
+    len(COLORS_LIST),
+    name="Rel_Color",
+    activation='softmax')(x)
 
-full_model = Model(inputs=nn_input,
-                   outputs=[action_pred, shape_pred, color_pred, rel_action_pred, rel_shape_pred, rel_color_pred])
+full_model = Model(
+    inputs=nn_input,
+    outputs=[
+        action_pred,
+        shape_pred,
+        color_pred,
+        rel_action_pred,
+        rel_shape_pred,
+        rel_color_pred])
 
 full_model.summary()
 
-full_model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=3e-5, epsilon=1e-08, clipnorm=1.0),
-                   loss=tf.keras.losses.SparseCategoricalCrossentropy(
-                       from_logits=True),
-                   metrics=[tf.keras.metrics.SparseCategoricalAccuracy('accuracy')])
+full_model.compile(
+    optimizer=tf.keras.optimizers.Adam(
+        learning_rate=3e-5,
+        epsilon=1e-08,
+        clipnorm=1.0),
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(
+        from_logits=True),
+    metrics=[
+        tf.keras.metrics.SparseCategoricalAccuracy('accuracy')])
 
 full_model.fit(sentences,
-               {"Action": actions, "Noun": shapes, "Color": colors,
-                   "Rel_Action": rel_actions, "Rel_Noun": rel_shapes, "Rel_Color": rel_colors},
-               epochs=20, batch_size=64)
+               {"Action": actions,
+                "Noun": shapes,
+                "Color": colors,
+                "Rel_Action": rel_actions,
+                "Rel_Noun": rel_shapes,
+                "Rel_Color": rel_colors},
+               epochs=20,
+               batch_size=64)
 
 full_model.save_weights("Weights.h5")
 
@@ -132,6 +165,9 @@ val_rel_shapes = np.asarray(rel_shapes)
 val_rel_colors = np.asarray(rel_colors)
 
 print(full_model.evaluate(val_sentences,
-                          {"Noun": val_shapes, "Action": val_actions, "Color": val_colors, "Rel_Noun": val_rel_shapes,
-                           "Rel_Action": val_rel_actions, "Rel_Color": val_rel_colors})
-      )
+                          {"Noun": val_shapes,
+                           "Action": val_actions,
+                           "Color": val_colors,
+                           "Rel_Noun": val_rel_shapes,
+                           "Rel_Action": val_rel_actions,
+                           "Rel_Color": val_rel_colors}))

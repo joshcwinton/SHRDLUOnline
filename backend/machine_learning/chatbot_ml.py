@@ -13,18 +13,25 @@ INPUT_SIZE = 15
 # Target Fields - used to convert nn output to target output
 COLORS_LIST = {0: 'none', 1: 'red', 2: 'blue', 3: 'green'}
 ACTIONS_LIST = {0: 'none', 1: 'add', 2: 'find', 3: 'delete', 4: 'move'}
-REL_ACTIONS_LIST = {0: 'none', 1: 'above',
-                    2: 'below', 3: 'near', 4: 'right', 5: 'left'}
+REL_ACTIONS_LIST = {
+    0: 'none',
+    1: 'above',
+    2: 'below',
+    3: 'near',
+    4: 'right',
+    5: 'left'}
+
 NOUN_LIST = {0: 'none', 1: 'cube', 2: 'pyramid', 3: 'sphere'}
 
 
 # Create neural network architecture and load weights
 def createModel():
     # Load pretrained model
-    model = TFBertForTokenClassification.from_pretrained("bert-base-uncased",
-                                                         num_labels=INPUT_SIZE,
-                                                         output_attentions=False,
-                                                         output_hidden_states=False)
+    model = TFBertForTokenClassification.from_pretrained(
+        "bert-base-uncased",
+        num_labels=INPUT_SIZE,
+        output_attentions=False,
+        output_hidden_states=False)
 
     # Create architecture and load weights
     nn_input = Input(shape=(INPUT_SIZE,), dtype='int64')
@@ -35,26 +42,47 @@ def createModel():
     x = Dense(64, activation='sigmoid')(x)
     x = Dense(16, activation='sigmoid')(x)
 
-    action_pred = Dense(len(ACTIONS_LIST), name="Action",
-                        activation='softmax')(x)
+    action_pred = Dense(
+        len(ACTIONS_LIST),
+        name="Action",
+        activation='softmax')(x)
     shape_pred = Dense(len(NOUN_LIST), name="Noun", activation='softmax')(x)
     color_pred = Dense(len(COLORS_LIST), name="Color", activation='softmax')(x)
-    rel_action_pred = Dense(len(REL_ACTIONS_LIST),
-                            name="Rel_Action", activation='softmax')(x)
+    rel_action_pred = Dense(
+        len(REL_ACTIONS_LIST),
+        name="Rel_Action",
+        activation='softmax')(x)
     rel_shape_pred = Dense(
-        len(NOUN_LIST), name="Rel_Noun", activation='softmax')(x)
+        len(NOUN_LIST),
+        name="Rel_Noun",
+        activation='softmax')(x)
     rel_color_pred = Dense(
-        len(COLORS_LIST), name="Rel_Color", activation='softmax')(x)
+        len(COLORS_LIST),
+        name="Rel_Color",
+        activation='softmax')(x)
 
-    full_model = Model(inputs=nn_input,
-                       outputs=[action_pred, shape_pred, color_pred, rel_action_pred, rel_shape_pred, rel_color_pred])
+    full_model = Model(
+        inputs=nn_input,
+        outputs=[
+            action_pred,
+            shape_pred,
+            color_pred,
+            rel_action_pred,
+            rel_shape_pred,
+            rel_color_pred])
 
     full_model.summary()
 
-    full_model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=3e-5, epsilon=1e-08, clipnorm=1.0),
-                       loss=tf.keras.losses.SparseCategoricalCrossentropy(
-                           from_logits=True),
-                       metrics=[tf.keras.metrics.SparseCategoricalAccuracy('accuracy')])
+    full_model.compile(
+        optimizer=tf.keras.optimizers.Adam(
+            learning_rate=3e-5,
+            epsilon=1e-08,
+            clipnorm=1.0),
+        loss=tf.keras.losses.SparseCategoricalCrossentropy(
+            from_logits=True),
+        metrics=[
+            tf.keras.metrics.SparseCategoricalAccuracy('accuracy')])
+
 
     full_model.load_weights("Weights.h5")
 
@@ -70,7 +98,6 @@ def checkColor(adj):
 
 # Return if location is valid on the grid
 # If valid returns true
-
 
 def checkLocation(row, col):
     return not (row > GRID_SIZE - 1 or col > GRID_SIZE - 1
@@ -90,23 +117,24 @@ def doRelativeAction(rel_action, rel_shape, rel_color):
     x, y = findShape(shape=rel_shape, color=rel_color)[0]
 
     if rel_action == 'ABOVE':
-        y = y+1
+        y = y + 1
 
     if rel_action == 'BELOW':
-        y = y-1
+        y = y - 1
 
     if rel_action == 'RIGHT':
-        x = x+1
+        x = x + 1
 
     if rel_action == 'LEFT':
-        x = x-1
+        x = x - 1
 
     if rel_action == 'NEAR':
         random.seed(datetime.now())
         positions = []
 
-        x = x-1
-        y = y-1
+        x = x - 1
+        y = y - 1
+
         # Store every possible coordinate within 1 square radius into positions
         for i in range(3):
             for j in range(3):
@@ -203,7 +231,13 @@ def findAction(shape, color=None, x=-1, y=-1):
 # Returns the reponse_number based on what conditions are met
 
 
-def doAction(action, shape, color, rel_action=None, rel_shape=None, rel_color=None):
+def doAction(
+        action,
+        shape,
+        color,
+        rel_action=None,
+        rel_shape=None,
+        rel_color=None):
 
     action = action.upper()
     shape = shape.upper()
@@ -220,8 +254,11 @@ def doAction(action, shape, color, rel_action=None, rel_shape=None, rel_color=No
             foundShape = findShape(shape=shape, color=color)
             if len(foundShape) != 0:
                 for found in foundShape:
-                    deleteAction(shape=shape, color=color,
-                                 x=found[0], y=found[1])
+                    deleteAction(
+                        shape=shape,
+                        color=color,
+                        x=found[0],
+                        y=found[1])
                     return 0
         if action == "MOVE":
             return 7  # Location please
@@ -300,8 +337,13 @@ def chatbot_ml(sentence):
     rel_noun = NOUN_LIST[np.argmax(res[4])]
     rel_color = COLORS_LIST[np.argmax(res[5])]
 
-    response_num = doAction(action=action, shape=noun, color=color,
-                            rel_action=rel_action, rel_shape=rel_noun, rel_color=rel_color)
+    response_num = doAction(
+        action=action,
+        shape=noun,
+        color=color,
+        rel_action=rel_action,
+        rel_shape=rel_noun,
+        rel_color=rel_color)
 
     print(response_num)
 
