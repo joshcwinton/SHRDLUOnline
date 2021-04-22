@@ -83,7 +83,6 @@ def createModel():
         metrics=[
             tf.keras.metrics.SparseCategoricalAccuracy('accuracy')])
 
-
     full_model.load_weights("Weights.h5")
 
     return full_model
@@ -98,6 +97,7 @@ def checkColor(adj):
 
 # Return if location is valid on the grid
 # If valid returns true
+
 
 def checkLocation(row, col):
     return not (row > GRID_SIZE - 1 or col > GRID_SIZE - 1
