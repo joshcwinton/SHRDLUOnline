@@ -124,12 +124,16 @@ def doAction(action, shape, color, row, col):
         if action == 'MOVE':
             if not checkLocation(row, col) == 1:
                 return 7
-            else:
+            if row == foundShape[0][0] and col == foundShape[0][1]:
+                return 99
+            elif emptyPosition(row, col):
                 moveShape(
                     x1=foundShape[0][0],
                     y1=foundShape[0][1],
                     x2=row,
                     y2=col)
+            else:
+                return 1
 
         row = foundShape[0][0]
         col = foundShape[0][1]
@@ -156,7 +160,8 @@ def response(response_number):
         7: "Location please.",
         8: "Found",
         9: "Deleted",
-        10: "Location does not exist."
+        10: "Location does not exist.",
+        99: "Already there"
     }
 
     return responses[response_number]
