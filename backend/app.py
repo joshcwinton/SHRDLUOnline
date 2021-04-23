@@ -87,12 +87,14 @@ def history():
         return jsonify({"history": getEnvironmentHistory()})
     return None
 
+
 @app.route('/clear', methods=['POST'])
 def clear_route():
     if request.method == 'POST':
         clearBoard()
         return jsonify({"SHRDLU": "Board cleared."})
     return None
+
 
 @app.route('/undo', methods=['POST'])
 def undo_route():
