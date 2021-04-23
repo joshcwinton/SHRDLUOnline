@@ -69,6 +69,47 @@ class Chat extends Component {
     });
   };
 
+  undoAction = () => {
+    console.log("Undo Action");
+    let errors = [];
+    axios
+      .post("https:shrdluonline-backend.herokuapp.com/undo")
+      .then((res) => {
+        // add response to chat history
+        let response = { name: "SHRDLU", text: res.data.SHRDLU };
+        this.addMessage(response);
+        this.updateEnvironment();
+      })
+      .catch((err) => {
+        console.log(err);
+        errors.push(err.message);
+      })
+      .finally(() => {
+        this.setState({ errors: errors });
+      });
+  }
+
+  clearBoard  = () => {
+    console.log("Clear Board");
+    let errors = [];
+    axios
+      .post("https:shrdluonline-backend.herokuapp.com/clear")
+      .then((res) => {
+        // add response to chat history
+        let response = { name: "SHRDLU", text: res.data.SHRDLU };
+        this.addMessage(response);
+        this.updateEnvironment();
+      })
+      .catch((err) => {
+        console.log(err);
+        errors.push(err.message);
+      })
+      .finally(() => {
+        this.setState({ errors: errors });
+      });
+  }
+
+
   // TODO: This will likely involve a user param later on
   componentDidMount = () => {
     axios.get(`${getURI()}/messages`).then((res) => {
@@ -96,6 +137,14 @@ class Chat extends Component {
                 this.submitMessage(messageString)
               }
             />
+            <button onClick={this.undoAction}>
+              Undo
+            </button>
+
+            <button onClick={this.clearBoard}>
+              Clear Board
+            </button>
+
             {this.state.errors.map((error, i) => (
               <p key={i} className="error">
                 {error}
