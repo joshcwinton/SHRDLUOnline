@@ -9,13 +9,15 @@ import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Environment from "./Environment";
 
+import { getURI } from "../utils/config";
+
 class Chat extends Component {
   state = {
     messages: [],
     name: "Me",
     errors: [],
-    imageSrc: "https://shrdluonline-backend.herokuapp.com/environment_image",
-    imageHash: Date.now()
+    imageSrc: `${getURI()}/environment_image`,
+    imageHash: Date.now(),
   };
 
   // Send message to backend then print it to console
@@ -25,7 +27,7 @@ class Chat extends Component {
     let errors = [];
     // send message to backend
     axios
-      .post("https://shrdluonline-backend.herokuapp.com/chat", {
+      .post(`${getURI()}/chat`, {
         user: message.text,
       })
       .then((res) => {
@@ -62,57 +64,71 @@ class Chat extends Component {
 
   updateEnvironment = () => {
     this.setState({
-      imageSrc: "https:shrdluonline-backend.herokuapp.com/environment_image",
-      imageHash: Date.now()
+      imageSrc: `${getURI()}/environment_image`,
+      imageHash: Date.now(),
     });
-  }
+  };
 
   undoAction = () => {
     console.log("Undo Action");
     let errors = [];
-    // axios
-    //   .post("https://shrdluonline-backend.herokuapp.com/undo-action")
-    //   .then((res) => {
-    //     // add response to history
-    //     let response = { name: "SHRDLU", text: res.data.SHRDLU };
-    //     this.addMessage(response);
-    //     this.updateEnvironment();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     errors.push(err.message);
-    //   })
-    //   .finally(() => {
-    //     this.setState({ errors: errors });
-    //   });
+    axios
+      .post("https:shrdluonline-backend.herokuapp.com/undo")
+      .then((res) => {
+        // add response to chat history
+        let response = { name: "SHRDLU", text: res.data.SHRDLU };
+        this.addMessage(response);
+        this.updateEnvironment();
+      })
+      .catch((err) => {
+        console.log(err);
+        errors.push(err.message);
+      })
+      .finally(() => {
+        this.setState({ errors: errors });
+      });
   }
 
   clearBoard  = () => {
     console.log("Clear Board");
-    // let errors = [];
-    // axios
-    //   .post("https://shrdluonline-backend.herokuapp.com/clear-board")
-    //   .then((res) => {
-    //     // add response to history
-    //     let response = { name: "SHRDLU", text: res.data.SHRDLU };
-    //     this.addMessage(response);
-    //     this.updateEnvironment();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     errors.push(err.message);
-    //   })
-    //   .finally(() => {
-    //     this.setState({ errors: errors });
-    //   });
+    let errors = [];
+    axios
+      .post("https:shrdluonline-backend.herokuapp.com/clear")
+      .then((res) => {
+        // add response to chat history
+        let response = { name: "SHRDLU", text: res.data.SHRDLU };
+        this.addMessage(response);
+        this.updateEnvironment();
+      })
+      .catch((err) => {
+        console.log(err);
+        errors.push(err.message);
+      })
+      .finally(() => {
+        this.setState({ errors: errors });
+      });
   }
+
+
+  // TODO: This will likely involve a user param later on
+  componentDidMount = () => {
+    axios.get(`${getURI()}/messages`).then((res) => {
+      let fetchedMessages = res.data.messages;
+      this.setState({
+        messages: fetchedMessages,
+      });
+    });
+  };
 
   render() {
     return (
       <Container fluid="sm">
         <Row>
           <Col>
-            <Environment imageSrc={this.state.imageSrc} imageHash={this.state.imageHash} />
+            <Environment
+              imageSrc={this.state.imageSrc}
+              imageHash={this.state.imageHash}
+            />
           </Col>
           <Col>
             <ChatMessageList messages={this.state.messages} />
