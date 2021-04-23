@@ -57,7 +57,7 @@ def delShape(row, col):
 
 
 def moveShape(x1, y1, x2, y2):
-    """x1,y1 is moving from
+    """x1,y1 is moving  from
     x2,y2 is moving to"""
     global GRID
 
@@ -74,13 +74,30 @@ def holdShape(row, col):
 
 
 def clearBoard():
-    global GRID
+    global GRID,HISTORY,MESSAGES
     for x in range(GRID_SIZE):
         for y in range(GRID_SIZE):
             GRID[x][y] = ("", "", 0)
 
+    MESSAGES.append({"name": "Me", "text": "Clear board"})
+    MESSAGES.append({"name": "SHRDLU", "text": "Board cleared"})
+    HISTORY = []
     renderEnvironment(GRID)
 
+def undo():
+    global GRID, HISTORY, MESSAGES
+    if len(HISTORY) != 0:
+        GRID = HISTORY.pop()
+        MESSAGES.append({"name": "Me", "text": "Undo Action"})
+        MESSAGES.append({"name": "SHRDLU", "text": "Okay"})
+    else:
+        MESSAGES.append({"name": "Me", "text": "Undo Action"})
+        MESSAGES.append({"name": "SHRDLU", "text": "No action to undo"})
+
+    renderEnvironment(GRID)
+
+def getPosition(row,col):
+    return GRID[row][col]
 
 def showGrid():
     for i in GRID:
@@ -91,7 +108,6 @@ def showGrid():
 
 def getEnvironment():
     return(GRID)
-
 
 def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
     """"Adds information about a single interaction with SHRDLU to the history
