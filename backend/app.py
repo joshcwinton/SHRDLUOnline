@@ -93,7 +93,7 @@ def history():
 def clear_route():
     if request.method == 'POST':
         bot_res = clearBoard()
-        bot_res = {res["name"]:res["text"] for res in bot_res}
+        bot_res = {res["name"]: res["text"] for res in bot_res}
         return jsonify(bot_res)
     return None
 
@@ -102,7 +102,7 @@ def clear_route():
 def undo_route():
     if request.method == 'POST':
         bot_res = undo()
-        bot_res = {res["name"]:res["text"] for res in bot_res}
+        bot_res = {res["name"]: res["text"] for res in bot_res}
         return jsonify(bot_res)
     return None
 

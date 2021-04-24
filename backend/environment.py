@@ -11,6 +11,7 @@ CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
 MESSAGES = []  # Stores a list of messages
 HISTORY = []  # Stores a list of grids
 
+
 def findShape(shape, color=None, height=0):
     """ Returns all shapes found based on given parameters
     TODO: Change height parameter in functions to a lambda to check for comparison words:
@@ -72,6 +73,7 @@ def holdShape(row, col):
     global CLAW_POS
     CLAW_POS = row, col
 
+
 def clearBoardAppStart():
     """Used to clear the board on app start"""
     global GRID
@@ -79,6 +81,7 @@ def clearBoardAppStart():
         for y in range(GRID_SIZE):
             GRID[x][y] = ("", "", 0)
     renderEnvironment(GRID)
+
 
 def clearBoard():
     """used for clear board route."""
@@ -152,6 +155,7 @@ def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
     MESSAGES.append({"name": "Me", "text": inputMessage})
     MESSAGES.append({"name": "SHRDLU", "text": outputMessage})
     HISTORY.append(currentEnv)
+
 
 def getMessages():
     return(MESSAGES)
