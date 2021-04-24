@@ -3,7 +3,7 @@ import os
 from chatbot import chatbot
 import json
 from flask_cors import CORS
-from environment import getEnvironment, clearBoard, getMessages, getEnvironmentHistory, clearBoard, undo
+from environment import getEnvironment, clearBoard, getMessages, getEnvironmentHistory, clearBoard, undo, clearBoardAppStart
 
 
 app = Flask(__name__)
@@ -15,7 +15,7 @@ dummy = [{'sass': 'sample_response_1'},
          {'sass': 'sample_response_3'}]
 
 # clear board to clear image
-clearBoard()
+clearBoardAppStart()
 
 # main route (Landing Page)
 
@@ -76,6 +76,7 @@ def environment_image():
 
 @app.route('/messages', methods=['GET'])
 def messages():
+    print(getMessages())
     if request.method == 'GET':
         return jsonify({"messages": getMessages()})
     return None
@@ -91,19 +92,20 @@ def history():
 @app.route('/clear', methods=['POST'])
 def clear_route():
     if request.method == 'POST':
-        clearBoard()
-        return jsonify({"SHRDLU": "Board cleared."})
+        bot_res = clearBoard()
+        bot_res = {res["name"]:res["text"] for res in bot_res}
+        return jsonify(bot_res)
     return None
 
 
 @app.route('/undo', methods=['POST'])
 def undo_route():
     if request.method == 'POST':
-        undo()
-        return jsonify({"SHRDLU": "Undo action"})
+        bot_res = undo()
+        bot_res = {res["name"]:res["text"] for res in bot_res}
+        return jsonify(bot_res)
     return None
 
 
 if __name__ == '__main__':
-    #    app.run(debug = True)
     app.run(host='127.0.0.1', port=os.getenv('PORT', 5555), debug=True)

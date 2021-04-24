@@ -180,6 +180,8 @@ def chatbot(sentence):
         col=col)
 
     # Update board when grid is changed
+    # TODO: We probably don't want to update history when env isn't changed.
+    # ex. Bad command that doesn't do anything will add a env to history, that messes with undo.
     currentEnv = getEnvironment()
     updateHistory(currentEnv, sentence, response(
         response_number), (shape, color, action, row, col))
