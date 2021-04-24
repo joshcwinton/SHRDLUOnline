@@ -143,6 +143,7 @@ def getEnvironment():
 
 
 def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
+    global HISTORY
     """"Adds information about a single interaction with SHRDLU to the history
 
     Args:
@@ -152,9 +153,15 @@ def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
         parsedMessage (tuple): (shape, color, action, row, col)
     """
     # TODO: Update this to update database instead of global variable
+    updateMessage(inputMessage,outputMessage)
+    HISTORY.append(currentEnv)
+
+
+def updateMessage(inputMessage, outputMessage):
+    global MESSAGES
+
     MESSAGES.append({"name": "Me", "text": inputMessage})
     MESSAGES.append({"name": "SHRDLU", "text": outputMessage})
-    HISTORY.append(currentEnv)
 
 
 def getMessages():
