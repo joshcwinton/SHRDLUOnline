@@ -184,11 +184,11 @@ def chatbot(sentence):
     # TODO: We probably don't want to update history when env isn't changed.
     # ex. Bad command that doesn't do anything will add a env to history, that messes with undo.
     currentEnv = getEnvironment()
-    #Only updates history if command is good(0-Done, 8-Found)
-    if response_number == 0 or response_number == 8 or response_number == 9:
+    # Only updates history if command is good(0-Done, 8-Found)
+    if response_number == 0 or response_number == 8:
         updateHistory(currentEnv, sentence, response(
             response_number), (shape, color, action, row, col))
     else:
-        updateMessage(sentence,response_number)
+        updateMessage(sentence, response_number)
 
     return(response(response_number))

@@ -153,7 +153,7 @@ def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
         parsedMessage (tuple): (shape, color, action, row, col)
     """
     # TODO: Update this to update database instead of global variable
-    updateMessage(inputMessage,outputMessage)
+    updateMessage(inputMessage, outputMessage)
     HISTORY.append(currentEnv)
 
 
