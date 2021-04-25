@@ -189,6 +189,6 @@ def chatbot(sentence):
         updateHistory(currentEnv, sentence, response(
             response_number), (shape, color, action, row, col))
     else:
-        updateMessage(sentence, response_number)
+        updateMessage(sentence, response(response_number))
 
     return(response(response_number))
