@@ -90,16 +90,16 @@ def doRelativeAction(rel_action, rel_shape, rel_color):
     x, y = findShape(shape=rel_shape, color=rel_color)[0]
 
     if rel_action == 'ABOVE':
-        y = y+1
+        x = x-1
 
     if rel_action == 'BELOW':
-        y = y-1
-
-    if rel_action == 'RIGHT':
         x = x+1
 
+    if rel_action == 'RIGHT':
+        y = y+1
+
     if rel_action == 'LEFT':
-        x = x-1
+        y = y-1
 
     return x, y
 
@@ -268,7 +268,7 @@ def doAction(action, shape, color, rel_action=None, rel_shape=None, rel_color=No
     # Case: relative shape found
     # doRelativeAction returns the coordinates for the relative action
     x, y = doRelativeAction(
-        rel_action=rel_action, rel_shape=rel_shape, rel_color=rel_color, action=action)
+        rel_action=rel_action, rel_shape=rel_shape, rel_color=rel_color)
     if rel_action == "NEAR":
         x, y = nearAction(shape=shape, color=color, action=action,
                           rel_action=rel_action, rel_shape=rel_shape, rel_color=rel_color)
