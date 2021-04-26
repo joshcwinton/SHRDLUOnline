@@ -3,7 +3,7 @@ from tensorflow.keras.layers import Dense, Input
 from transformers import BertTokenizer, TFBertForTokenClassification
 import tensorflow as tf
 import numpy as np
-from environment import SHAPES, COLORS, addShape, delShape, findShape, moveShape, GRID_SIZE, GRID, getPostion, updateHistory, updateMessage
+from environment import SHAPES, COLORS, addShape, delShape, findShape, moveShape, GRID_SIZE, GRID, getPosition, updateHistory, updateMessage
 import random
 from datetime import datetime
 
@@ -131,7 +131,7 @@ def nearAction(shape, color, action, rel_action, rel_shape, rel_color):
             x, y = positions.pop(pos)
 
     if action == "DELETE":  # Find matching block near relative object
-        while (getPostion(x, y) != [shape, color, 0] and len(positions) != 0):
+        while (getPosition(x, y) != [shape, color, 0] and len(positions) != 0):
             pos = random.randint(0, len(positions) - 1)
             x, y = positions.pop(pos)
 
@@ -141,7 +141,7 @@ def nearAction(shape, color, action, rel_action, rel_shape, rel_color):
             x, y = positions.pop(pos)
 
     if action == "FIND":  # Find matching blocks near relative object -> Only returns one right now
-        while (getPostion(x, y) != [shape, color, 0] and len(positions) != 0):
+        while (getPosition(x, y) != [shape, color, 0] and len(positions) != 0):
             pos = random.randint(0, len(positions) - 1)
             x, y = positions.pop(pos)
 
@@ -170,7 +170,7 @@ def deleteAction(shape, color, x, y):
     if emptyPosition(x, y):
         return 6
     else:
-        if getPostion(x, y) == (shape, color, 0):  # Action can be done
+        if getPosition(x, y) == (shape, color, 0):  # Action can be done
             delShape(row=x, col=y)
             return 0
         else:  # shape and/or color does not match
@@ -219,7 +219,7 @@ def findAction(shape, color=None, x=-1, y=-1):
         if len(foundShapes) == 1:
             return 8
     else:  # Coordinates are given
-        if getPostion(x, y) == (shape, color, 0):
+        if getPosition(x, y) == (shape, color, 0):
             return 8
         else:
             return 6
