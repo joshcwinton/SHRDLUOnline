@@ -4,7 +4,7 @@ from chatbot import chatbot
 import json
 from flask_cors import CORS
 from environment import getEnvironment, clearBoard, getMessages, getEnvironmentHistory, clearBoard, undo, clearBoardAppStart
-
+from machine_learning.chatbot_ml import chatbot_ml
 
 app = Flask(__name__)
 CORS(app)
@@ -51,6 +51,18 @@ def chatbot_route():
         post_data = request.get_json()
         user_res = post_data["user"]
         bot_res = chatbot(user_res)
+        return jsonify({"SHRDLU": bot_res})
+    return jsonify({"get": "requested"})
+
+# endpoint that returns environment array
+
+
+@app.route('/mlchat', methods=['GET', 'POST'])
+def chatbot_ml_route():
+    if request.method == 'POST':
+        post_data = request.get_json()
+        user_res = post_data["user"]
+        bot_res = chatbot_ml(user_res)
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})
 
