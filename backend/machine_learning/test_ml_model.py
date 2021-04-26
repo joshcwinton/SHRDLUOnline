@@ -12,40 +12,47 @@ INPUT_SIZE = 20
 # Target Fields
 COLORS_LIST = {0: 'none', 1: 'red', 2: 'blue', 3: 'green'}
 ACTIONS_LIST = {0: 'none', 1: 'add', 2: 'find', 3: 'delete', 4: 'move'}
-REL_ACTIONS_LIST = {0: 'none', 1: 'above', 2: 'below', 3: 'near', 4: 'right', 5: 'left'}
+REL_ACTIONS_LIST = {0: 'none', 1: 'above',
+                    2: 'below', 3: 'near', 4: 'right', 5: 'left'}
 NOUN_LIST = {0: 'none', 1: 'cube', 2: 'pyramid', 3: 'sphere'}
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
+
 def createModel():
     model = TFBertForTokenClassification.from_pretrained("bert-base-uncased",
                                                          num_labels=INPUT_SIZE,
-                                                         output_attentions = False,
-                                                         output_hidden_states = False)
-    #Create architecture and load weights
-    nn_input =  Input(shape=(INPUT_SIZE,), dtype= 'int64')
+                                                         output_attentions=False,
+                                                         output_hidden_states=False)
+    # Create architecture and load weights
+    nn_input = Input(shape=(INPUT_SIZE,), dtype='int64')
     x = model(nn_input)
     x = x[0]
     x = tf.keras.layers.Flatten()(x)
-    x = Dense(128,activation='relu')(x)
-    x = Dense(64,activation='sigmoid')(x)
-    x = Dense(16,activation='sigmoid')(x)
+    x = Dense(128, activation='relu')(x)
+    x = Dense(64, activation='sigmoid')(x)
+    x = Dense(16, activation='sigmoid')(x)
 
-    action_pred = Dense(len(ACTIONS_LIST), name="Action", activation='softmax')(x)
+    action_pred = Dense(len(ACTIONS_LIST), name="Action",
+                        activation='softmax')(x)
     shape_pred = Dense(len(NOUN_LIST), name="Noun", activation='softmax')(x)
     color_pred = Dense(len(COLORS_LIST), name="Color", activation='softmax')(x)
-    rel_action_pred = Dense(len(REL_ACTIONS_LIST), name="Rel_Action", activation='softmax')(x)
-    rel_shape_pred = Dense(len(NOUN_LIST), name="Rel_Noun", activation='softmax')(x)
-    rel_color_pred = Dense(len(COLORS_LIST), name="Rel_Color", activation='softmax')(x)
+    rel_action_pred = Dense(len(REL_ACTIONS_LIST),
+                            name="Rel_Action", activation='softmax')(x)
+    rel_shape_pred = Dense(
+        len(NOUN_LIST), name="Rel_Noun", activation='softmax')(x)
+    rel_color_pred = Dense(
+        len(COLORS_LIST), name="Rel_Color", activation='softmax')(x)
 
     full_model = Model(inputs=nn_input,
-                       outputs = [action_pred,shape_pred,color_pred,rel_action_pred,rel_shape_pred,rel_color_pred])
+                       outputs=[action_pred, shape_pred, color_pred, rel_action_pred, rel_shape_pred, rel_color_pred])
 
     full_model.summary()
 
     full_model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=3e-5, epsilon=1e-08, clipnorm=1.0),
-                  loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                  metrics=[tf.keras.metrics.SparseCategoricalAccuracy('accuracy')])
+                       loss=tf.keras.losses.SparseCategoricalCrossentropy(
+                           from_logits=True),
+                       metrics=[tf.keras.metrics.SparseCategoricalAccuracy('accuracy')])
 
     full_model.load_weights("Weights.h5")
 
