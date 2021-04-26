@@ -8,7 +8,7 @@ import random
 from datetime import datetime
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-INPUT_SIZE = 15
+INPUT_SIZE = 20
 
 # Target Fields - used to convert nn output to target output
 COLORS_LIST = {0: 'none', 1: 'red', 2: 'blue', 3: 'green'}
