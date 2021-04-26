@@ -8,6 +8,8 @@ from environment import (
     getMessages,
     getEnvironmentHistory,
     getInstances,
+    clearBoardAppStart,
+    undo,
 )
 
 
@@ -22,7 +24,7 @@ dummy = [
 ]
 
 # clear board to clear image
-clearBoard()
+clearBoardAppStart()
 
 # main route (Landing Page)
 
@@ -107,6 +109,23 @@ def instance_list():
     return None
 
 
+@app.route("/clear", methods=["POST"])
+def clear_route():
+    if request.method == "POST":
+        bot_res = clearBoard()
+        bot_res = {res["name"]: res["text"] for res in bot_res}
+        return jsonify(bot_res)
+    return None
+
+
+@app.route("/undo", methods=["POST"])
+def undo_route():
+    if request.method == "POST":
+        bot_res = undo()
+        bot_res = {res["name"]: res["text"] for res in bot_res}
+        return jsonify(bot_res)
+    return None
+
+
 if __name__ == "__main__":
-    #    app.run(debug = True)
     app.run(host="127.0.0.1", port=os.getenv("PORT", 5555), debug=True)

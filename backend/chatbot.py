@@ -1,5 +1,5 @@
 import spacy
-from environment import SHAPES, COLORS, addShape, delShape, findShape, moveShape, holdShape, GRID_SIZE, GRID, showGrid, getEnvironment, updateHistory
+from environment import SHAPES, COLORS, addShape, delShape, findShape, moveShape, holdShape, GRID_SIZE, GRID, showGrid, getEnvironment, updateHistory, updateMessage
 
 # Create function for conjunctions(and) to make sentences easier to read
 
@@ -142,6 +142,7 @@ def doAction(action, shape, color, row, col):
             return 8
         if action == 'DELETE':
             delShape(row, col)
+            return 9
         if action == 'HOLD':
             holdShape(foundShape[0][0], foundShape[0][1])
 
@@ -180,8 +181,14 @@ def chatbot(sentence):
         col=col)
 
     # Update board when grid is changed
+    # TODO: We probably don't want to update history when env isn't changed.
+    # ex. Bad command that doesn't do anything will add a env to history, that messes with undo.
     currentEnv = getEnvironment()
-    updateHistory(currentEnv, sentence, response(
-        response_number), (shape, color, action, row, col))
+    # Only updates history if command is good(0-Done, 8-Found)
+    if response_number == 0 or response_number == 8 or response_number == 9:
+        updateHistory(currentEnv, sentence, response(
+            response_number), (shape, color, action, row, col))
+    else:
+        updateMessage(sentence, response(response_number))
 
     return(response(response_number))

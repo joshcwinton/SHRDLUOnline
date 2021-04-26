@@ -1,4 +1,5 @@
 from render import renderEnvironment
+import copy
 
 GRID_SIZE = 4
 # Tuple is (shape, color, height)
@@ -88,7 +89,7 @@ def delShape(row, col):
 
 
 def moveShape(x1, y1, x2, y2):
-    """x1,y1 is moving from
+    """x1,y1 is moving  from
     x2,y2 is moving to"""
     global GRID
 
@@ -104,13 +105,60 @@ def holdShape(row, col):
     CLAW_POS = row, col
 
 
-def clearBoard():
+def clearBoardAppStart():
+    """Used to clear the board on app start"""
     global GRID
     for x in range(GRID_SIZE):
         for y in range(GRID_SIZE):
             GRID[x][y] = ("", "", 0)
-
     renderEnvironment(GRID)
+
+
+def clearBoard():
+    """used for clear board route."""
+    global GRID, HISTORY, MESSAGES
+    ret = []
+    for x in range(GRID_SIZE):
+        for y in range(GRID_SIZE):
+            GRID[x][y] = ("", "", 0)
+
+    MESSAGES.append({"name": "Me", "text": "Clear board"})
+    MESSAGES.append({"name": "SHRDLU", "text": "Board cleared"})
+    ret.append({"name": "Me", "text": "Clear board"})
+    ret.append({"name": "SHRDLU", "text": "Board cleared"})
+    HISTORY = []
+    renderEnvironment(GRID)
+    return ret
+
+
+def undo():
+    global GRID, HISTORY, MESSAGES
+    ret = []
+    MESSAGES.append({"name": "Me", "text": "Undo Action"})
+    ret.append({"name": "Me", "text": "Undo Action"})
+    # Don't do anything if there is no history
+    if len(HISTORY) == 0:
+        MESSAGES.append({"name": "SHRDLU", "text": "No action to undo"})
+        ret.append({"name": "SHRDLU", "text": "No action to undo"})
+
+    else:
+        # special case if there is only one prev env.
+        if len(HISTORY) == 1:
+            HISTORY.pop()
+            for x in range(GRID_SIZE):
+                for y in range(GRID_SIZE):
+                    GRID[x][y] = ("", "", 0)
+        else:
+            HISTORY.pop()
+            GRID = HISTORY[-1]
+        MESSAGES.append({"name": "SHRDLU", "text": "Okay"})
+        ret.append({"name": "SHRDLU", "text": "Okay"})
+    renderEnvironment(GRID)
+    return ret
+
+
+def getPosition(row, col):
+    return GRID[row][col]
 
 
 def showGrid():
@@ -121,11 +169,13 @@ def showGrid():
 
 
 def getEnvironment():
-    return GRID
+    """Get a deepcopy"""
+    return copy.deepcopy(GRID)
 
 
 def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
-    """ "Adds information about a single interaction with SHRDLU to the history
+    global HISTORY
+    """"Adds information about a single interaction with SHRDLU to the history
 
     Args:
         currentEnv: Resulting grid after interaction
@@ -133,11 +183,16 @@ def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
         outputMessage (str): Response from SHRDLU
         parsedMessage (tuple): (shape, color, action, row, col)
     """
-
     # TODO: Update this to update database instead of global variable
+    updateMessage(inputMessage, outputMessage)
+    HISTORY.append(currentEnv)
+
+
+def updateMessage(inputMessage, outputMessage):
+    global MESSAGES
+
     MESSAGES.append({"name": "Me", "text": inputMessage})
     MESSAGES.append({"name": "SHRDLU", "text": outputMessage})
-    HISTORY.append(currentEnv)
 
 
 def getMessages():

@@ -73,10 +73,12 @@ class Chat extends Component {
     console.log("Undo Action");
     let errors = [];
     axios
-      .post("https:shrdluonline-backend.herokuapp.com/undo")
+      .post(`${getURI()}/undo`)
       .then((res) => {
         // add response to chat history
+        let userMessage = {name: "Me", text: res.data.Me};
         let response = { name: "SHRDLU", text: res.data.SHRDLU };
+        this.addMessage(userMessage);
         this.addMessage(response);
         this.updateEnvironment();
       })
@@ -93,10 +95,12 @@ class Chat extends Component {
     console.log("Clear Board");
     let errors = [];
     axios
-      .post("https:shrdluonline-backend.herokuapp.com/clear")
+      .post(`${getURI()}/clear`)
       .then((res) => {
         // add response to chat history
+        let userMessage = {name: "Me", text: res.data.Me};
         let response = { name: "SHRDLU", text: res.data.SHRDLU };
+        this.addMessage(userMessage);
         this.addMessage(response);
         this.updateEnvironment();
       })
