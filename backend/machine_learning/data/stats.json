@@ -1,0 +1,25 @@
+{
+    "total_sentences": 99078,
+    "total_unique_sentences": 2070,
+    "sentence_samples": {
+        "ACTIONS": {
+            "ADD": 14154,
+            "FIND": 28308,
+            "DELETE": 14154,
+            "MOVE": 21231,
+            "HOLD": 21231
+        },
+        "REL_ACTIONS": {
+            "ABOVE": 24696,
+            "BELOW": 24696,
+            "NEAR": 24696,
+            "RIGHT": 12348,
+            "LEFT": 12348
+        },
+        "SHAPES": {
+            "CUBE": 42462,
+            "SPHERE": 28308,
+            "PYRAMID": 28308
+        }
+    }
+}

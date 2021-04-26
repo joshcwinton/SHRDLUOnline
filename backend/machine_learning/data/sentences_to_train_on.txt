@@ -1,0 +1,3 @@
+Sentence,Target_Action,Noun,Color,Relative_Action,Relative_Object,Relative_Object_Color
+Add the red cube,add,cube,red
+Add the red cube near the blue sphere,add,cube,red,near,sphere,blue
