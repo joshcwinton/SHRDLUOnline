@@ -160,4 +160,3 @@ dmypy.json
 cython_debug/
 
 # Images directort
-/backend/images
