@@ -4,9 +4,9 @@ from transformers import BertTokenizer, TFBertForTokenClassification
 import tensorflow as tf
 import numpy as np
 
-#Create architecture and load weights
+# Create architecture and load weights
 
-#Load pretrained model
+# Load pretrained model
 INPUT_SIZE = 20
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
@@ -52,7 +52,7 @@ full_model.load_weights("Weights.h5")
 
 
 full_model = tf.keras.models.load_model("Model.h5")
-#Test model
+# Test model
 
 pred_sentences = ["Can you add the red cube next to the green sphere",
                   "Delete the green circle to the left of the red pyramid",
@@ -65,15 +65,20 @@ pred_sentences = ["Can you add the red cube next to the green sphere",
                   "Is there a blue sphere"]
 
 for sentence in pred_sentences:
-    tokenize_sentence = tokenizer.encode(sentence,padding='max_length',max_length=INPUT_SIZE)
+    tokenize_sentence = tokenizer.encode(
+        sentence, padding='max_length', max_length=INPUT_SIZE)
     res = full_model.predict([tokenize_sentence])
     print("Sentence: ", sentence)
     print("Tokenized Sentence: ", tokenize_sentence)
-    print("Action: ", ACTIONS_LIST[np.argmax(res[0])],np.argmax(res[0]), res[0] )
-    print("Noun: ", NOUN_LIST[np.argmax(res[1])],np.argmax(res[1]), res[1])
-    print("Color: ", COLORS_LIST[np.argmax(res[2])],np.argmax(res[2]), res[2])
-    print("Rel_Action: ", REL_ACTIONS_LIST[np.argmax(res[3])],np.argmax(res[3]), res[3])
-    print("Rel_Noun: ", NOUN_LIST[np.argmax(res[4])],np.argmax(res[4]), res[4])
-    print("Rel_Color: ", COLORS_LIST[np.argmax(res[5])],np.argmax(res[5]), res[5])
+    print("Action: ", ACTIONS_LIST[np.argmax(
+        res[0])], np.argmax(res[0]), res[0])
+    print("Noun: ", NOUN_LIST[np.argmax(res[1])], np.argmax(res[1]), res[1])
+    print("Color: ", COLORS_LIST[np.argmax(res[2])], np.argmax(res[2]), res[2])
+    print("Rel_Action: ", REL_ACTIONS_LIST[np.argmax(
+        res[3])], np.argmax(res[3]), res[3])
+    print("Rel_Noun: ", NOUN_LIST[np.argmax(
+        res[4])], np.argmax(res[4]), res[4])
+    print("Rel_Color: ", COLORS_LIST[np.argmax(
+        res[5])], np.argmax(res[5]), res[5])
 
     print("-------------------------")
