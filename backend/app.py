@@ -7,6 +7,7 @@ from environment import (
     clearBoard,
     getMessages,
     getEnvironmentHistory,
+    getInstances,
 )
 
 
@@ -99,10 +100,10 @@ def history():
     return None
 
 
-@app.route("/instance_list", methods=["GET"])
+@app.route("/instances", methods=["GET"])
 def instance_list():
     if request.method == "GET":
-        return jsonify({"instanceList": ["a", "b", "c"]})
+        return jsonify({"instances": getInstances()})
     return None
 
 

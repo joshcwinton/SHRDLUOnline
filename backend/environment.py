@@ -9,11 +9,42 @@ COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
 MESSAGES = []  # Stores a list of messages
 HISTORY = []  # Stores a list of grids
+INSTANCES = [
+    {
+        "name": "Josh's World",
+        "creator": "Josh",
+        "size": 4,
+        "lastUpdated": "??",
+        "url": "/",
+    },
+    {
+        "name": "Donald's World",
+        "creator": "Donald",
+        "size": 5,
+        "lastUpdated": "??",
+        "url": "/",
+    },
+    {
+        "name": "Saurav's World",
+        "creator": "Saurav",
+        "size": 6,
+        "lastUpdated": "??",
+        "url": "/",
+    },
+    {
+        "name": "Jasper's World",
+        "creator": "Jasper",
+        "size": 7,
+        "lastUpdated": "??",
+        "url": "/",
+    },
+]
 
 
 def findShape(shape, color=None, height=0):
-    """ Returns all shapes found based on given parameters
-    TODO: Change height parameter in functions to a lambda to check for comparison words:
+    """Returns all shapes found based on given parameters
+    TODO: Change height parameter in functions to a lambda to check for
+    comparison words:
     ie. Find a block that is TALLER than this pyramid
     """
     foundShapes = []
@@ -90,11 +121,11 @@ def showGrid():
 
 
 def getEnvironment():
-    return(GRID)
+    return GRID
 
 
 def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
-    """"Adds information about a single interaction with SHRDLU to the history
+    """ "Adds information about a single interaction with SHRDLU to the history
 
     Args:
         currentEnv: Resulting grid after interaction
@@ -110,8 +141,12 @@ def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
 
 
 def getMessages():
-    return(MESSAGES)
+    return MESSAGES
 
 
 def getEnvironmentHistory():
-    return(HISTORY)
+    return HISTORY
+
+
+def getInstances():
+    return INSTANCES
