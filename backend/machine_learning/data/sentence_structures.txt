@@ -1,0 +1,2 @@
+<target_action> the <color> <noun>
+<target_action> the <color> <noun> <rel_action> the <rel_object_color> <rel_object>
