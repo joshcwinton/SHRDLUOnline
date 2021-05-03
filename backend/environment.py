@@ -10,11 +10,42 @@ COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
 MESSAGES = []  # Stores a list of messages
 HISTORY = []  # Stores a list of grids
+INSTANCES = [
+    {
+        "name": "Josh's World",
+        "creator": "Josh",
+        "size": 4,
+        "lastUpdated": "??",
+        "url": "/",
+    },
+    {
+        "name": "Donald's World",
+        "creator": "Donald",
+        "size": 5,
+        "lastUpdated": "??",
+        "url": "/",
+    },
+    {
+        "name": "Saurav's World",
+        "creator": "Saurav",
+        "size": 6,
+        "lastUpdated": "??",
+        "url": "/",
+    },
+    {
+        "name": "Jasper's World",
+        "creator": "Jasper",
+        "size": 7,
+        "lastUpdated": "??",
+        "url": "/",
+    },
+]
 
 
 def findShape(shape, color=None, height=0):
-    """ Returns all shapes found based on given parameters
-    TODO: Change height parameter in functions to a lambda to check for comparison words:
+    """Returns all shapes found based on given parameters
+    TODO: Change height parameter in functions to a lambda to check for
+    comparison words:
     ie. Find a block that is TALLER than this pyramid
     """
     foundShapes = []
@@ -106,13 +137,13 @@ def undo():
     MESSAGES.append({"name": "Me", "text": "Undo Action"})
     ret.append({"name": "Me", "text": "Undo Action"})
     # Don't do anything if there is no history
-    if(len(HISTORY) == 0):
+    if len(HISTORY) == 0:
         MESSAGES.append({"name": "SHRDLU", "text": "No action to undo"})
         ret.append({"name": "SHRDLU", "text": "No action to undo"})
 
     else:
         # special case if there is only one prev env.
-        if(len(HISTORY) == 1):
+        if len(HISTORY) == 1:
             HISTORY.pop()
             for x in range(GRID_SIZE):
                 for y in range(GRID_SIZE):
@@ -139,7 +170,7 @@ def showGrid():
 
 def getEnvironment():
     """Get a deepcopy"""
-    return(copy.deepcopy(GRID))
+    return copy.deepcopy(GRID)
 
 
 def updateHistory(currentEnv, inputMessage, outputMessage, parsedMessage):
@@ -165,8 +196,12 @@ def updateMessage(inputMessage, outputMessage):
 
 
 def getMessages():
-    return(MESSAGES)
+    return MESSAGES
 
 
 def getEnvironmentHistory():
-    return(HISTORY)
+    return HISTORY
+
+
+def getInstances():
+    return INSTANCES

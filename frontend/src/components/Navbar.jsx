@@ -6,12 +6,12 @@ import SampleCommands from "./SampleCommands";
 
 class SHRDLUNavbar extends Component {
   state = {
-    show: false
-  }
+    show: false,
+  };
 
-  handleClick = (e) =>{
-    this.setState({show:!this.state.show});
-  }
+  handleClick = (e) => {
+    this.setState({ show: !this.state.show });
+  };
 
   render() {
     return (
@@ -29,8 +29,8 @@ class SHRDLUNavbar extends Component {
           </Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="/">Chat</Nav.Link>
-            <Nav.Link href="/">Explore</Nav.Link>
-            <Nav.Link href="/">Login</Nav.Link>
+            <Nav.Link href="/instances">Explore</Nav.Link>
+            {/* <Nav.Link href="/">Login</Nav.Link> */}
             <Nav.Link onClick={this.handleClick}> Toggle Help</Nav.Link>
           </Nav>
         </Navbar>

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import InstanceList from './components/InstanceList';
 
 // Routing
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
@@ -15,6 +16,7 @@ const routing = (
     <SHRDLUNavbar />
     <Router>
       <Route exact path="/" component={Chat} />
+      <Route path="/instances" component={InstanceList} />
     </Router>
   </div>
 );
