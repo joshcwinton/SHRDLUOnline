@@ -132,7 +132,6 @@ def history():
     return None
 
 
-
 @app.route("/instances", methods=["GET"])
 def instance_list():
     if request.method == "GET":
