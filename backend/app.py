@@ -12,7 +12,6 @@ from environment import (
     undo,
 )
 
-
 app = Flask(__name__)
 CORS(app)
 
@@ -68,9 +67,19 @@ def chatbot_route():
 
 
 # endpoint that returns environment array
+@app.route('/mlchat', methods=['GET', 'POST'])
+def chatbot_ml_route():
+    if request.method == 'POST':
+        post_data = request.get_json()
+        user_res = post_data["user"]
+        bot_res = chatbot_ml(user_res)
+        return jsonify({"SHRDLU": bot_res})
+    return jsonify({"get": "requested"})
+
+# endpoint that returns environment array
 
 
-@app.route("/environment", methods=["GET"])
+@app.route('/environment', methods=['GET'])
 def environment_route():
     if request.method == "GET":
         env = getEnvironment()

@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import {
+  Row,
+  Col,
+  ButtonGroup,
+  Container,
+  ToggleButton,
+} from "react-bootstrap";
 
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
@@ -18,6 +22,7 @@ class Chat extends Component {
     errors: [],
     imageSrc: `${getURI()}/environment_image`,
     imageHash: Date.now(),
+    ml: false,
   };
 
   // Send message to backend then print it to console
@@ -27,7 +32,7 @@ class Chat extends Component {
     let errors = [];
     // send message to backend
     axios
-      .post(`${getURI()}/chat`, {
+      .post(`${getURI()}/${this.state.ml ? "ml" : ""}chat`, {
         user: message.text,
       })
       .then((res) => {
@@ -76,7 +81,7 @@ class Chat extends Component {
       .post(`${getURI()}/undo`)
       .then((res) => {
         // add response to chat history
-        let userMessage = {name: "Me", text: res.data.Me};
+        let userMessage = { name: "Me", text: res.data.Me };
         let response = { name: "SHRDLU", text: res.data.SHRDLU };
         this.addMessage(userMessage);
         this.addMessage(response);
@@ -89,16 +94,16 @@ class Chat extends Component {
       .finally(() => {
         this.setState({ errors: errors });
       });
-  }
+  };
 
-  clearBoard  = () => {
+  clearBoard = () => {
     console.log("Clear Board");
     let errors = [];
     axios
       .post(`${getURI()}/clear`)
       .then((res) => {
         // add response to chat history
-        let userMessage = {name: "Me", text: res.data.Me};
+        let userMessage = { name: "Me", text: res.data.Me };
         let response = { name: "SHRDLU", text: res.data.SHRDLU };
         this.addMessage(userMessage);
         this.addMessage(response);
@@ -111,8 +116,7 @@ class Chat extends Component {
       .finally(() => {
         this.setState({ errors: errors });
       });
-  }
-
+  };
 
   // TODO: This will likely involve a user param later on
   componentDidMount = () => {
@@ -122,6 +126,19 @@ class Chat extends Component {
         messages: fetchedMessages,
       });
     });
+  };
+
+  setChecked = () => {
+    console.log(this.state.ml);
+    if (this.state.ml == true) {
+      this.setState((state) => {
+        return { ml: false };
+      });
+    } else {
+      this.setState((state) => {
+        return { ml: true };
+      });
+    }
   };
 
   render() {
@@ -141,13 +158,20 @@ class Chat extends Component {
                 this.submitMessage(messageString)
               }
             />
-            <button onClick={this.undoAction}>
-              Undo
-            </button>
+            <button onClick={this.undoAction}>Undo</button>
 
-            <button onClick={this.clearBoard}>
-              Clear Board
-            </button>
+            <button onClick={this.clearBoard}>Clear Board</button>
+
+            <ButtonGroup toggle>
+              <ToggleButton
+                type="checkbox"
+                checked={this.state.ml}
+                value="1"
+                onChange={(e) => this.setChecked()}
+              >
+                SHRDLU+
+              </ToggleButton>
+            </ButtonGroup>
 
             {this.state.errors.map((error, i) => (
               <p key={i} className="error">
