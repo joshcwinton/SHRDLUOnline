@@ -120,7 +120,6 @@ def environment_image():
 
 @app.route("/messages", methods=["GET"])
 def messages():
-    print(getMessages())
     if request.method == "GET":
         return jsonify({"messages": getMessages()})
     return None
@@ -130,6 +129,14 @@ def messages():
 def history():
     if request.method == "GET":
         return jsonify({"history": getEnvironmentHistory()})
+    return None
+
+
+
+@app.route("/instances", methods=["GET"])
+def instance_list():
+    if request.method == "GET":
+        return jsonify({"instances": getInstances()})
     return None
 
 
