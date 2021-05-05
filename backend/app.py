@@ -6,8 +6,6 @@ from transformers import BertTokenizer
 import tensorflow as tf
 
 from dbqueries import test
-
-# import json
 from flask_cors import CORS
 from environment import (
     getEnvironment,
@@ -16,6 +14,7 @@ from environment import (
     clearBoard,
     undo,
     clearBoardAppStart,
+    getInstances,
 )
 from machine_learning.chatbot_ml import chatbot_ml
 
@@ -34,6 +33,7 @@ clearBoardAppStart()
 
 print("loading ml........")
 model = tf.keras.models.load_model("Model.h5")
+# model._make_predict_function()
 # main route (Landing Page)
 
 
@@ -133,7 +133,6 @@ def history():
     if request.method == "GET":
         return jsonify({"history": getEnvironmentHistory()})
     return None
-
 
 
 @app.route("/instances", methods=["GET"])
