@@ -30,7 +30,6 @@ def getMess(instance):
 		if(doc.id == instance):
 			test = doc.to_dict()
 			strry = test['messy']
-			
 	return strry
 			
  		#print(f'{doc.id} => {doc.to_dict()}')
