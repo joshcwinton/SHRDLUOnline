@@ -5,15 +5,11 @@ from chatbot import chatbot
 from transformers import BertTokenizer
 import tensorflow as tf
 
-<<<<<<< HEAD
 from dbqueries import test, setMessages, getMess
 import json
 
 
-# import json
-=======
 from dbqueries import test
->>>>>>> ab5d0a78896480cbe09218b13a944ef46d0fc2fb
 from flask_cors import CORS
 from environment import (
     getEnvironment,
