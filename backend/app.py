@@ -5,6 +5,8 @@ from chatbot import chatbot
 from transformers import BertTokenizer
 import tensorflow as tf
 
+from dbqueries import test
+
 # import json
 from flask_cors import CORS
 from environment import (
@@ -69,6 +71,7 @@ def chatbot_route():
         post_data = request.get_json()
         user_res = post_data["user"]
         bot_res = chatbot(user_res)
+        test()
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})
 
