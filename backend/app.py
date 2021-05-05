@@ -5,7 +5,9 @@ from chatbot import chatbot
 from transformers import BertTokenizer
 import tensorflow as tf
 
-from dbqueries import test
+from dbqueries import test, setMessages, getMess
+import json
+
 
 # import json
 from flask_cors import CORS
@@ -124,7 +126,25 @@ def environment_image():
 @app.route("/messages", methods=["GET"])
 def messages():
     if request.method == "GET":
-        return jsonify({"messages": getMessages()})
+        stemp = jsonify({"messages": getMessages()})
+        ccas = stemp.get_json()
+        #strings
+        checkkin = json.dumps(ccas)
+        print("comparte1")
+        print(checkkin)
+        print(type(checkkin))
+        #turn back no need cause string is json type string
+
+        #store to db on refresh prob have sets to db be a save button
+        setMessages('instance1', checkkin)
+
+        #attempt to return
+        print("comparte2")
+        templ = getMess('instance1')
+        print(templ)
+        print(type(templ))
+
+        return templ
     return None
 
 
