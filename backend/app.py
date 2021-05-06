@@ -5,7 +5,7 @@ from chatbot import chatbot
 from transformers import BertTokenizer
 import tensorflow as tf
 
-from dbqueries import test, setMessages, getMess
+from dbqueries import test, storeField, retrieveField
 import json
 
 
@@ -13,12 +13,16 @@ from dbqueries import test
 from flask_cors import CORS
 from environment import (
     getEnvironment,
+    getGrid,
     getMessages,
-    getEnvironmentHistory,
+    getHistory,
     clearBoard,
     undo,
     clearBoardAppStart,
     getInstances,
+    setGrid,
+    setMessages,
+    setHistory
 )
 from machine_learning.chatbot_ml import chatbot_ml
 
@@ -75,7 +79,10 @@ def chatbot_route():
         post_data = request.get_json()
         user_res = post_data["user"]
         bot_res = chatbot(user_res)
-        test()
+
+        #writing to db in string form 
+        storeField('instance1','messages',str(getMessages()))
+
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})
 
@@ -128,53 +135,7 @@ def environment_image():
 @app.route("/messages", methods=["GET"])
 def messages():
     if request.method == "GET":
-        globalList = jsonify({"messages": getMessages()})
-        globalListJSON = globalList.get_json()
-        #strings
-        globalListString = json.dumps(globalListJSON)
-        print("comparte1")
-        print(globalListString)
-        print(type(globalListString))
-        #turn back no need cause string is json type string
-
-        #can store to db
-        #setMessages('instance1', globalListString)
-
-        #can be used to get data from an instance in db
-        print("comparte2")
-        dbList = getMess('instance1')
-        print(dbList)
-        print(type(dbList))
-
-        #this would append so i can put directly in chat route
-        #if works move it to environment.py along with queries
-        #get query string, cut off last 2 chars add a comma
-        #print(dbList[:-2]) + , + below
-        #get global string cut off all up to and including [
-        #print(globalListString[14:])
-        #add strings
-        print("comparte3")
-        concatedVers = dbList[:-2] + ', ' + globalListString[14:]
-        print(concatedVers)
-        jsonify(concatedVers)
-        #this fails because string operation changes it from json string to normal string
-        #can attempt to jsonfiy string (FAILED) OR 
-        #return dict(convert to list and initalize global to that) from query and append to that in environment.py
-        #^ FOR THAT turn this route back to normal and just put setMessages inside chat route
-        print("checking")
-        print(getMessages())
-        print(type(getMessages()))
-        print(concatedVers[13:-1])
-
-        print("typ check")
-        print(type(globalList))
-        print(type(jsonify({"messages" : concatedVers})))
-        #might be the fuckin comma but idk
-        
-        #return dbList returns messageList from db
-        #return globalListString returns from global list
-        #return concat fails which is supposed to be string concat of both List strings
-        return concatedVers 
+        return jsonify({"messages": getMessages()})
     return None
 
 

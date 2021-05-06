@@ -17,19 +17,20 @@ def test():
 	# Add a new doc in collection 'cities' with ID 'LA'
 	db.collection('schools').document('school1').set(data)
 
-def setMessages(instance, data):
-	db.collection('shrdlu').document(instance).update({'messy': data})
+def storeField(instance, field, data):
+	db.collection('shrdlu').document(instance).update({field: data})
 
-def getMess(instance):
+def retrieveField(instance, field):
 	ref = db.collection('shrdlu')
 	docs = ref.stream()
 
-	strry = ""
+	stringOfData = ""
 
 	for doc in docs:
 		if(doc.id == instance):
-			test = doc.to_dict()
-			strry = test['messy']
-	return strry
+			stringOfData = doc.to_dict()[field]
+	return stringOfData
 			
- 		#print(f'{doc.id} => {doc.to_dict()}')
+
+
+
