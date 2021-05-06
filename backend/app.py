@@ -80,8 +80,8 @@ def chatbot_route():
         user_res = post_data["user"]
         bot_res = chatbot(user_res)
 
-        #writing to db in string form 
-        storeField('instance1','messages',str(getMessages()))
+        # writing to db in string form
+        storeField('instance1', 'messages', str(getMessages()))
 
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})

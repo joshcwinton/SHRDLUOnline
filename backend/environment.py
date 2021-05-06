@@ -11,9 +11,9 @@ SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
 COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
 
-#pulling from db and formatting it 
-data = eval(retrieveField('instance1','messages'))
-MESSAGES = list(dict(sub) for sub in data) # Stores a list of messages
+# pulling from db and formatting it
+data = eval(retrieveField('instance1', 'messages'))
+MESSAGES = list(dict(sub) for sub in data)  # Stores a list of messages
 
 HISTORY = []  # Stores a list of grids
 INSTANCES = [
@@ -204,21 +204,27 @@ def updateMessage(inputMessage, outputMessage):
 def getGrid():
     return GRID
 
+
 def getMessages():
     return MESSAGES
+
 
 def getHistory():
     return HISTORY
 
+
 def setGrid(data):
     GRID = data
+
 
 def setMessages(data):
     res = list(dict(sub) for sub in data)
     MESSAGES = res
 
+
 def setHistory(data):
     HISTORY = data
+
 
 def getInstances():
     return INSTANCES
