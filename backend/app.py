@@ -37,7 +37,7 @@ dummy = [
 ]
 
 # clear board to clear image
-clearBoardAppStart()
+#clearBoardAppStart()
 
 print("loading ml........")
 model = tf.keras.models.load_model("Model.h5")
@@ -80,8 +80,25 @@ def chatbot_route():
         user_res = post_data["user"]
         bot_res = chatbot(user_res)
 
-        # writing to db in string form
+        #writing grid to db, overwriting
+        storeField('instance1', 'grid', str(getGrid()))
+
+        #writing history to db, appended (prob can just do history[-1] for grid but for now store all)
+        storeField('instance1', 'history', str(getHistory()))
+
+        # writing messages to db, appended to prev
         storeField('instance1', 'messages', str(getMessages()))
+        
+
+        #print grid
+        print(getGrid())
+        print(type(getGrid()))
+        #print history
+        #print(getHistory())
+        #print(type(getHistory()))
+        #print messages
+        print(getMessages())
+        print(type(getMessages()))
 
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})
