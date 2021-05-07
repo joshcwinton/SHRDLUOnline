@@ -5,11 +5,10 @@ from chatbot import chatbot
 from transformers import BertTokenizer
 import tensorflow as tf
 
-from dbqueries import test, storeField, retrieveField
+from dbqueries import test, storeField, retrieveField, createInstanceStorage, getAllStoredInstances
 import json
 
 
-from dbqueries import test
 from flask_cors import CORS
 from environment import (
     getEnvironment,
@@ -99,6 +98,9 @@ def chatbot_route():
         #print messages
         print(getMessages())
         print(type(getMessages()))
+
+        print("db storage")
+        getAllStoredInstances()
 
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})

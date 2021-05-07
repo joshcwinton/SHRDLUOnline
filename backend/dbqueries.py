@@ -34,3 +34,20 @@ def retrieveField(instance, field):
         if(doc.id == instance):
             stringOfData = doc.to_dict()[field]
     return stringOfData
+
+#query for making an empty collection with the needed fields
+def createInstanceStorage(instance_num):
+	new_ref = db.collection('shrdlu').document(instance_num)
+
+	new_ref.set({
+    	'grid': "",
+    	'history': "",
+    	'messages': "",
+	})
+
+#query to return all stored instances prob tweak the return type to what need
+def getAllStoredInstances():
+	docs = db.collection('shrdlu').stream()
+
+	for doc in docs:
+		print(f'{doc.id} => {doc.to_dict()}')
