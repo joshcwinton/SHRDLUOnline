@@ -2,9 +2,9 @@ from render import renderEnvironment
 import copy
 from dbqueries import test, storeField, retrieveField
 
-#if want to check original status of what grid, messages and history look like just set = []
+# if want to check original status of what grid, messages and history look like just set = []
 
-#didnt store size idk if need
+# didnt store size idk if need
 GRID_SIZE = 4
 # Tuple is (shape, color, height)
 
@@ -12,7 +12,7 @@ GRID = []
 SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
 COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
-MESSAGES = [] # Stores a list of messages
+MESSAGES = []  # Stores a list of messages
 HISTORY = []
 
 
@@ -200,17 +200,22 @@ def updateMessage(inputMessage, outputMessage):
     MESSAGES.append({"name": "Me", "text": inputMessage})
     MESSAGES.append({"name": "SHRDLU", "text": outputMessage})
 
+
 def getGridSize():
     return GRID_SIZE
+
 
 def getGrid():
     return GRID
 
+
 def getMessages():
     return MESSAGES
 
+
 def getHistory():
     return HISTORY
+
 
 '''
 Use set methods: 
@@ -220,17 +225,21 @@ With data source (query method based on instance that should be passed into the 
 And initalize the globals to what they should be inside the route
 '''
 
+
 def setGridSize(data):
     global GRID_SIZE
     GRID_SIZE = int(data)
+
 
 def setGrid(data):
     global GRID
     GRID = list(list(sub) for sub in data)
 
+
 def setMessages(data):
     global MESSAGES
     MESSAGES = list(dict(sub) for sub in data)
+
 
 def setHistory(data):
     global HISTORY

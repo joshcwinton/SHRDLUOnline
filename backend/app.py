@@ -36,19 +36,20 @@ dummy = [
 ]
 
 # clear board to clear image
-#clearBoardAppStart() 
+# clearBoardAppStart()
 
 print("loading ml........")
 model = tf.keras.models.load_model("Model.h5")
 # model._make_predict_function()
 # main route (Landing Page)
 
-#'''
-#this should be going in a route that fetches an instance here rn for testing 
+# '''
+# this should be going in a route that fetches an instance here rn for testing
 setMessages(eval(retrieveField('instance1', 'messages')))
 setGrid(eval(retrieveField('instance1', 'grid')))
 setHistory(eval(retrieveField('instance1', 'history')))
-#'''
+# '''
+
 
 @app.route("/", methods=["GET"])
 def main_route():
@@ -85,16 +86,14 @@ def chatbot_route():
         user_res = post_data["user"]
         bot_res = chatbot(user_res)
 
-
-        #writing grid to db, overwriting
+        # writing grid to db, overwriting
         storeField('instance1', 'grid', str(getGrid()))
 
-        #writing history to db, appended (prob can just do history[-1] for grid but for now store all)
+        # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
         storeField('instance1', 'history', str(getHistory()))
 
         # writing messages to db, appended to prev
         storeField('instance1', 'messages', str(getMessages()))
-
 
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})
@@ -172,18 +171,15 @@ def clear_route():
         bot_res = clearBoard()
         bot_res = {res["name"]: res["text"] for res in bot_res}
 
-
-
-        #writing grid to db, overwriting
+        # writing grid to db, overwriting
         storeField('instance1', 'grid', str(getGrid()))
 
-        #writing history to db, appended (prob can just do history[-1] for grid but for now store all)
+        # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
         storeField('instance1', 'history', str(getHistory()))
 
         # writing messages to db, appended to prev
         storeField('instance1', 'messages', str(getMessages()))
 
-        
         return jsonify(bot_res)
     return None
 
@@ -194,16 +190,14 @@ def undo_route():
         bot_res = undo()
         bot_res = {res["name"]: res["text"] for res in bot_res}
 
-
-        #writing grid to db, overwriting
+        # writing grid to db, overwriting
         storeField('instance1', 'grid', str(getGrid()))
 
-        #writing history to db, appended (prob can just do history[-1] for grid but for now store all)
+        # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
         storeField('instance1', 'history', str(getHistory()))
 
         # writing messages to db, appended to prev
         storeField('instance1', 'messages', str(getMessages()))
-        
 
         return jsonify(bot_res)
     return None
