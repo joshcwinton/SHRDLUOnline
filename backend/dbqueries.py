@@ -12,6 +12,8 @@ db = firestore.client()
 '''
 test function
 '''
+
+
 def test():
     data = {
         u'name': u'Los Angeles',
@@ -24,6 +26,8 @@ def test():
 '''
 given instance, field, and data function stores it as a string
 '''
+
+
 def storeField(instance, field, data):
     db.collection('shrdlu').document(instance).update({field: data})
 
@@ -32,6 +36,8 @@ def storeField(instance, field, data):
 given instance, field the function returns data as a string
 turning back into real data type is done inside setter
 '''
+
+
 def retrieveField(instance, field):
     ref = db.collection('shrdlu')
     docs = ref.stream()
@@ -47,6 +53,8 @@ def retrieveField(instance, field):
 '''
 Query for making an empty collection with the wanted fields initialized
 '''
+
+
 def createInstanceStorage(worldName, creator, size):
     new_ref = db.collection('instances').document()
 
@@ -64,6 +72,8 @@ def createInstanceStorage(worldName, creator, size):
 Query to get: worldName, creator, size from all documents
 Return type List of List, inner list holds each field value as a string, outer holds each document fields
 '''
+
+
 def getAllStoredInstances(collectionName):
     docs = db.collection(collectionName).stream()
 
@@ -74,6 +84,6 @@ def getAllStoredInstances(collectionName):
         ele.append(temp['worldName'])
         ele.append(temp['creator'])
         ele.append(temp['size'])
-        
+
         instancesBio.append(ele)
     return instancesBio

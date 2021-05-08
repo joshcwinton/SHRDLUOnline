@@ -95,10 +95,9 @@ def chatbot_route():
         # writing messages to db, appended to prev
         storeField('instance1', 'messages', str(getMessages()))
 
-        #testing queries now
-        #createInstanceStorage('nightmare','kara','5')
-        #print(getAllStoredInstances('instances'))
-
+        # testing queries now
+        # createInstanceStorage('nightmare','kara','5')
+        # print(getAllStoredInstances('instances'))
 
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})
