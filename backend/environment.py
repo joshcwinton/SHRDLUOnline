@@ -2,18 +2,17 @@ from render import renderEnvironment
 import copy
 from dbqueries import test, storeField, retrieveField
 
-# if want to check original status of what grid, messages and history look like just set = []
 
-# didnt store size idk if need
 GRID_SIZE = 4
-# Tuple is (shape, color, height)
 
-GRID = []
+# Tuple is (shape, color, height)
+GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
+
 SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
 COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
-MESSAGES = []  # Stores a list of messages
-HISTORY = []
+MESSAGES = []   # Stores a list of messages
+HISTORY = []    # Stores a list of grids
 
 
 INSTANCES = [

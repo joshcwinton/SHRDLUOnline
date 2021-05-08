@@ -18,7 +18,6 @@ def test():
         u'state': u'CA',
         u'country': u'USA'
     }
-    # Add a new doc in collection 'cities' with ID 'LA'
     db.collection('schools').document('school1').set(data)
 
 
@@ -46,7 +45,7 @@ def retrieveField(instance, field):
 
 
 '''
-query for making an empty collection with the wanted fields initialized
+Query for making an empty collection with the wanted fields initialized
 '''
 def createInstanceStorage(worldName, creator, size):
     new_ref = db.collection('instances').document()
@@ -62,22 +61,19 @@ def createInstanceStorage(worldName, creator, size):
 
 
 '''
-query to return all stored instances ids
-GH TASK: get all instances returns stuff on instance page
+Query to get: worldName, creator, size from all documents
+Return type List of List, inner list holds each field value as a string, outer holds each document fields
 '''
 def getAllStoredInstances(collectionName):
     docs = db.collection(collectionName).stream()
 
-#in each doc get worldName, creator, size
-
+    instancesBio = []
     for doc in docs:
-        print(f'{doc.id} => {doc.to_dict()}')
-
-'''
-query to return all stored instances ids
-'''
-
-
-
-
-
+        ele = []
+        temp = doc.to_dict()
+        ele.append(temp['worldName'])
+        ele.append(temp['creator'])
+        ele.append(temp['size'])
+        
+        instancesBio.append(ele)
+    return instancesBio
