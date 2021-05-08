@@ -5,7 +5,7 @@ from chatbot import chatbot
 from transformers import BertTokenizer
 import tensorflow as tf
 
-from dbqueries import test, storeField, retrieveField, createInstanceStorage, getAllStoredInstances
+from dbqueries import test, storeField, retrieveField, createInstanceStorage, getAllStoredInstances, createInstanceStorage
 import json
 
 
@@ -94,6 +94,9 @@ def chatbot_route():
 
         # writing messages to db, appended to prev
         storeField('instance1', 'messages', str(getMessages()))
+
+        #testing queries now
+        createInstanceStorage('world1','aguy','4')
 
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})

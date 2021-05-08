@@ -9,7 +9,9 @@ firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-
+'''
+test function
+'''
 def test():
     data = {
         u'name': u'Los Angeles',
@@ -20,10 +22,17 @@ def test():
     db.collection('schools').document('school1').set(data)
 
 
+'''
+given instance, field, and data function stores it as a string
+'''
 def storeField(instance, field, data):
     db.collection('shrdlu').document(instance).update({field: data})
 
 
+'''
+given instance, field the function returns data as a string
+turning back into real data type is done inside setter
+'''
 def retrieveField(instance, field):
     ref = db.collection('shrdlu')
     docs = ref.stream()
@@ -35,23 +44,40 @@ def retrieveField(instance, field):
             stringOfData = doc.to_dict()[field]
     return stringOfData
 
-# query for making an empty collection with the needed fields
 
-
-def createInstanceStorage(instance_num):
-    new_ref = db.collection('shrdlu').document(instance_num)
+'''
+query for making an empty collection with the wanted fields initialized
+'''
+def createInstanceStorage(worldName, creator, size):
+    new_ref = db.collection('instances').document()
 
     new_ref.set({
+        'worldName': worldName,
+        'creator': creator,
+        'size': size,
         'grid': "",
         'history': "",
         'messages': "",
     })
 
-# query to return all stored instances prob tweak the return type to what need
 
+'''
+query to return all stored instances ids
+GH TASK: get all instances returns stuff on instance page
+'''
+def getAllStoredInstances(collectionName):
+    docs = db.collection(collectionName).stream()
 
-def getAllStoredInstances():
-    docs = db.collection('shrdlu').stream()
+#in each doc get worldName, creator, size
 
     for doc in docs:
         print(f'{doc.id} => {doc.to_dict()}')
+
+'''
+query to return all stored instances ids
+'''
+
+
+
+
+
