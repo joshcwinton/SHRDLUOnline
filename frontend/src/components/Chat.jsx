@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-
+import Toggle from "react-toggle";
 import {
   Row,
   Col,
@@ -128,7 +128,7 @@ class Chat extends Component {
     });
   };
 
-  setChecked = () => {
+  setChecked = (e) => {
     console.log(this.state.ml);
     if (this.state.ml == true) {
       this.setState((state) => {
@@ -158,26 +158,23 @@ class Chat extends Component {
                 this.submitMessage(messageString)
               }
             />
-            <button onClick={this.undoAction}>Undo</button>
+            <div>
+              <button onClick={this.undoAction}>Undo</button>
 
-            <button onClick={this.clearBoard}>Clear Board</button>
+              <button onClick={this.clearBoard}>Clear Board</button>
 
-            <ButtonGroup toggle>
-              <ToggleButton
-                type="checkbox"
-                checked={this.state.ml}
-                value="1"
-                onChange={(e) => this.setChecked()}
-              >
-                SHRDLU+
-              </ToggleButton>
-            </ButtonGroup>
+              <label>Machine Learning</label>
+              <Toggle
+                defaultChecked={this.state.ml}
+                onChange={this.setChecked}
+              />
 
-            {this.state.errors.map((error, i) => (
-              <p key={i} className="error">
-                {error}
-              </p>
-            ))}
+              {this.state.errors.map((error, i) => (
+                <p key={i} className="error">
+                  {error}
+                </p>
+              ))}
+            </div>
           </Col>
         </Row>
       </Container>
