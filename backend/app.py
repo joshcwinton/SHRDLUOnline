@@ -132,7 +132,7 @@ def chatbot_ml_route():
 
         # writing messages to db, appended to prev
         storeField('instance1', 'messages', str(getMessages()))
-        
+
         return jsonify({"SHRDLU": resp})
     return jsonify({"get": "requested"})
 
