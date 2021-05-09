@@ -123,6 +123,16 @@ def chatbot_ml_route():
         print(tokenize_sentence)
         res = model.predict([tokenize_sentence])
         resp = chatbot_ml(res, sentence)
+
+        # writing grid to db, overwriting
+        storeField('instance1', 'grid', str(getGrid()))
+
+        # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
+        storeField('instance1', 'history', str(getHistory()))
+
+        # writing messages to db, appended to prev
+        storeField('instance1', 'messages', str(getMessages()))
+        
         return jsonify({"SHRDLU": resp})
     return jsonify({"get": "requested"})
 
