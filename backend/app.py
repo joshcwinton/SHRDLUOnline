@@ -180,6 +180,7 @@ def instance_list():
         return jsonify({"instances": getAllStoredInstances('instances')})
     return None
 
+
 @app.route('/createinstance/<worldName>/<creator>/<size>/')
 def create(worldName=None, creator=None, size=None):
     createInstanceStorage(worldName, creator, size)
