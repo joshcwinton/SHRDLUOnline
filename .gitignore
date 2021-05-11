@@ -160,3 +160,8 @@ dmypy.json
 cython_debug/
 
 # Images directort
+backend/Model.h5
+backend/machine_learning/Model.h5
+backend/shrdlu-storage-firebase-adminsdk-690pn-c4f962b560.json
+.gitignore
+backend/images/env_image.png
