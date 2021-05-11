@@ -181,9 +181,14 @@ def instance_list():
     return None
 
 
-@app.route('/createinstance/<worldName>/<creator>/<size>/')
-def create(worldName=None, creator=None, size=None):
-    createInstanceStorage(worldName, creator, size)
+@app.route('/createinstance', methods=["POST"])
+def create():
+    if request.method == "POST":
+        post_data = request.get_json()
+        worldName = post_data["instanceName"]
+        creator = post_data["creatorName"]
+        size = post_data["instanceSize"]
+        createInstanceStorage(worldName, creator, size)
     return None
 
 
