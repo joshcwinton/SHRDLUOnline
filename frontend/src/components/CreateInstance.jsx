@@ -3,6 +3,8 @@ import { Form, Button, Container, Jumbotron } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
+import { getURI } from "../utils/config";
+
 class CreateInstance extends Component {
   constructor(props) {
     super(props);
@@ -26,8 +28,9 @@ class CreateInstance extends Component {
   }
 
   handleSubmit = () => {
+    console.log(getURI());
     axios
-      .post("/new_instance", {
+      .post(`${getURI()}/createinstance`, {
         instanceName: this.state.instanceName,
         creatorName: this.state.creatorName,
         instanceSize: this.state.instanceSize,
@@ -39,7 +42,7 @@ class CreateInstance extends Component {
         console.log(err);
       });
 
-    this.props.history.push(`/instances`);
+    // this.props.history.push(`/instances`);
   };
 
   render = () => {
