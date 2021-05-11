@@ -175,8 +175,12 @@ def history():
 @app.route("/instances", methods=["GET"])
 def instance_list():
     if request.method == "GET":
-        print(getAllStoredInstances('instances'))
         return jsonify({"instances": getAllStoredInstances('instances')})
+    return None
+
+@app.route('/createinstance/<worldName>/<creator>/<size>/')
+def create(worldName=None, creator=None, size=None):
+    createInstanceStorage(worldName, creator, size)
     return None
 
 
