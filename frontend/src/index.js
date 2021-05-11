@@ -19,6 +19,7 @@ const routing = (
     <SHRDLUNavbar />
     <Router>
       <Route exact path="/" component={Chat} />
+      <Route path="/instance/:instance" component={Chat} />
       <Route path="/instances" component={InstanceList} />
       <Route path="/new" component={CreateInstance} />
     </Router>

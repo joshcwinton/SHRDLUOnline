@@ -39,7 +39,7 @@ class CreateInstance extends Component {
         console.log(err);
       });
 
-    this.props.history.push(`/instance/${this.state.instanceName}`);
+    this.props.history.push(`/instances`);
   };
 
   render = () => {
