@@ -3,6 +3,7 @@ from tensorflow.keras.layers import Dense, Input
 from transformers import BertTokenizer, TFBertForTokenClassification
 import tensorflow as tf
 import numpy as np
+
 from environment import (
     SHAPES,
     COLORS,
@@ -11,7 +12,7 @@ from environment import (
     findShape,
     moveShape,
     GRID_SIZE,
-    GRID,
+    getGrid,
     getPosition,
     updateHistory,
     updateMessage,
@@ -105,7 +106,7 @@ def checkLocation(row, col):
 
 
 def emptyPosition(row, col):
-    return GRID[row][col] == ("", "", 0)
+    return getGrid()[row][col] == ("", "", 0)
 
 
 # Grabs coordinates based on the relative action and relative shape
@@ -118,16 +119,16 @@ def doRelativeAction(rel_action, rel_shape, rel_color):
     x, y = findShape(shape=rel_shape, color=rel_color)[0]
 
     if rel_action == "ABOVE":
-        x = x - 1
+        y = y - 1
 
     if rel_action == "BELOW":
-        x = x + 1
-
-    if rel_action == "RIGHT":
         y = y + 1
 
+    if rel_action == "RIGHT":
+        x = x + 1
+
     if rel_action == "LEFT":
-        y = y - 1
+        x = x - 1
 
     return x, y
 
@@ -374,7 +375,7 @@ def chatbot_ml(res, sentence):
 
     resp = response(response_num, action=action, shape=noun, color=color)
     if response_num == 0 or response_num == 8 or response_num == 9:
-        updateHistory(GRID, sentence, resp, (noun, color, action))
+        updateHistory(getGrid(), sentence, resp, (noun, color, action))
     else:
         updateMessage(sentence, resp)
     return resp

@@ -5,15 +5,23 @@ from chatbot import chatbot
 from transformers import BertTokenizer
 import tensorflow as tf
 
+from dbqueries import test, storeField, retrieveField, createInstanceStorage, getAllStoredInstances, createInstanceStorage
+import json
+
+
 from flask_cors import CORS
 from environment import (
     getEnvironment,
+    getGrid,
     getMessages,
-    getEnvironmentHistory,
+    getHistory,
     clearBoard,
     undo,
     clearBoardAppStart,
     getInstances,
+    setGrid,
+    setMessages,
+    setHistory
 )
 from machine_learning.chatbot_ml import chatbot_ml
 
@@ -28,12 +36,19 @@ dummy = [
 ]
 
 # clear board to clear image
-clearBoardAppStart()
+# clearBoardAppStart()
 
 print("loading ml........")
 model = tf.keras.models.load_model("Model.h5")
 # model._make_predict_function()
 # main route (Landing Page)
+
+# '''
+# this should be going in a route that fetches an instance here rn for testing
+setMessages(eval(retrieveField('instance1', 'messages')))
+setGrid(eval(retrieveField('instance1', 'grid')))
+setHistory(eval(retrieveField('instance1', 'history')))
+# '''
 
 
 @app.route("/", methods=["GET"])
@@ -70,6 +85,20 @@ def chatbot_route():
         post_data = request.get_json()
         user_res = post_data["user"]
         bot_res = chatbot(user_res)
+
+        # writing grid to db, overwriting
+        storeField('instance1', 'grid', str(getGrid()))
+
+        # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
+        storeField('instance1', 'history', str(getHistory()))
+
+        # writing messages to db, appended to prev
+        storeField('instance1', 'messages', str(getMessages()))
+
+        # testing queries now
+        # createInstanceStorage('nightmare','kara','5')
+        # print(getAllStoredInstances('instances'))
+
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})
 
@@ -94,6 +123,16 @@ def chatbot_ml_route():
         print(tokenize_sentence)
         res = model.predict([tokenize_sentence])
         resp = chatbot_ml(res, sentence)
+
+        # writing grid to db, overwriting
+        storeField('instance1', 'grid', str(getGrid()))
+
+        # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
+        storeField('instance1', 'history', str(getHistory()))
+
+        # writing messages to db, appended to prev
+        storeField('instance1', 'messages', str(getMessages()))
+
         return jsonify({"SHRDLU": resp})
     return jsonify({"get": "requested"})
 
@@ -145,6 +184,16 @@ def clear_route():
     if request.method == "POST":
         bot_res = clearBoard()
         bot_res = {res["name"]: res["text"] for res in bot_res}
+
+        # writing grid to db, overwriting
+        storeField('instance1', 'grid', str(getGrid()))
+
+        # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
+        storeField('instance1', 'history', str(getHistory()))
+
+        # writing messages to db, appended to prev
+        storeField('instance1', 'messages', str(getMessages()))
+
         return jsonify(bot_res)
     return None
 
@@ -154,6 +203,16 @@ def undo_route():
     if request.method == "POST":
         bot_res = undo()
         bot_res = {res["name"]: res["text"] for res in bot_res}
+
+        # writing grid to db, overwriting
+        storeField('instance1', 'grid', str(getGrid()))
+
+        # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
+        storeField('instance1', 'history', str(getHistory()))
+
+        # writing messages to db, appended to prev
+        storeField('instance1', 'messages', str(getMessages()))
+
         return jsonify(bot_res)
     return None
 

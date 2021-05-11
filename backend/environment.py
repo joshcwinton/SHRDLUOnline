@@ -1,15 +1,20 @@
 from render import renderEnvironment
 import copy
+from dbqueries import test, storeField, retrieveField
+
 
 GRID_SIZE = 4
+
 # Tuple is (shape, color, height)
 GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
 
 SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
 COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
-MESSAGES = []  # Stores a list of messages
-HISTORY = []  # Stores a list of grids
+MESSAGES = []   # Stores a list of messages
+HISTORY = []    # Stores a list of grids
+
+
 INSTANCES = [
     {
         "name": "Josh's World",
@@ -195,12 +200,50 @@ def updateMessage(inputMessage, outputMessage):
     MESSAGES.append({"name": "SHRDLU", "text": outputMessage})
 
 
+def getGridSize():
+    return GRID_SIZE
+
+
+def getGrid():
+    return GRID
+
+
 def getMessages():
     return MESSAGES
 
 
-def getEnvironmentHistory():
+def getHistory():
     return HISTORY
+
+
+'''
+Use set methods: 
+setGrid, setMessages, setHistory 
+
+With data source (query method based on instance that should be passed into the route)
+And initalize the globals to what they should be inside the route
+'''
+
+
+def setGridSize(data):
+    global GRID_SIZE
+    GRID_SIZE = int(data)
+
+
+def setGrid(data):
+    global GRID
+    GRID = list(list(sub) for sub in data)
+
+
+def setMessages(data):
+    global MESSAGES
+    MESSAGES = list(dict(sub) for sub in data)
+
+
+def setHistory(data):
+    global HISTORY
+    res = list(list(sub) for sub in data)
+    HISTORY = res
 
 
 def getInstances():
