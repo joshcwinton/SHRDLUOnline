@@ -175,7 +175,8 @@ def history():
 @app.route("/instances", methods=["GET"])
 def instance_list():
     if request.method == "GET":
-        return jsonify({"instances": getInstances()})
+        print(getAllStoredInstances('instances'))
+        return jsonify({"instances": getAllStoredInstances('instances')})
     return None
 
 
