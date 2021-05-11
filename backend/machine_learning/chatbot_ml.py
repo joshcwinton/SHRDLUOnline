@@ -3,6 +3,7 @@ from tensorflow.keras.layers import Dense, Input
 from transformers import BertTokenizer, TFBertForTokenClassification
 import tensorflow as tf
 import numpy as np
+
 from environment import (
     SHAPES,
     COLORS,
@@ -11,7 +12,7 @@ from environment import (
     findShape,
     moveShape,
     GRID_SIZE,
-    GRID,
+    getGrid,
     getPosition,
     updateHistory,
     updateMessage,
@@ -25,8 +26,7 @@ INPUT_SIZE = 20
 # Target Fields - used to convert nn output to target output
 COLORS_LIST = {0: "none", 1: "red", 2: "blue", 3: "green"}
 ACTIONS_LIST = {0: "none", 1: "add", 2: "find", 3: "delete", 4: "move"}
-REL_ACTIONS_LIST = {0: "none", 1: "above",
-                    2: "below", 3: "near", 4: "right", 5: "left"}
+REL_ACTIONS_LIST = {0: "none", 1: "above", 2: "below", 3: "near", 4: "right", 5: "left"}
 NOUN_LIST = {0: "none", 1: "cube", 2: "pyramid", 3: "sphere"}
 
 
@@ -49,17 +49,14 @@ def createModel():
     x = Dense(64, activation="sigmoid")(x)
     x = Dense(16, activation="sigmoid")(x)
 
-    action_pred = Dense(len(ACTIONS_LIST), name="Action",
-                        activation="softmax")(x)
+    action_pred = Dense(len(ACTIONS_LIST), name="Action", activation="softmax")(x)
     shape_pred = Dense(len(NOUN_LIST), name="Noun", activation="softmax")(x)
     color_pred = Dense(len(COLORS_LIST), name="Color", activation="softmax")(x)
     rel_action_pred = Dense(
         len(REL_ACTIONS_LIST), name="Rel_Action", activation="softmax"
     )(x)
-    rel_shape_pred = Dense(
-        len(NOUN_LIST), name="Rel_Noun", activation="softmax")(x)
-    rel_color_pred = Dense(
-        len(COLORS_LIST), name="Rel_Color", activation="softmax")(x)
+    rel_shape_pred = Dense(len(NOUN_LIST), name="Rel_Noun", activation="softmax")(x)
+    rel_color_pred = Dense(len(COLORS_LIST), name="Rel_Color", activation="softmax")(x)
 
     full_model = Model(
         inputs=nn_input,
@@ -105,7 +102,7 @@ def checkLocation(row, col):
 
 
 def emptyPosition(row, col):
-    return GRID[row][col] == ("", "", 0)
+    return getGrid()[row][col] == ("", "", 0)
 
 
 # Grabs coordinates based on the relative action and relative shape
@@ -280,8 +277,7 @@ def doAction(action, shape, color, rel_action=None, rel_shape=None, rel_color=No
             foundShape = findShape(shape=shape, color=color)
             if len(foundShape) != 0:
                 for found in foundShape:
-                    deleteAction(shape=shape, color=color,
-                                 x=found[0], y=found[1])
+                    deleteAction(shape=shape, color=color, x=found[0], y=found[1])
                     return 0
             else:
                 return 6
@@ -374,7 +370,7 @@ def chatbot_ml(res, sentence):
 
     resp = response(response_num, action=action, shape=noun, color=color)
     if response_num == 0 or response_num == 8 or response_num == 9:
-        updateHistory(GRID, sentence, resp, (noun, color, action))
+        updateHistory(getGrid(), sentence, resp, (noun, color, action))
     else:
         updateMessage(sentence, resp)
     return resp
