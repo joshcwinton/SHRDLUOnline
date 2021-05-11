@@ -11,6 +11,7 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 // Components
 import Chat from './components/Chat';
 import SHRDLUNavbar from './components/Navbar';
+import CreateInstance from './components/CreateInstance';
 
 
 const routing = (
@@ -19,6 +20,7 @@ const routing = (
     <Router>
       <Route exact path="/" component={Chat} />
       <Route path="/instances" component={InstanceList} />
+      <Route path="/new" component={CreateInstance} />
     </Router>
   </div>
 );
