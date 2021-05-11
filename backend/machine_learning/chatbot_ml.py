@@ -26,8 +26,7 @@ INPUT_SIZE = 20
 # Target Fields - used to convert nn output to target output
 COLORS_LIST = {0: "none", 1: "red", 2: "blue", 3: "green"}
 ACTIONS_LIST = {0: "none", 1: "add", 2: "find", 3: "delete", 4: "move"}
-REL_ACTIONS_LIST = {0: "none", 1: "above",
-                    2: "below", 3: "near", 4: "right", 5: "left"}
+REL_ACTIONS_LIST = {0: "none", 1: "above", 2: "below", 3: "near", 4: "right", 5: "left"}
 NOUN_LIST = {0: "none", 1: "cube", 2: "pyramid", 3: "sphere"}
 
 
@@ -50,17 +49,14 @@ def createModel():
     x = Dense(64, activation="sigmoid")(x)
     x = Dense(16, activation="sigmoid")(x)
 
-    action_pred = Dense(len(ACTIONS_LIST), name="Action",
-                        activation="softmax")(x)
+    action_pred = Dense(len(ACTIONS_LIST), name="Action", activation="softmax")(x)
     shape_pred = Dense(len(NOUN_LIST), name="Noun", activation="softmax")(x)
     color_pred = Dense(len(COLORS_LIST), name="Color", activation="softmax")(x)
     rel_action_pred = Dense(
         len(REL_ACTIONS_LIST), name="Rel_Action", activation="softmax"
     )(x)
-    rel_shape_pred = Dense(
-        len(NOUN_LIST), name="Rel_Noun", activation="softmax")(x)
-    rel_color_pred = Dense(
-        len(COLORS_LIST), name="Rel_Color", activation="softmax")(x)
+    rel_shape_pred = Dense(len(NOUN_LIST), name="Rel_Noun", activation="softmax")(x)
+    rel_color_pred = Dense(len(COLORS_LIST), name="Rel_Color", activation="softmax")(x)
 
     full_model = Model(
         inputs=nn_input,
@@ -119,16 +115,16 @@ def doRelativeAction(rel_action, rel_shape, rel_color):
     x, y = findShape(shape=rel_shape, color=rel_color)[0]
 
     if rel_action == "ABOVE":
-        x = x - 1
+        y = y - 1
 
     if rel_action == "BELOW":
-        x = x + 1
-
-    if rel_action == "RIGHT":
         y = y + 1
 
+    if rel_action == "RIGHT":
+        x = x + 1
+
     if rel_action == "LEFT":
-        y = y - 1
+        x = x - 1
 
     return x, y
 
@@ -281,8 +277,7 @@ def doAction(action, shape, color, rel_action=None, rel_shape=None, rel_color=No
             foundShape = findShape(shape=shape, color=color)
             if len(foundShape) != 0:
                 for found in foundShape:
-                    deleteAction(shape=shape, color=color,
-                                 x=found[0], y=found[1])
+                    deleteAction(shape=shape, color=color, x=found[0], y=found[1])
                     return 0
             else:
                 return 6
