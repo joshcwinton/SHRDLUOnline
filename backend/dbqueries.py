@@ -29,7 +29,7 @@ given instance, field, and data function stores it as a string
 
 
 def storeField(instance, field, data):
-    db.collection('shrdlu').document(instance).update({field: data})
+    db.collection('instances').document(instance).update({field: data})
 
 
 '''
@@ -39,7 +39,7 @@ turning back into real data type is done inside setter
 
 
 def retrieveField(instance, field):
-    ref = db.collection('shrdlu')
+    ref = db.collection('instances')
     docs = ref.stream()
 
     stringOfData = ""

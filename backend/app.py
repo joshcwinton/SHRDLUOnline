@@ -21,7 +21,8 @@ from environment import (
     getInstances,
     setGrid,
     setMessages,
-    setHistory
+    setHistory,
+    setGridSize
 )
 from machine_learning.chatbot_ml import chatbot_ml
 
@@ -45,9 +46,10 @@ model = tf.keras.models.load_model("Model.h5")
 
 # '''
 # this should be going in a route that fetches an instance here rn for testing
-setMessages(eval(retrieveField('instance1', 'messages')))
-setGrid(eval(retrieveField('instance1', 'grid')))
-setHistory(eval(retrieveField('instance1', 'history')))
+setMessages(eval(retrieveField('A7Rds3Sh8AQDESznBxqj', 'messages')))
+setGrid(eval(retrieveField('A7Rds3Sh8AQDESznBxqj', 'grid')))
+setHistory(eval(retrieveField('A7Rds3Sh8AQDESznBxqj', 'history')))
+setGridSize(eval(retrieveField('A7Rds3Sh8AQDESznBxqj', 'size')))
 # '''
 
 
@@ -87,13 +89,13 @@ def chatbot_route():
         bot_res = chatbot(user_res)
 
         # writing grid to db, overwriting
-        storeField('instance1', 'grid', str(getGrid()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'grid', str(getGrid()))
 
         # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
-        storeField('instance1', 'history', str(getHistory()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'history', str(getHistory()))
 
         # writing messages to db, appended to prev
-        storeField('instance1', 'messages', str(getMessages()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'messages', str(getMessages()))
 
         # testing queries now
         # createInstanceStorage('nightmare','kara','5')
@@ -125,13 +127,13 @@ def chatbot_ml_route():
         resp = chatbot_ml(res, sentence)
 
         # writing grid to db, overwriting
-        storeField('instance1', 'grid', str(getGrid()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'grid', str(getGrid()))
 
         # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
-        storeField('instance1', 'history', str(getHistory()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'history', str(getHistory()))
 
         # writing messages to db, appended to prev
-        storeField('instance1', 'messages', str(getMessages()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'messages', str(getMessages()))
 
         return jsonify({"SHRDLU": resp})
     return jsonify({"get": "requested"})
@@ -191,13 +193,13 @@ def clear_route():
         bot_res = {res["name"]: res["text"] for res in bot_res}
 
         # writing grid to db, overwriting
-        storeField('instance1', 'grid', str(getGrid()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'grid', str(getGrid()))
 
         # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
-        storeField('instance1', 'history', str(getHistory()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'history', str(getHistory()))
 
         # writing messages to db, appended to prev
-        storeField('instance1', 'messages', str(getMessages()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'messages', str(getMessages()))
 
         return jsonify(bot_res)
     return None
@@ -210,13 +212,13 @@ def undo_route():
         bot_res = {res["name"]: res["text"] for res in bot_res}
 
         # writing grid to db, overwriting
-        storeField('instance1', 'grid', str(getGrid()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'grid', str(getGrid()))
 
         # writing history to db, appended (prob can just do history[-1] for grid but for now store all)
-        storeField('instance1', 'history', str(getHistory()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'history', str(getHistory()))
 
         # writing messages to db, appended to prev
-        storeField('instance1', 'messages', str(getMessages()))
+        storeField('A7Rds3Sh8AQDESznBxqj', 'messages', str(getMessages()))
 
         return jsonify(bot_res)
     return None
