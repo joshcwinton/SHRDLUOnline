@@ -16,14 +16,19 @@ import Environment from "./Environment";
 import { getURI } from "../utils/config";
 
 class Chat extends Component {
-  state = {
-    messages: [],
-    name: "Me",
-    errors: [],
-    imageSrc: `${getURI()}/environment_image`,
-    imageHash: Date.now(),
-    ml: false,
-  };
+  constructor(props) {
+    super(props);
+    let instanceName = props.match.params.instanceName;
+
+    this.state = {
+      messages: [],
+      name: "Me",
+      errors: [],
+      imageSrc: `${getURI()}/environment_image`,
+      imageHash: Date.now(),
+      ml: false,
+    };
+  }
 
   // Send message to backend then print it to console
   sendMessage = (message) => {

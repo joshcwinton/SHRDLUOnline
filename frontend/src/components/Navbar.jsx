@@ -28,8 +28,9 @@ class SHRDLUNavbar extends Component {
             SHRDLU Online
           </Navbar.Brand>
           <Nav className="mr-auto">
-            <Nav.Link href="/">Chat</Nav.Link>
+            {/* <Nav.Link href="/">Chat</Nav.Link> */}
             <Nav.Link href="/instances">Explore</Nav.Link>
+            <Nav.Link href="/new">New Instance</Nav.Link>
             {/* <Nav.Link href="/">Login</Nav.Link> */}
             <Nav.Link onClick={this.handleClick}> Toggle Help</Nav.Link>
           </Nav>
