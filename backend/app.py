@@ -41,13 +41,15 @@ dummy = [
 
 
 print("loading ml........")
-#TODO add fake ml call
+# TODO add fake ml call
 model = tf.keras.models.load_model("Model.h5")
 # model._make_predict_function()
 # main route (Landing Page)
 
 # '''
 # this should be going in a route that fetches an instance here rn for testing
+
+
 def setThings(instance_id):
     setMessages(eval(retrieveField(instance_id, 'messages')))
     setGrid(eval(retrieveField(instance_id, 'grid')))
@@ -94,7 +96,6 @@ def chatbot_route(instance_id):
         user_res = post_data["user"]
         bot_res = chatbot(user_res)
 
-
         # writing grid to db, overwriting
         storeField(instance_id, 'grid', str(getGrid()))
 
@@ -103,7 +104,6 @@ def chatbot_route(instance_id):
 
         # writing messages to db, appended to prev
         storeField(instance_id, 'messages', str(getMessages()))
-
 
         return jsonify({"SHRDLU": bot_res})
     return jsonify({"get": "requested"})
@@ -168,7 +168,7 @@ def environment_image(instance_id):
 
         env = getEnvironment()
         renderEnvironment(env)
-        
+
         return send_from_directory("images", "env_image.png")
     return None
 
@@ -179,6 +179,7 @@ def messages(instance_id):
         setThings(instance_id)
         return jsonify({"messages": getMessages()})
     return None
+
 
 '''
 @app.route("/history", methods=["GET"])
