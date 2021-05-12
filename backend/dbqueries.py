@@ -62,9 +62,9 @@ def createInstanceStorage(worldName, creator, size):
         'worldName': worldName,
         'creator': creator,
         'size': size,
-        'grid': "",
-        'history': "",
-        'messages': "",
+        'grid': "[]",
+        'history': "[]",
+        'messages': "[]",
     })
 
 
