@@ -81,6 +81,7 @@ def getAllStoredInstances(collectionName):
     for doc in docs:
         ele = []
         temp = doc.to_dict()
+        ele.append(str(doc.id))
         ele.append(temp['worldName'])
         ele.append(temp['creator'])
         ele.append(temp['size'])
