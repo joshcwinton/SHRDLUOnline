@@ -11,8 +11,8 @@ GRID = [[("", "", 0) for i in range(GRID_SIZE)] for j in range(GRID_SIZE)]
 SHAPES = set(["CUBE", "PYRAMID", "SPHERE"])
 COLORS = set(["RED", "BLUE", "GREEN"])
 CLAW_POS = GRID_SIZE // 2, GRID_SIZE // 2
-MESSAGES = []   # Stores a list of messages
-HISTORY = []    # Stores a list of grids
+MESSAGES = []  # Stores a list of messages
+HISTORY = []  # Stores a list of grids
 
 
 INSTANCES = [
@@ -113,8 +113,8 @@ def holdShape(row, col):
 def clearBoardAppStart():
     """Used to clear the board on app start"""
     global GRID
-    for x in range(GRID_SIZE):
-        for y in range(GRID_SIZE):
+    for x in range(getGridSize()):
+        for y in range(getGridSize()):
             GRID[x][y] = ("", "", 0)
     renderEnvironment(GRID)
 
@@ -123,8 +123,8 @@ def clearBoard():
     """used for clear board route."""
     global GRID, HISTORY, MESSAGES
     ret = []
-    for x in range(GRID_SIZE):
-        for y in range(GRID_SIZE):
+    for x in range(getGridSize()):
+        for y in range(getGridSize()):
             GRID[x][y] = ("", "", 0)
 
     MESSAGES.append({"name": "Me", "text": "Clear board"})
@@ -150,8 +150,8 @@ def undo():
         # special case if there is only one prev env.
         if len(HISTORY) == 1:
             HISTORY.pop()
-            for x in range(GRID_SIZE):
-                for y in range(GRID_SIZE):
+            for x in range(getGridSize()):
+                for y in range(getGridSize()):
                     GRID[x][y] = ("", "", 0)
         else:
             HISTORY.pop()
@@ -216,13 +216,13 @@ def getHistory():
     return HISTORY
 
 
-'''
+"""
 Use set methods: 
 setGrid, setMessages, setHistory 
 
 With data source (query method based on instance that should be passed into the route)
 And initalize the globals to what they should be inside the route
-'''
+"""
 
 
 def setGridSize(data):

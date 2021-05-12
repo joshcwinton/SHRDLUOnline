@@ -1,16 +1,31 @@
 import spacy
-from environment import SHAPES, COLORS, addShape, delShape, findShape, moveShape, holdShape, GRID_SIZE, GRID, showGrid, getEnvironment, updateHistory, updateMessage
+from environment import (
+    SHAPES,
+    COLORS,
+    addShape,
+    delShape,
+    findShape,
+    moveShape,
+    holdShape,
+    getGridSize,
+    GRID,
+    showGrid,
+    getEnvironment,
+    updateHistory,
+    updateMessage,
+)
 
 # Create function for conjunctions(and) to make sentences easier to read
 
-nlp = spacy.load('en_core_web_sm')
+nlp = spacy.load("en_core_web_sm")
 
 ACTIONS = {
-    'FIND': findShape,
-    'DELETE': delShape,
-    'ADD': addShape,
-    'MOVE': moveShape,
-    'HOLD': holdShape}
+    "FIND": findShape,
+    "DELETE": delShape,
+    "ADD": addShape,
+    "MOVE": moveShape,
+    "HOLD": holdShape,
+}
 
 # @Param sentence- string
 # Sentence - Takes the format "[action] [adj] [noun] [x] [y]"
@@ -24,28 +39,31 @@ def readSentence(sentence):
 
     processed_sentence = nlp(sentence)
 
-    color, shape, action = '', '', ''
-    row, col = -1, -1,
+    color, shape, action = "", "", ""
+    row, col = (
+        -1,
+        -1,
+    )
     for token in processed_sentence:
-        if token.pos_ == 'VERB':
+        if token.pos_ == "VERB":
             action = token.text.upper()
-        if token.pos_ == 'ADJ':
+        if token.pos_ == "ADJ":
             color = token.text.upper()
-        if token.pos_ == 'NOUN':
+        if token.pos_ == "NOUN":
             shape = token.text.upper()
-        if token.pos_ == 'NUM':
+        if token.pos_ == "NUM":
             if row == -1:
                 row = int(token.text)
             else:
                 col = int(token.text)
         # For relative
-        if token.pos_ == 'SCONJ':
+        if token.pos_ == "SCONJ":
             conj = token.text.upper()
 
-        #print(token, token.tag_, token.pos_, spacy.explain(token.tag_), token.head.text, token.dep_)
+        # print(token, token.tag_, token.pos_, spacy.explain(token.tag_), token.head.text, token.dep_)
         # example output "Add VB VERB verb, base form Add ROOT"
 
-    return(shape, color, action, row, col)
+    return (shape, color, action, row, col)
 
 
 def checkShape(noun):
@@ -61,8 +79,9 @@ def checkAction(action):
 
 
 def checkLocation(row, col):
-    return not (row > GRID_SIZE - 1 or col > GRID_SIZE - 1
-                or row < 0 or col < 0)
+    return not (
+        row > getGridSize() - 1 or col > getGridSize() - 1 or row < 0 or col < 0
+    )
 
 
 def emptyPosition(row, col):
@@ -72,6 +91,7 @@ def emptyPosition(row, col):
 # Next to, Above, Below, Left, Right, Near
 def doRelativeAction():
     pass
+
 
 # @Param flags- the check from @func checkSemantics
 # Returns the reponse_number based on what conditions are met
@@ -85,7 +105,7 @@ def doAction(action, shape, color, row, col):
     elif not checkAction(action) == 1:  # Check if action is valid
         return 3
 
-    if action == 'ADD':
+    if action == "ADD":
         if not checkColor(color):
             return 4
 
@@ -98,7 +118,7 @@ def doAction(action, shape, color, row, col):
             return 1  # Say location is taken
 
     foundShape = []
-    if row != -1 and col != -1 and action != 'MOVE':
+    if row != -1 and col != -1 and action != "MOVE":
         if emptyPosition(row=row, col=col):
             return 6
         else:
@@ -121,29 +141,25 @@ def doAction(action, shape, color, row, col):
         else:
             return 4
     else:
-        if action == 'MOVE':
+        if action == "MOVE":
             if not checkLocation(row, col) == 1:
                 return 7
             if row == foundShape[0][0] and col == foundShape[0][1]:
                 return 99
             elif emptyPosition(row, col):
-                moveShape(
-                    x1=foundShape[0][0],
-                    y1=foundShape[0][1],
-                    x2=row,
-                    y2=col)
+                moveShape(x1=foundShape[0][0], y1=foundShape[0][1], x2=row, y2=col)
             else:
                 return 1
 
         row = foundShape[0][0]
         col = foundShape[0][1]
 
-        if action == 'FIND':
+        if action == "FIND":
             return 8
-        if action == 'DELETE':
+        if action == "DELETE":
             delShape(row, col)
             return 9
-        if action == 'HOLD':
+        if action == "HOLD":
             holdShape(foundShape[0][0], foundShape[0][1])
 
     return 0
@@ -162,10 +178,11 @@ def response(response_number):
         8: "Found",
         9: "Deleted",
         10: "Location does not exist.",
-        99: "Already there"
+        99: "Already there",
     }
 
     return responses[response_number]
+
 
 # Takes string parameter and outputs response based on the string
 
@@ -174,11 +191,8 @@ def chatbot(sentence):
     shape, color, action, row, col = readSentence(sentence)
 
     response_number = doAction(
-        action=action,
-        shape=shape,
-        color=color,
-        row=row,
-        col=col)
+        action=action, shape=shape, color=color, row=row, col=col
+    )
 
     # Update board when grid is changed
     # TODO: We probably don't want to update history when env isn't changed.
@@ -186,9 +200,13 @@ def chatbot(sentence):
     currentEnv = getEnvironment()
     # Only updates history if command is good(0-Done, 8-Found)
     if response_number == 0 or response_number == 8 or response_number == 9:
-        updateHistory(currentEnv, sentence, response(
-            response_number), (shape, color, action, row, col))
+        updateHistory(
+            currentEnv,
+            sentence,
+            response(response_number),
+            (shape, color, action, row, col),
+        )
     else:
         updateMessage(sentence, response(response_number))
 
-    return(response(response_number))
+    return response(response_number)
