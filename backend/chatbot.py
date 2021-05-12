@@ -147,7 +147,8 @@ def doAction(action, shape, color, row, col):
             if row == foundShape[0][0] and col == foundShape[0][1]:
                 return 99
             elif emptyPosition(row, col):
-                moveShape(x1=foundShape[0][0], y1=foundShape[0][1], x2=row, y2=col)
+                moveShape(x1=foundShape[0][0],
+                          y1=foundShape[0][1], x2=row, y2=col)
             else:
                 return 1
 

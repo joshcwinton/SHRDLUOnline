@@ -18,15 +18,16 @@ import { getURI } from "../utils/config";
 class Chat extends Component {
   constructor(props) {
     super(props);
-    let instanceName = props.match.params.instanceName;
+    let instanceId = props.match.params.instance;
 
     this.state = {
       messages: [],
       name: "Me",
       errors: [],
-      imageSrc: `${getURI()}/environment_image`,
+      imageSrc: `${getURI()}/environment_image/${instanceId}`,
       imageHash: Date.now(),
       ml: false,
+      instanceId: instanceId
     };
   }
 
@@ -37,8 +38,9 @@ class Chat extends Component {
     let errors = [];
     // send message to backend
     axios
-      .post(`${getURI()}/${this.state.ml ? "ml" : ""}chat`, {
+      .post(`${getURI()}/${this.state.ml ? "ml" : ""}chat/${this.state.instanceId}`, {
         user: message.text,
+        instanceId: this.state.instanceId
       })
       .then((res) => {
         // add response to history
@@ -74,7 +76,7 @@ class Chat extends Component {
 
   updateEnvironment = () => {
     this.setState({
-      imageSrc: `${getURI()}/environment_image`,
+      imageSrc: `${getURI()}/environment_image/${this.state.instanceId}`,
       imageHash: Date.now(),
     });
   };
@@ -83,7 +85,7 @@ class Chat extends Component {
     console.log("Undo Action");
     let errors = [];
     axios
-      .post(`${getURI()}/undo`)
+      .post(`${getURI()}/undo/${this.state.instanceId}`)
       .then((res) => {
         // add response to chat history
         let userMessage = { name: "Me", text: res.data.Me };
@@ -105,7 +107,7 @@ class Chat extends Component {
     console.log("Clear Board");
     let errors = [];
     axios
-      .post(`${getURI()}/clear`)
+      .post(`${getURI()}/clear/${this.state.instanceId}`)
       .then((res) => {
         // add response to chat history
         let userMessage = { name: "Me", text: res.data.Me };
@@ -125,7 +127,7 @@ class Chat extends Component {
 
   // TODO: This will likely involve a user param later on
   componentDidMount = () => {
-    axios.get(`${getURI()}/messages`).then((res) => {
+    axios.get(`${getURI()}/messages/${this.state.instanceId}`).then((res) => {
       let fetchedMessages = res.data.messages;
       this.setState({
         messages: fetchedMessages,
