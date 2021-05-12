@@ -28,21 +28,23 @@ class InstanceList extends Component {
               <th>Name</th>
               <th>Creator</th>
               <th>Size</th>
-              <th>Last Updated</th>
             </tr>
           </thead>
           <tbody>
             {this.state.instances.map((instance) => {
+              let id = instance[0];
+              let name = instance[1];
+              let creator = instance[2];
+              let size = instance[3];
               return (
-                <tr key={instance.name}>
+                <tr key={name}>
                   <td>
-                    <Link to={instance.url}>{instance.name}</Link>
+                    <Link to={`/instance/${id}`}>{name}</Link>
                   </td>
-                  <td>{instance.creator}</td>
+                  <td>{creator}</td>
                   <td>
-                    {instance.size} x {instance.size}
+                    {size} x {size}
                   </td>
-                  <td>{instance.lastUpdated}</td>
                 </tr>
               );
             })}
