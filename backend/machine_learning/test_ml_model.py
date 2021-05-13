@@ -18,7 +18,9 @@ NOUN_LIST = {0: 'none', 1: 'cube', 2: 'pyramid', 3: 'sphere'}
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
-
+#Used to create neural network architecture and load weights from "Weights.h5"
+#Returns the created model
+#Not used because we are loading from model file
 def createModel():
     model = TFBertForTokenClassification.from_pretrained("bert-base-uncased",
                                                          num_labels=INPUT_SIZE,
@@ -60,6 +62,7 @@ def createModel():
 full_model = tf.keras.models.load_model("Model.h5")
 # Test model
 
+#Model will predict on each sentence in pred_sentences
 pred_sentences = ["Can you add the red cube next to the green sphere",
                   "Delete the green circle to the left of the red pyramid",
                   "Add the green pyramid to the right of the blue circle",

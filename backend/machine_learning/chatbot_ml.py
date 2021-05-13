@@ -31,7 +31,9 @@ REL_ACTIONS_LIST = {0: "none", 1: "above",
 NOUN_LIST = {0: "none", 1: "cube", 2: "pyramid", 3: "sphere"}
 
 
-# Create neural network architecture and load weights
+#Used to create neural network architecture and load weights from "Weights.h5"
+#Returns the created model
+#Not used because we are loading from model file
 def createModel():
     # Load pretrained model
     model = TFBertForTokenClassification.from_pretrained(
@@ -113,6 +115,7 @@ def emptyPosition(row, col):
 
 # Grabs coordinates based on the relative action and relative shape
 # Returns the coordinates
+# Only used for Above, Below, Right, Left
 # ie relative action == left -> return coordinates left of relative shape
 
 
@@ -357,7 +360,7 @@ def response(response_number, action, shape, color):
 
 
 def chatbot_ml(res, sentence):
-    # model = createModel()
+    # model = createModel() #Model is moved to app.py so the models won't be instanced
 
     action = ACTIONS_LIST[np.argmax(res[0])]
     noun = NOUN_LIST[np.argmax(res[1])]

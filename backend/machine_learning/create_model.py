@@ -61,6 +61,7 @@ rel_colors = train_data[:, 6].astype(int)
 
 # Create model and train
 
+#Input Neurons and Hidden Layers
 nn_input = Input(shape=(INPUT_SIZE,), dtype='int64')
 x = model(nn_input)
 x = x[0]
@@ -76,6 +77,7 @@ REL_ACTIONS_LIST = {0: 'none', 1: 'above',
                     2: 'below', 3: 'near', 4: 'right', 5: 'left'}
 NOUN_LIST = {0: 'none', 1: 'cube', 2: 'pyramid', 3: 'sphere'}
 
+#Output Neurons
 action_pred = Dense(len(ACTIONS_LIST), name="Action", activation='softmax')(x)
 shape_pred = Dense(len(NOUN_LIST), name="Noun", activation='softmax')(x)
 color_pred = Dense(len(COLORS_LIST), name="Color", activation='softmax')(x)
@@ -86,6 +88,7 @@ rel_shape_pred = Dense(len(NOUN_LIST), name="Rel_Noun",
 rel_color_pred = Dense(len(COLORS_LIST), name="Rel_Color",
                        activation='softmax')(x)
 
+#Create model and train
 full_model = Model(inputs=nn_input,
                    outputs=[action_pred, shape_pred, color_pred, rel_action_pred, rel_shape_pred, rel_color_pred])
 

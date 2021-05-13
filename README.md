@@ -19,6 +19,7 @@ Saurav Hossain, Donald Chen
 
 ### Backend
 - Python 3
+- Download model file from drive and move file to backend/
 
 #### Getting Started
 1. `cd backend`
