@@ -31,9 +31,9 @@ REL_ACTIONS_LIST = {0: "none", 1: "above",
 NOUN_LIST = {0: "none", 1: "cube", 2: "pyramid", 3: "sphere"}
 
 
-#Used to create neural network architecture and load weights from "Weights.h5"
-#Returns the created model
-#Not used because we are loading from model file
+# Used to create neural network architecture and load weights from "Weights.h5"
+# Returns the created model
+# Not used because we are loading from model file
 def createModel():
     # Load pretrained model
     model = TFBertForTokenClassification.from_pretrained(
