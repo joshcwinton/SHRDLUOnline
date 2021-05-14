@@ -61,7 +61,8 @@ def createInstanceStorage(worldName, creator, size):
             "creator": creator,
             "size": size,
             "grid": str(
-                [[("", "", 0) for i in range(int(size))] for j in range(int(size))]
+                [[("", "", 0) for i in range(int(size))]
+                 for j in range(int(size))]
             ),
             "history": "[]",
             "messages": "[]",
