@@ -29,7 +29,7 @@ Saurav Hossain, Donald Chen
 
 1. `cd backend`
 2. `python3 -m pip install -r requirements.txt`
-3. `python3 apps.py`
+3. `python3 app.py`
 
 ## Deployment
 
