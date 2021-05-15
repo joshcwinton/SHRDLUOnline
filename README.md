@@ -23,6 +23,7 @@ Saurav Hossain, Donald Chen
 
 - Python 3
 - Download model file from drive and move file to backend/
+- Download database secret file from drive and move file to backend/
 
 #### Getting Started
 

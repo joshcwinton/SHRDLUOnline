@@ -4,7 +4,7 @@ from firebase_admin import firestore
 
 
 cred = credentials.Certificate(
-    "./shrdlu-storage-firebase-adminsdk-690pn-c4f962b560.json"
+    "./shrdlu-storage2-firebase-adminsdk-4zbgr-ae1cfe53f9.json"
 )
 firebase_admin.initialize_app(cred)
 
